@@ -22,7 +22,9 @@
 			</div>
 			<div class="d-flex align-items-center">
 				<button type="submit" class="btn btn-secondary mt-3 me-2">로그인</button>
-				<button type="submit" class="btn btn-secondary mt-3 me-2"><a style="text-decoration: none; color: white;" href="./userRegister.jsp">회원가입</a></button>
+				<button type="submit" class="btn btn-secondary mt-3 me-2">
+					<a style="text-decoration: none; color: white;" href="./userRegister.jsp">회원가입</a>
+				</button>
 				<div class="find mt-3">
 					<a href="./userIdFind.jsp">아이디찾기/</a>
 					<a href="./userPasswordFind.jsp">비밀번호찾기</a>						
@@ -30,6 +32,9 @@
 			</div>
 		</form>
 	</div>
+	<footer class="my-3 text-center text-small">
+      <p class="mb-1">&copy; 2022 지니북스</p>
+    </footer>
 
 </body>
 </html>

@@ -1,13 +1,22 @@
+<%@page import="bookInfo.BookInfoDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
+<%@ page import="bookInfo.BookInfoDAO"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>지니북스</title>
+<title>Insert title here</title>
 <body>
+	<%
+		BookInfoDAO bookInfoDAO = new BookInfoDAO();
+		bookInfoDAO.selectBookInfo();
+		
+		List<BookInfoDTO> bookInfoList = bookInfoDAO.selectBookInfo();
+	%>
 	<%@ include file="navBar.jsp"%>
+	
 	
 	
 	<div id="carouselExampleInterval" class="container carousel slide mt-5"
@@ -16,14 +25,15 @@
 			<div class="carousel-item active" data-bs-interval="3000">
 				<img src="https://image.aladin.co.kr/product/30473/65/cover/k172830285_1.jpg" alt="..."> 
 				<div>책 제목</div> 
-			</div>
+			</div>	
+			
 			<%
-				for(int i=0; i<10; i++){
-			%>	
+				for (BookInfoDTO bi : bookInfoList) {
+			%>
 				<div class="carousel-item" data-bs-interval="3000">
-				<img src="https://image.aladin.co.kr/product/30473/65/cover/k172830285_1.jpg" alt="...">
-				<div>책 제목</div> 
-			</div>		
+					<img src="<%=bi.cover%>" alt="...">
+					<div><%=bi.title%></div> 
+				</div>	
 			<%
 				}
 			%>
@@ -61,15 +71,17 @@
 				</tr>
 			</thead>
 			<tbody>
+			
 			<%
-				for(int i=0; i<10; i++){
-			%>	
+				for (BookInfoDTO bi : bookInfoList) {
+			%>
 				<tr>
-					<th scope="row">1</th>
-					<td><a href="./bookDetail?id=">Mark</a></td>
-					<td>apple</td>
-					<td><button>예약가능</button></td>
-				</tr>			
+					<th scope="row"><%=bi.rank%></th>
+					<td><a style="text-decoration:none; color:black;" href="./bookDetail.jsp?title=<%=bi.title%>"><%=bi.title%></a></td>
+					<td><%=bi.author%></td>
+					<td><button style="width: 80px;">예약가능</button></td>
+				</tr>	
+			
 			<%
 				}
 			%>
@@ -79,6 +91,9 @@
 		</table>
 
 	</div>
+	<footer class="my-3 text-center text-small">
+      <p class="mb-1">&copy; 2022 지니북스</p>
+    </footer>
 
 
 

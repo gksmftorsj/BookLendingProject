@@ -1,4 +1,4 @@
-package BookReturn;
+package bookReturn;
 
 public class BookReturnDTO {
 

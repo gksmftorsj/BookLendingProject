@@ -31,8 +31,6 @@ public class BookInfoDTO {
 		this.bookCnt = bookCnt;
 	}
 
-
-
 	public int getRank() {
 		return rank;
 	}
