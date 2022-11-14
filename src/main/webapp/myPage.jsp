@@ -89,16 +89,17 @@ display: inline;
 									<option value="12">12</option>
 								</select><span style="color: #636363; font-weight: bold;"> 월</span>
 
-								<div class="account_select02">
+ 								<div class="account_select02">
 									<label for="select04"
 										style="color: #636363; font-weight: bold;"> 상태별조회</label> <select
 										id="select_searchOrderStatusSel" class="Searchselect_01">
 										<option value="0" selected="">전체보기</option>
-										<option value="1">대여중</option>
-										<option value="2">연체중</option>
-										<option value="3">반납완료</option>
+										<option value="1">예약대기</option>
+										<option value="2">대여중</option>
+										<option value="3">연체중</option>
+										<option value="4">반납완료</option>
 									</select>
-								</div>								
+								</div>
 							</div>
 						</div>
 						<div class="order_box_line"></div>
@@ -112,6 +113,9 @@ display: inline;
 									<ul class="dropdown-menu">
 										<li><a class="dropdown-item" href="#">대여도서명</a></li>
 										<li><a class="dropdown-item" href="#">대여번호</a></li>
+										<li><hr class="dropdown-divider"></li>
+										<li><a class="dropdown-item" href="#">예약도서명</a></li>
+										<li><a class="dropdown-item" href="#">예약번호</a></li>
 									</ul>
 									<input type="text" class="form-control"
 										aria-label="Text input with 2 dropdown buttons">
@@ -174,58 +178,6 @@ display: inline;
 				</div>
 			</div>
 			</fieldset>
-
-			<div class="col-auto">
-				<label for="name">예약내역조회</label>
-				<fieldset>
-					<div class="order_box01">
-						<div class="order_box02">
-							<div class="account_select01">
-								<select id="select_searchYearSel" class="Searchselect_01"
-									title="연도 선택">
-									<option value="0" selected="">전체보기</option>
-									<option value="2022">2022</option>
-								</select><span style="color: #636363; font-weight: bold;"> 년</span> <select
-									id="select_searchMonthSel" class="Searchselect_01" title="월 선택">
-									<option value="0" selected="">전체보기</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="8">8</option>
-									<option value="9">9</option>
-									<option value="10">10</option>
-									<option value="11">11</option>
-									<option value="12">12</option>
-								</select><span style="color: #636363; font-weight: bold;"> 월</span>
-
-							</div>
-						</div>
-						<div class="order_box_line"></div>
-
-						<div class="order_box03">
-
-
-							<div class="account_select03" style="width: 100%">
-								<div class="input-group">
-									<button class="btn btn-outline-secondary dropdown-toggle"
-										type="button" data-bs-toggle="dropdown" aria-expanded="false">대여내역조회</button>
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">예약도서명</a></li>
-										<li><a class="dropdown-item" href="#">예약번호</a></li>
-									</ul>
-									<input type="text" class="form-control"
-										aria-label="Text input with 2 dropdown buttons">
-									<button class="btn btn-outline-secondary" types="button">검색</button>
-								</div>
-							</div>
-						</div>
-					</div>
-			</fieldset>
-			</div>
 			
 			<fieldset>
 			<div class="col-auto">

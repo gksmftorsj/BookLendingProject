@@ -105,43 +105,7 @@ public class BookInfoDAO {
       }
       return BookInfoList;
    }
-   
-//	 �쐞�뿉 硫붿냼�뱶 �솢�슜�븯硫� �맖
-//   public List<BookInfoDTO> selectTopRankBookInfo() {
-//	   String sqlQuery = "SELECT * FROM BOOK_INFO WHERE ROWNUM <=10 ORDER BY BOOKRANK DESC";
-//	   
-//	   Connection conn = null;
-//	   PreparedStatement psmt = null;
-//	   ResultSet rs = null;
-//	   
-//	   List<BookInfoDTO> topRankBookInfoList = null;
-//	   
-//	   try {
-//		   conn = DatabaseUtil.getConnection();
-//		   psmt = conn.prepareStatement(sqlQuery);
-//		   rs = psmt.executeQuery();
-//		   
-//		   topRankBookInfoList = new ArrayList<BookInfoDTO>();
-//		   
-//		   while (rs.next()) {
-//			   BookInfoDTO bi = new BookInfoDTO();
-//			   bi.rank = rs.getInt("bookRank");
-//			   bi.title = rs.getString("bookTitle");
-//			   bi.author = rs.getString("bookAuthor");
-//			   bi.cover = rs.getString("bookCover");
-//			   
-//			   topRankBookInfoList.add(bi);
-//		   }
-//		   
-//	   } catch (Exception e) {
-//		   e.printStackTrace();
-//	   } finally {
-//		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-//		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-//		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-//	   }
-//	   return topRankBookInfoList;
-//   }
+
    
    public BookInfoDTO selectBookDetail(String title) {
          String sqlQuery = "SELECT * FROM BOOK_INFO WHERE BOOKTITLE = ?";
@@ -211,10 +175,7 @@ public class BookInfoDAO {
 	   }
 	   return total;
    }
-   
-   
 
-   
    public static void main(String[] args) throws java.text.ParseException{
        String book = getBookData();
        JSONParser parser = new JSONParser();
