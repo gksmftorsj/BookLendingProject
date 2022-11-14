@@ -1,3 +1,5 @@
+<%@page import="userManagement.UserManagementDTO"%>
+<%@page import="userManagement.UserManagementDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="userInfo.UserInfoDTO"%>
 <%@page import="userInfo.UserInfoDAO"%>
@@ -12,25 +14,25 @@
 	String userTel = null;
 	String userAddress = null;
 	if(request.getParameter("userName") != null){
-		userName = (String) request.getParameter("userName");
+		userName = request.getParameter("userName");
 	}
 	if(request.getParameter("userID") != null){
-		userID = (String) request.getParameter("userID");
+		userID = request.getParameter("userID");
 	}
 	if(request.getParameter("userPassword") != null){
-		userPassword = (String) request.getParameter("userPassword");
+		userPassword = request.getParameter("userPassword");
 	}
 	if(request.getParameter("userEmail") != null){
-		userEmail = (String) request.getParameter("userEmail");
+		userEmail = request.getParameter("userEmail");
 	}
 	if(request.getParameter("userTel") != null){
-		userTel = (String) request.getParameter("userTel");
+		userTel = request.getParameter("userTel");
 	}
 	if(request.getParameter("userAddress") != null){
 		if(request.getParameter("userAddressDetail") != null){
-			userAddress = (String) request.getParameter("userAddress") + (String) request.getParameter("userAddressDetail");
+			userAddress = request.getParameter("userAddress") + request.getParameter("userAddressDetail");
 		} else{
-			userAddress = (String) request.getParameter("userAddress");
+			userAddress = request.getParameter("userAddress");
 		}
 	}
 	
@@ -44,8 +46,8 @@
 		return;
 	}
 	UserInfoDAO userInfoDAO = new UserInfoDAO();
-	int result = userInfoDAO.register(new UserInfoDTO(userName, userID, userPassword, userEmail, SHA256.getSHA256(userEmail), "false", userAddress, userTel));
-	if(result == -1){
+	int userInfoRs = userInfoDAO.insertUserInfo(new UserInfoDTO(userName, userID, userPassword, userEmail, SHA256.getSHA256(userEmail), "false", userAddress, userTel));
+	if(userInfoRs == -1){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('이미 존재하는 아이디입니다.');");
@@ -54,12 +56,30 @@
 		script.close();
 		return;
 	} else {
-		session.setAttribute("userID", userID);
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("location.href = 'emailSendAction.jsp'");
-		script.println("</script>");
-		script.close();
+		UserManagementDAO userManagementDAO = new UserManagementDAO();
+		String userNo = userInfoDAO.selectUserNo(userID);
+		String overDueStatus = "false";
+		int overDueCnt = 0;
+		int currentLendingCnt = 0;
+		int currentReservationCnt = 0;
+		int totalLendingCnt = 0;
+		UserManagementDTO userManagementDTO = new UserManagementDTO(userNo, overDueStatus, overDueCnt, currentLendingCnt, currentReservationCnt, totalLendingCnt);
+		int userManagementRs = userManagementDAO.insertUserManagement(userManagementDTO);
+		if(userManagementRs == -1){
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('다시 시도해주세요.');");
+			script.println("history.back();");
+			script.println("</script>");
+			script.close();
+			return;
+		} else{
+			session.setAttribute("userID", userID);
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("location.href = 'emailSendAction.jsp'");
+			script.println("</script>");
+			script.close();
+		}
 	}
-
 %>

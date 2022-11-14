@@ -11,6 +11,16 @@
 	rel="stylesheet"
 	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
 	crossorigin="anonymous">
+<style>
+.logo {
+	transform: rotate(30deg);
+	position: relative;
+	top: -6px;
+	left: -9px;
+	width: 30px;
+	height: 30px;
+}
+</style>
 
 </head>
 <body>
@@ -31,7 +41,8 @@
 %>
 	<nav class="navbar navbar-expand-lg bg-light">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="./index.jsp">지니북스</a>
+			<a class="navbar-brand" href="./index.jsp">지니북스 <img class="logo"
+				src="./img/logo.png"></a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -39,7 +50,7 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<%
+				<%
 	if(valUserID == null){
 %>
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -57,8 +68,7 @@
 							<li><hr class="dropdown-divider"></li>
 							<li><a class="dropdown-item" href="#">Something else
 									here</a></li>
-						</ul>
-					</li>
+						</ul></li>
 				</ul>
 				<%
 	}

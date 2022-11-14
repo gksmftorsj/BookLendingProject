@@ -1,9 +1,38 @@
 package userManagement;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import userInfo.UserInfoDTO;
+import util.DatabaseUtil;
+
 public class UserManagementDAO {
-	public static void main(String[] args) {
-		
-
+	
+	public int insertUserManagement(UserManagementDTO um) {
+		String SQL = "INSERT INTO USER_MANAGEMENT "
+				   + "VALUES(?, TO_DATE(SUBSTR(?, 1, 8), 'YYYYMMDD'), ?, ?, ?, ?, ?)";
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(SQL);
+			psmt.setString(1, um.getUserNo());
+			psmt.setString(2, um.getUserNo());
+			psmt.setString(3, um.getOverDueStatus());
+			psmt.setInt(4, um.getOverDueCnt());
+			psmt.setInt(5, um.getCurrentLendingCnt());
+			psmt.setInt(6, um.getCurrentReservationCnt());
+			psmt.setInt(7, um.getCurrentLendingCnt());
+			return psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+			try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+			try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		}
+		return -1;
 	}
-
 }

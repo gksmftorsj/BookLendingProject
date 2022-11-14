@@ -24,7 +24,7 @@ import util.DatabaseUtil;
 public class BookInfoDAO {
    
    public void insertBookInfo(BookInfoDTO bi) {
-      String sqlQuery = "INSERT INTO BOOK_INFO VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      String sqlQuery = "INSERT INTO BOOK_INFO VALUES(?, ?, ?, ?, ?, ?, ?, SUBSTR(?, 6, INSTR(?, '>', 1, 2)-6), ?, ?)";
 
       Connection conn = null;
       PreparedStatement psmt = null;
@@ -42,11 +42,12 @@ public class BookInfoDAO {
          psmt.setString(6, bi.isbn);
          psmt.setString(7, bi.cover);
          psmt.setString(8, bi.categoryName);
-         psmt.setString(9, bi.publisher);
-         psmt.setInt(10, bi.bookCnt);
+         psmt.setString(9, bi.categoryName);
+         psmt.setString(10, bi.publisher);
+         psmt.setInt(11, bi.bookCnt);
          int resultCnt = psmt.executeUpdate();
          if(resultCnt>0) {
-            System.out.println("insert 성공");
+            System.out.println("insert �꽦怨�");
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -57,8 +58,14 @@ public class BookInfoDAO {
       }
    }
    
-   public List<BookInfoDTO> selectBookInfo() {
-      String sqlQuery = "SELECT * FROM BOOK_INFO";
+   public List<BookInfoDTO> selectBookInfo(int startIndex, int endIndex) {
+      String sqlQuery = "SELECT * "
+      		+ "FROM("
+      		+ "		SELECT ROWNUM AS RN, BI.* "
+      		+ "     FROM (SELECT * "
+      		+ "           FROM BOOK_INFO "
+      		+ "           ORDER BY BOOKRANK) BI) "
+      		+ "WHERE RN BETWEEN ? AND ?";
 
       Connection conn = null;
       PreparedStatement psmt = null;
@@ -69,6 +76,10 @@ public class BookInfoDAO {
       try {
          conn = DatabaseUtil.getConnection();
          psmt = conn.prepareStatement(sqlQuery);
+         
+         psmt.setInt(1, startIndex);
+         psmt.setInt(2, endIndex);
+         
          rs = psmt.executeQuery();
          
          BookInfoList = new ArrayList<BookInfoDTO>();
@@ -79,6 +90,8 @@ public class BookInfoDAO {
             bi.title = rs.getString("bookTitle");
             bi.author = rs.getString("bookAuthor");
             bi.cover = rs.getString("bookCover");
+            bi.categoryName = rs.getString("bookCategoryName");
+            bi.isbn = rs.getString("bookIsbn");
 
             BookInfoList.add(bi);
          }
@@ -92,6 +105,43 @@ public class BookInfoDAO {
       }
       return BookInfoList;
    }
+   
+//	 �쐞�뿉 硫붿냼�뱶 �솢�슜�븯硫� �맖
+//   public List<BookInfoDTO> selectTopRankBookInfo() {
+//	   String sqlQuery = "SELECT * FROM BOOK_INFO WHERE ROWNUM <=10 ORDER BY BOOKRANK DESC";
+//	   
+//	   Connection conn = null;
+//	   PreparedStatement psmt = null;
+//	   ResultSet rs = null;
+//	   
+//	   List<BookInfoDTO> topRankBookInfoList = null;
+//	   
+//	   try {
+//		   conn = DatabaseUtil.getConnection();
+//		   psmt = conn.prepareStatement(sqlQuery);
+//		   rs = psmt.executeQuery();
+//		   
+//		   topRankBookInfoList = new ArrayList<BookInfoDTO>();
+//		   
+//		   while (rs.next()) {
+//			   BookInfoDTO bi = new BookInfoDTO();
+//			   bi.rank = rs.getInt("bookRank");
+//			   bi.title = rs.getString("bookTitle");
+//			   bi.author = rs.getString("bookAuthor");
+//			   bi.cover = rs.getString("bookCover");
+//			   
+//			   topRankBookInfoList.add(bi);
+//		   }
+//		   
+//	   } catch (Exception e) {
+//		   e.printStackTrace();
+//	   } finally {
+//		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+//		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+//		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+//	   }
+//	   return topRankBookInfoList;
+//   }
    
    public BookInfoDTO selectBookDetail(String title) {
          String sqlQuery = "SELECT * FROM BOOK_INFO WHERE BOOKTITLE = ?";
@@ -133,6 +183,36 @@ public class BookInfoDAO {
          }
          return bookInfoDTO;
       }
+   
+   public int selectBookTotal() {
+	   String sqlQuery = "SELECT count(*) total FROM BOOK_INFO";
+	   
+	   int total = 0;
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   rs = psmt.executeQuery();
+		   
+		   if(rs.next()) {
+			   total = rs.getInt("total");
+			   
+		   }
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	   }
+	   return total;
+   }
+   
+   
 
    
    public static void main(String[] args) throws java.text.ParseException{
@@ -172,7 +252,7 @@ public class BookInfoDAO {
             urlBuilder.append("?" + URLEncoder.encode("ttbkey","UTF-8") + "=ttbksh9909131602002"); 
             urlBuilder.append("&" + URLEncoder.encode("QueryType","UTF-8") + "=" + URLEncoder.encode("Bestseller", "UTF-8")); 
             urlBuilder.append("&" + URLEncoder.encode("MaxResults","UTF-8") + "=" + URLEncoder.encode("50", "UTF-8")); 
-            urlBuilder.append("&" + URLEncoder.encode("start","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); 
+            urlBuilder.append("&" + URLEncoder.encode("start","UTF-8") + "=" + URLEncoder.encode("2", "UTF-8")); 
             urlBuilder.append("&" + URLEncoder.encode("SearchTarget","UTF-8") + "=" + URLEncoder.encode("Book", "UTF-8")); 
             urlBuilder.append("&" + URLEncoder.encode("output","UTF-8") + "=" + URLEncoder.encode("js", "UTF-8")); 
             urlBuilder.append("&" + URLEncoder.encode("Version","UTF-8") + "=" + URLEncoder.encode("20131101", "UTF-8")); 

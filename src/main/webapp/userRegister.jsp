@@ -23,7 +23,7 @@
     }
 </style>
 <body>
-	<%@ include file="navBar.jsp"%>
+	<%@ include file="userNavbar.jsp"%>
 	
 	<div class="container mt-5">
     <div class="input-form-backgroud row">
@@ -62,10 +62,10 @@
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label for="userTel">전화번호</label>
-            <input type="tel" class="form-control" id="userTel" name="userTel" required>
+            <label for="userTel">연락처</label>
+            <input type="tel" class="form-control" id="userTel" name="userTel" placeholder="010-1234-5678" required>
             <div class="invalid-feedback">
-              전화번호를 입력해주세요.
+              연락처를 입력해주세요.
             </div>
           </div>
         </div>

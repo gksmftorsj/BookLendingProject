@@ -8,7 +8,7 @@
 <title>로그인 페이지</title>
 </head>
 <body>
-	<%@ include file="navBar.jsp"%>
+	<%@ include file="userNavbar.jsp"%>
 	
 	<div class="container mt-3" style="max-width: 560px;">
 		<form method="post" action="./userLoginAction.jsp">

@@ -13,7 +13,7 @@
 	crossorigin="anonymous">
 </head>
 <body>
-	<%@ include file="navBar.jsp"%>
+	<%@ include file="userNavbar.jsp"%>
 	<div class="container mt-3" style="max-width: 560px;">
 		<form method="post" action="./userLoginAction.jsp">
 			<div class="form-group">

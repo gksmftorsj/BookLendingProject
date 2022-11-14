@@ -9,10 +9,10 @@
 	String userID = null;
 	String userPassword = null;
 	if(request.getParameter("userID") != null){
-		userID = (String) request.getParameter("userID");
+		userID = request.getParameter("userID");
 	}
 	if(request.getParameter("userPassword") != null){
-		userPassword = (String) request.getParameter("userPassword");
+		userPassword = request.getParameter("userPassword");
 	}
 	if(userID == "" || userPassword == ""){
 		PrintWriter script = response.getWriter();

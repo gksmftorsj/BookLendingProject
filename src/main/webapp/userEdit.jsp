@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%@ include file="navBar.jsp" %>
+	<%@ include file="userNavbar.jsp"%>
 	정보수정페이지입니다.
 	
 	<footer class="my-3 text-center text-small">

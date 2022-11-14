@@ -4,11 +4,41 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import bookManagement.BookManagementDTO;
 import util.DatabaseUtil;
 
 public class UserInfoDAO {
 	
-	// ¾ÆÀÌµð¿Í ºñ¹Ð¹øÈ£¸¦ ¹Þ¾Æ¼­ ·Î±×ÀÎÀ» ½ÃµµÇØÁÖ´Â ÇÔ¼ö °á°ú´Â Á¤¼öÇüÀ¸·Î ¹ÝÈ¯
+	public String selectUserNo(String userID) {
+        String sqlQuery = "SELECT userNo FROM USER_INFO WHERE userId = ?";
+        
+        String getUserID = null;
+        
+        Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        
+        try {
+           conn = DatabaseUtil.getConnection();
+           psmt = conn.prepareStatement(sqlQuery);
+           psmt.setString(1, userID);
+           rs = psmt.executeQuery();
+           
+           if(rs.next()) {
+        	 getUserID = rs.getString("userNo");
+           }
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+           try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+        }
+        return getUserID;
+     }
+	
+		
+	
 		public int login(String userID, String userPassword) {
 			String SQL = "SELECT userPassword FROM USER_INFO WHERE userID = ?";
 			Connection conn = null;
@@ -21,12 +51,12 @@ public class UserInfoDAO {
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
 					if(rs.getString(1).equals(userPassword)) {
-						return 1; // ·Î±×ÀÎ ¼º°ø
+						return 1; // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 					} else {
-						return 0; // ºñ¹Ð¹øÈ£ Æ²¸²
+						return 0; // ï¿½ï¿½Ð¹ï¿½È£ Æ²ï¿½ï¿½
 					}
 				}
-				return -1; // ¾ÆÀÌµð ¾øÀ½
+				return -1; // ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -34,25 +64,25 @@ public class UserInfoDAO {
 				try {if(pstmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
 				try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
 			}
-			return -2; // µ¥ÀÌÅÍº£ÀÌ½º ¿À·ù
+			return -2; // ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		}
 
-	public int register(UserInfoDTO user) {
-		String SQL = "INSERT INTO USER_INFO VALUES(userNo_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
+	public int insertUserInfo(UserInfoDTO ud) {
+		String SQL = "INSERT INTO USER_INFO VALUES(to_char(sysdate, 'yyyymmdd')||'URN'||LPAD(URN_SEQ.NEXTVAL, 4, 0), ?, ?, ?, ?, ?, ?, ?, ?)";
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		try {
 			conn = DatabaseUtil.getConnection();
 			psmt = conn.prepareStatement(SQL);
-			psmt.setString(1, user.getUserName());
-			psmt.setString(2, user.getUserTel());
-			psmt.setString(3, user.getUserID());
-			psmt.setString(4, user.getUserEmail());
-			psmt.setString(5, user.getUserEmailHash());
-			psmt.setString(6, user.getUserEmailChecked());
-			psmt.setString(7, user.getUserPassword());
-			psmt.setString(8, user.getUserAddress());
+			psmt.setString(1, ud.getUserName());
+			psmt.setString(2, ud.getUserTel());
+			psmt.setString(3, ud.getUserID());
+			psmt.setString(4, ud.getUserEmail());
+			psmt.setString(5, ud.getUserEmailHash());
+			psmt.setString(6, ud.getUserEmailChecked());
+			psmt.setString(7, ud.getUserPassword());
+			psmt.setString(8, ud.getUserAddress());
 			return psmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
