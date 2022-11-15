@@ -22,8 +22,7 @@ import util.DatabaseUtil;
 public class BookManagementDAO {
 
 	public void insertBookManagement(BookManagementDTO bm) {
-	      String sqlQuery = "INSERT INTO BOOK_MANAGEMENT VALUES(?||5, ?, ?, ?, ?, ?, ?)";
-
+	      String sqlQuery = "INSERT INTO BOOK_MANAGEMENT VALUES(?||5, ?, ?, ?, ?)";
 	      Connection conn = null;
 	      PreparedStatement psmt = null;
 	      ResultSet rs = null;
@@ -34,13 +33,11 @@ public class BookManagementDAO {
 	         
 	         psmt.setString(1, bm.bookIsbn);
 	         psmt.setString(2, bm.bookLendingAvailability);
-	         psmt.setInt(3, bm.bookLendingStatus);
-	         psmt.setString(4, bm.bookReservationAvailability);
-	         psmt.setInt(5, bm.bookReservationStatus);
-	         psmt.setInt(6, bm.bookLendingCnt);
-	         psmt.setString(7, bm.bookIsbn);
-	         int resultCnt = psmt.executeUpdate();
-	         if(resultCnt>0) {
+	         psmt.setString(3, bm.bookReservationAvailability);
+	         psmt.setInt(4, bm.bookLendingCnt);
+	         psmt.setString(5, bm.bookIsbn);
+	         int result = psmt.executeUpdate();
+	         if(result > 0) {
 	            System.out.println("insert �꽦怨�");
 	         }
 	      } catch (Exception e) {
@@ -76,9 +73,7 @@ public class BookManagementDAO {
            if(rs.next()) {
         	 bookManagementDTO.setBookNo(rs.getString("bookNo"));
         	 bookManagementDTO.setBookLendingAvailability(rs.getString("bookLendingAvailability"));
-        	 bookManagementDTO.setBookLendingStatus(rs.getInt("bookLendingStatus"));
         	 bookManagementDTO.setBookReservationAvailability(rs.getString("bookReservationAvailability"));
-        	 bookManagementDTO.setBookReservationStatus(rs.getInt("bookReservationStatus"));
         	 bookManagementDTO.setBookLendingCnt(rs.getInt("bookLendingCnt"));
         	 bookManagementDTO.setBookIsbn(isbn);
            }
@@ -92,6 +87,34 @@ public class BookManagementDAO {
         return bookManagementDTO;
      }
 	
+	public int updateBookManagementDetail(String bookIsbn) {
+		String sqlQuery = "UPDATE BOOK_MANAGEMENT "
+				+ "SET booklendingavailability = 'false', bookReservationAvailability= 'false', bookLendingCnt = bookLendingCnt + 1 "
+				+ "WHERE bookIsbn = ? AND "
+				+ "bookNo = (SELECT BOOKNO FROM(SELECT * FROM BOOK_MANAGEMENT WHERE bookIsbn = ? AND ROWNUM = 1 AND booklendingavailability = 'true' ORDER BY BOOKNO) BOOK_MANAGEMENT)";
+		
+		int result = 0;
+		
+		Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+		
+        try {
+            conn = DatabaseUtil.getConnection();
+            psmt = conn.prepareStatement(sqlQuery);
+            psmt.setString(1, bookIsbn);
+            psmt.setString(2, bookIsbn);
+            result = psmt.executeUpdate();
+         } catch (Exception e) {
+            e.printStackTrace();
+         } finally {
+            try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+         }
+         return result;
+	}
+
 	public static void main(String[] args) throws java.text.ParseException{
 	       String book = getBookData();
 	       JSONParser parser = new JSONParser();
@@ -103,14 +126,12 @@ public class BookManagementDAO {
 	            
 	            String bookNo = null;
 	            String bookLendingAvailability = "true";
-	            int bookLendingStatus = 0;
 	            String bookReservationAvailability = "false";
-	            int bookReservationStatus = 0;
 	            int bookLendingCnt = 0;
 	            String isbn = (String) itemObj.get("isbn");
 	            
 	            BookManagementDAO bookManagementDAO = new BookManagementDAO();
-	            BookManagementDTO bookManagementDTO = new BookManagementDTO(bookNo, bookLendingAvailability, bookLendingStatus, bookReservationAvailability, bookReservationStatus, bookLendingCnt, isbn);
+	            BookManagementDTO bookManagementDTO = new BookManagementDTO(bookNo, bookLendingAvailability, bookReservationAvailability, bookLendingCnt, isbn);
 	            bookManagementDAO.insertBookManagement(bookManagementDTO);
 	            
 	         }

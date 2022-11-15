@@ -11,13 +11,14 @@ public class BookInfoDTO {
 	public String categoryName;
 	public String publisher;
 	public int bookCnt;
+	public int bookTotalLendingCnt;
 	
 	public BookInfoDTO() {
 		
 	}
 
 	public BookInfoDTO(int rank, String title, String author, String pubDate, String description, String isbn,
-			String cover, String categoryName, String publisher, int bookCnt) {
+			String cover, String categoryName, String publisher, int bookCnt, int bookTotalLendingCnt) {
 		super();
 		this.rank = rank;
 		this.title = title;
@@ -29,6 +30,7 @@ public class BookInfoDTO {
 		this.categoryName = categoryName;
 		this.publisher = publisher;
 		this.bookCnt = bookCnt;
+		this.bookTotalLendingCnt = bookTotalLendingCnt;
 	}
 
 	public int getRank() {
@@ -109,6 +111,14 @@ public class BookInfoDTO {
 
 	public void setBookCnt(int bookCnt) {
 		this.bookCnt = bookCnt;
+	}
+	
+	public int getBookTotalLendingCnt() {
+		return bookTotalLendingCnt;
+	}
+	
+	public void setBookTotalLendingCnt(int bookTotalLendingCnt) {
+		this.bookTotalLendingCnt = bookTotalLendingCnt;
 	}
 
 	

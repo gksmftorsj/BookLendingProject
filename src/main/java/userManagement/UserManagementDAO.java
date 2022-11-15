@@ -35,4 +35,30 @@ public class UserManagementDAO {
 		}
 		return -1;
 	}
+	
+	public int updateUserManagement(String userNo) {
+		String sqlQuery = "UPDATE USER_MANAGEMENT "
+				+ "SET currentLendingCnt = currentLendingCnt + 1, totalLendingCnt = totalLendingCnt +1 "
+				+ "WHERE userNo = ?";
+		
+		int result = 0;
+		
+		Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+		
+        try {
+            conn = DatabaseUtil.getConnection();
+            psmt = conn.prepareStatement(sqlQuery);
+            psmt.setString(1, userNo);
+            result = psmt.executeUpdate();
+         } catch (Exception e) {
+            e.printStackTrace();
+         } finally {
+            try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+         }
+         return result;
+	}
 }

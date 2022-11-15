@@ -1,26 +1,22 @@
 package bookManagement;
 
 public class BookManagementDTO {
-	// 대여가능여부가 true일 때 예약가능여부는 false
+	// ���뿬媛��뒫�뿬遺�媛� true�씪 �븣 �삁�빟媛��뒫�뿬遺��뒗 false
 	public String bookNo;
-	public String bookLendingAvailability; // boolean 대여가능여부
-	public int bookLendingStatus; // 몇권대여중인지
-	public String bookReservationAvailability; // boolean 예약가능여부
-	public int bookReservationStatus; // 몇명대여중인지
-	public int bookLendingCnt; // 이 책이 총 몇번 대여되었는지
+	public String bookLendingAvailability; // boolean ���뿬媛��뒫�뿬遺�
+	public String bookReservationAvailability; // boolean �삁�빟媛��뒫�뿬遺�
+	public int bookLendingCnt; // �씠 梨낆씠 珥� 紐뉖쾲 ���뿬�릺�뿀�뒗吏�
 	public String bookIsbn;
 	
 	public BookManagementDTO() {
 	}
 	
-	public BookManagementDTO(String bookNo, String bookLendingAvailability, int bookLendingStatus,
-			String bookReservationAvailability, int bookReservationStatus, int bookLendingCnt, String bookIsbn) {
+	public BookManagementDTO(String bookNo, String bookLendingAvailability, String bookReservationAvailability,
+			int bookLendingCnt, String bookIsbn) {
 		super();
 		this.bookNo = bookNo;
 		this.bookLendingAvailability = bookLendingAvailability;
-		this.bookLendingStatus = bookLendingStatus;
 		this.bookReservationAvailability = bookReservationAvailability;
-		this.bookReservationStatus = bookReservationStatus;
 		this.bookLendingCnt = bookLendingCnt;
 		this.bookIsbn = bookIsbn;
 	}
@@ -41,28 +37,12 @@ public class BookManagementDTO {
 		this.bookLendingAvailability = bookLendingAvailability;
 	}
 
-	public int getBookLendingStatus() {
-		return bookLendingStatus;
-	}
-
-	public void setBookLendingStatus(int bookLendingStatus) {
-		this.bookLendingStatus = bookLendingStatus;
-	}
-
 	public String getBookReservationAvailability() {
 		return bookReservationAvailability;
 	}
 
 	public void setBookReservationAvailability(String bookReservationAvailability) {
 		this.bookReservationAvailability = bookReservationAvailability;
-	}
-
-	public int getBookReservationStatus() {
-		return bookReservationStatus;
-	}
-
-	public void setBookReservationStatus(int bookReservationStatus) {
-		this.bookReservationStatus = bookReservationStatus;
 	}
 
 	public int getBookLendingCnt() {
@@ -80,5 +60,6 @@ public class BookManagementDTO {
 	public void setBookIsbn(String bookIsbn) {
 		this.bookIsbn = bookIsbn;
 	}
+	
 	
 }
