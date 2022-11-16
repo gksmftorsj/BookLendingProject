@@ -30,8 +30,8 @@ a {
 	int endIndex = view_page * 10;
 	BookInfoDAO bookInfoDAO = new BookInfoDAO();
 
-	List<BookInfoDTO> topRankBookInfoList = bookInfoDAO.selectBookInfo(1, 10);
-	List<BookInfoDTO> bookInfoList = bookInfoDAO.selectBookInfo(startIndex, endIndex);
+	List<BookInfoDTO> topRankBookInfoList = bookInfoDAO.selectBookInfoByIndex(1, 10);
+	List<BookInfoDTO> bookInfoList = bookInfoDAO.selectBookInfoByIndex(startIndex, endIndex);
 
 	int total = bookInfoDAO.selectBookTotal();
 	int endPage = (int) Math.ceil((double) total / 10);
