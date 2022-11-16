@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
+<%@ page import="util.DatabaseUtil"%>
+<%@ page import="userInfo.UserInfoDTO" %>
+<%@ page import="userInfo.UserInfoDAO" %>
+<%@ page import="userManagement.UserManagementDTO" %>
+<%@ page import="userManagement.UserManagementDAO" %>
+<% request.setCharacterEncoding("UTF-8"); %>
 
 <!DOCTYPE html>
 <html>
@@ -27,16 +33,16 @@ body {
 	justify-content: space-around;
 	display: inline-block;
 }
-
 .order_box02 {
+	margin-top: 15px;	
 	display: inline;
 }
 
-.order_box03 {
-	margin-top: 15px;	
-}
-
 .account_select01 {
+width: 40%;
+display: inline;
+}
+.account_select02 {
 width: 40%;
 display: inline;
 }
@@ -49,6 +55,14 @@ display: inline;
 	text-align: center;
 }
 
+.order_box_line{
+border-bottom: 1px solid #d1d1d1;
+}
+
+p{
+	margin : 0 10px;
+}
+
 </style>
 </head>
 <body>
@@ -56,192 +70,163 @@ display: inline;
 
 	<div class="container">
 		<h2>관리자 페이지</h2>
-		<form name="lendingInfoForm" class="lendingInfoForm" method="post">
+		<form name="adminForm" class="adminForm" method="post">
 			<div class="col-auto">
-				<label for="name">전체회원목록</label>
+				<label for="name">회원정보조회</label>
 				<fieldset>
 					<div class="order_box01">
-						<div class="order_box02">
-							<div class="account_select01">
-								<label for="select04" style="color: #636363; font-weight: bold;">
-									상태별조회</label><select id="select_searchOrderStatusSel"
-									class="Searchselect_01">
-									<option value="0" selected="">전체보기</option>
-									<option value="1">대여중</option>
-									<option value="2">연체중</option>
-									<option value="3">반납완료</option>
-								</select>
-							</div>
-						</div>
-						<div class="order_box_line"></div>
 
-						<div class="order_box03">
+						<div class="order_box02">
 
 							<div class="account_select03" style="width: 100%">
-								<div class="input-group">
-									<button class="btn btn-outline-secondary dropdown-toggle"
-										type="button" data-bs-toggle="dropdown" aria-expanded="false">대여내역조회</button>
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">대여도서명</a></li>
-										<li><a class="dropdown-item" href="#">대여번호</a></li>
-									</ul>
-									<input type="text" class="form-control"
-										aria-label="Text input with 2 dropdown buttons">
-									<button class="btn btn-outline-secondary" types="button">검색</button>
-								</div>
+								<form action="userManager.jsp" method="post">
+									<div class="input-group">
+										<select name="userOption" required
+											class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+											id="inputGroupSelect01">
+											<ul class="dropdown-menu">
+												<li><option class="dropdown-item" selected>회원정보검색</option></li>
+												<li><option class="dropdown-item" value="userName">회원명</option></li>
+												<li><option class="dropdown-item" value="userId">아이디</option></li>
+												<li><option class="dropdown-divider" disabled>-------</option></li>
+												<li><option class="dropdown-item" value="userNo">회원번호</option></li>
+										</select>
+										</ul>
+
+										<input type="text" class="form-control"
+											aria-label="Text input with 2 dropdown buttons"
+											name="searching" value="" required>
+										<button class="btn btn-outline-secondary" type="submit">검색</button>
+										</label>
+									</div>
+								</form>
 							</div>
 						</div>
 					</div>
+				</fieldset>
 			</div>
-			</fieldset>
+
 
 			<fieldset>
-			<div class="col-auto">
-				<label for="name">대여내역</label>
-				<div class="myTable">
-					<table class="lendingTable container">
-						<thead>
+				<div class="col-auto">
+					<label for="name">회원목록</label>
+					<div class="myTable">
+						<table class="userTable container">
+							<thead>
+								<tr>
+									<th scope="col"><p>회원번호</p></th>
+									<th scope="col"><p>회원명</p></th>
+									<th scope="col"><p>ID</p></th>
+									<th scope="col"><p>Email</p></th>
+									<th scope="col"><p>연락처</p></th>
+									<th scope="col"><p>주소</p></th>
+									<th scope="col"><p>현재대여건수</p></th>
+									<th scope="col"><p>현재예약건수</p></th>
+									<th scope="col"><p>총대여건수</p></th>
+									<th scope="col"><p>비고(연체정보)</p></th>
+								</tr>
+
+							</thead>
+
+							<tbody>
+	<%
+	UserManagementDAO userManagementDao = new UserManagementDAO();
+	List<UserManagementDTO> userAdminList = null;
+							
+	if( request.getParameter("searching") == null) {
+		userAdminList = userManagementDao.selectAdminUserManagement();
+		if(userAdminList != null && userAdminList.size()>0) {
+				for(UserManagementDTO userInfo : userAdminList){
+	%>
 							<tr>
-								<th scope="col"><p>대여일자</p></th>
-								<th scope="col"><p>대여번호</p></th>
-								<th scope="col"><p>대여도서</p></th>
-								<th scope="col"><p>반납일자</p></th>
-								<th scope="col"><p>연장</p></th>
-								<th scope="col"><p>비고(연체정보)</p></th>
+								<td><p><%=userInfo.getUserNo() %></p></td>
+								<td><p><%=userInfo.getUserName() %></p></td>
+								<td><p><%=userInfo.getUserID() %></p></td>
+								<td><p><%=userInfo.getUserEmail() %></p></td>
+								<td><p><%=userInfo.getUserTel() %>/5</p></td>
+								<td><p><%=userInfo.getUserAddress() %></p></td>
+								<td><p><%=userInfo.getCurrentLendingCnt() %></p></td>
+								<td><p><%=userInfo.getCurrentReservationCnt() %></p></td>
+								<td><p><%=userInfo.getTotalLendingCnt() %></p></td>
+								<td><p><%=userInfo.getOverDueCnt() %></p></td>
 							</tr>
-						</thead>
-						<tbody>
-							<%
-							for (int i = 0; i < 5; i++) {
-							%>
-							<tr>
-								<td><p>YYYY-MM-DD</p></td>
-								<td><p>
-										<a href="#">YYMMDDLD0001</a>
-									</p></td>
-								<td><p>
-										도서명<%=i + 1%></p></td>
-								<td><p>YYYY-MM-DD</p></td>
-								<td><p><%
-										if (i % 6 == 0) {
-										%><a href="#">연장가능</a>
-										<%
-										} else {
-										%>기간만료<%}%>
-										</a>
-									</p></td>
-								<td><p><%
-										if ((i+1)%4 == 0) {
-										%>연체
-										<%
-										} else {
-										%><%}%>
-										</p></td>
-							</tr>
-							<%
-							}
-							%>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			</fieldset>
+	<%
+				}
+		}
+	} else {
+		String search = request.getParameter("searching");		
+		String option = request.getParameter("userOption");
+	
+		if( option.equals("userName") ){
+			userAdminList = userManagementDao.selectAdminUserManagementByUserName(search);
+			if(userAdminList != null && userAdminList.size()>0) {
+				for(UserManagementDTO userInfo : userAdminList){
+	%>
+					<tr>
+						<td><p><%=userInfo.getUserNo() %></p></td>
+						<td><p><%=userInfo.getUserName() %></p></td>
+						<td><p><%=userInfo.getUserID() %></p></td>
+						<td><p><%=userInfo.getUserEmail() %></p></td>
+						<td><p><%=userInfo.getUserTel() %>/5</p></td>
+						<td><p><%=userInfo.getUserAddress() %></p></td>
+						<td><p><%=userInfo.getCurrentLendingCnt() %></p></td>
+						<td><p><%=userInfo.getCurrentReservationCnt() %></p></td>
+						<td><p><%=userInfo.getTotalLendingCnt() %></p></td>
+						<td><p><%=userInfo.getOverDueCnt() %></p></td>
+					</tr>
+	<%
+					}
+  				}
+		} else if( option.equals("userId") ) {
+			userAdminList = userManagementDao.selectAdminUserManagementByUserId(search);
+			if(userAdminList != null && userAdminList.size()>0) {
+				for(UserManagementDTO userInfo : userAdminList){
+	%>
+					<tr>
+						<td><p><%=userInfo.getUserNo() %></p></td>
+						<td><p><%=userInfo.getUserName() %></p></td>
+						<td><p><%=userInfo.getUserID() %></p></td>
+						<td><p><%=userInfo.getUserEmail() %></p></td>
+						<td><p><%=userInfo.getUserTel() %>/5</p></td>
+						<td><p><%=userInfo.getUserAddress() %></p></td>
+						<td><p><%=userInfo.getCurrentLendingCnt() %></p></td>
+						<td><p><%=userInfo.getCurrentReservationCnt() %></p></td>
+						<td><p><%=userInfo.getTotalLendingCnt() %></p></td>
+						<td><p><%=userInfo.getOverDueCnt() %></p></td>
+					</tr>
+	<%
+					}}
+		} else if( option.equals("userNo") ) {
+			userAdminList = userManagementDao.selectAdminUserManagementByUserNo(search);
+			if(userAdminList != null && userAdminList.size()>0) {
+				for(UserManagementDTO userInfo : userAdminList){
+	%>
+					<tr>
+						<td><p><%=userInfo.getUserNo() %></p></td>
+						<td><p><%=userInfo.getUserName() %></p></td>
+						<td><p><%=userInfo.getUserID() %></p></td>
+						<td><p><%=userInfo.getUserEmail() %></p></td>
+						<td><p><%=userInfo.getUserTel() %>/5</p></td>
+						<td><p><%=userInfo.getUserAddress() %></p></td>
+						<td><p><%=userInfo.getCurrentLendingCnt() %></p></td>
+						<td><p><%=userInfo.getCurrentReservationCnt() %></p></td>
+						<td><p><%=userInfo.getTotalLendingCnt() %></p></td>
+						<td><p><%=userInfo.getOverDueCnt() %></p></td>
+					</tr>
+	<%
+					}
+				}
+		}
+	}
+	%>
 
-			<div class="col-auto">
-				<label for="name">예약내역조회</label>
-				<fieldset>
-					<div class="order_box01">
-						<div class="order_box02">
-							<div class="account_select01">
-								<select id="select_searchYearSel" class="Searchselect_01"
-									title="연도 선택">
-									<option value="0" selected="">전체보기</option>
-									<option value="2022">2022</option>
-								</select><span style="color: #636363; font-weight: bold;"> 년</span> <select
-									id="select_searchMonthSel" class="Searchselect_01" title="월 선택">
-									<option value="0" selected="">전체보기</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="8">8</option>
-									<option value="9">9</option>
-									<option value="10">10</option>
-									<option value="11">11</option>
-									<option value="12">12</option>
-								</select><span style="color: #636363; font-weight: bold;"> 월</span>
 
-							</div>
-						</div>
-						<div class="order_box_line"></div>
-
-						<div class="order_box03">
-
-							<div class="account_select03" style="width: 100%">
-								<div class="input-group">
-									<button class="btn btn-outline-secondary dropdown-toggle"
-										type="button" data-bs-toggle="dropdown" aria-expanded="false">대여내역조회</button>
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">예약도서명</a></li>
-										<li><a class="dropdown-item" href="#">예약번호</a></li>
-									</ul>
-									<input type="text" class="form-control"
-										aria-label="Text input with 2 dropdown buttons">
-									<button class="btn btn-outline-secondary" types="button">검색</button>
-								</div>
-							</div>
-						</div>
+							</tbody>
+						</table>
 					</div>
-			</fieldset>
-			</div>
-			
-			<fieldset>
-			<div class="col-auto">
-				<label for="name">예약내역</label>
-				<div class="myTable">
-					<table class="reservationTable container">
-						<thead>
-							<tr>
-								<th scope="col"><p>예약일자</p></th>
-								<th scope="col"><p>예약번호</p></th>
-								<th scope="col"><p>예약도서</p></th>
-								<th scope="col"><p>대여가능일자</p></th>
-								<th scope="col"><p>비고(순번)</p></th>
-							</tr>
-						</thead>
-						<tbody>
-							<%
-							for (int i = 0; i < 5; i++) {
-							%>
-							<tr>
-								<td><p>YYYY-MM-DD</p></td>
-								<td><p>
-										<a href="#">YYMMDDRS000<%=i + 1%></a>
-									</p></td>
-								<td><p>
-										도서명<%=i + 1%></p></td>
-								<td><p>YYYY-MM-DD</p></td>
-								<td><p><%=i + 1%></p></td>
-							</tr>
-							<%
-			}
-			%>
-						</tbody>
-					</table>
 				</div>
-			</div>
 			</fieldset>
 		</form>
 	</div>
-
-
-
-
-
-
-
 </body>
 </html>

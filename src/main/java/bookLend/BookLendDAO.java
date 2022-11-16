@@ -213,7 +213,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectBookLendByBookByTitle(String title) {
 	      String sqlQuery = "SELECT * FROM BOOK_LEND "
 	      		+ "WHERE bookNo = (SELECT bookNo FROM  BOOK_MANAGEMENT "
-	      		+ "WHERE bookIsbn = (SELECT bookIsbn FROM BOOK_INFO WHERE bookTitle = ?));";
+	      		+ "WHERE bookIsbn = (SELECT bookIsbn FROM BOOK_INFO WHERE bookTitle like %?%));";
 
 	      Connection conn = null;
 	      PreparedStatement psmt = null;
@@ -335,7 +335,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectBookLendByLendDateAndTitle(LocalDateTime localDate, String title) {
 	      String sqlQuery = "SELECT * FROM BOOK_LEND WHERE (lendDate=?) AND "
 		      			+ "(bookNo = (SELECT bookNo FROM  BOOK_MANAGEMENT "
-		    	      		+ "WHERE bookIsbn = (SELECT bookIsbn FROM BOOK_INFO WHERE bookTitle = ?)))";
+		    	      		+ "WHERE bookIsbn = (SELECT bookIsbn FROM BOOK_INFO WHERE bookTitle like %?%)))";
 
 	      Connection conn = null;
 	      PreparedStatement psmt = null;
