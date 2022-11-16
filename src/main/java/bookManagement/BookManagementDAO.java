@@ -154,29 +154,8 @@ public class BookManagementDAO {
         Connection conn = null;
         PreparedStatement psmt = null;
         ResultSet rs = null;
-<<<<<<< HEAD
-		
-        try {
-            conn = DatabaseUtil.getConnection();
-            psmt = conn.prepareStatement(sqlQuery);
-            psmt.setString(1, bookIsbn);
-            psmt.setString(2, bookIsbn);
-            result = psmt.executeUpdate();
-         } catch (Exception e) {
-            e.printStackTrace();
-         } finally {
-            try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-         }
-         return result;
-	}
-	
-	
-=======
-        
+     
         List<BookManagementDTO> bookManagementList = null;
->>>>>>> 77b38b325cc22a561a7216969b34c4f7bf6879c5
 
         try {
            conn = DatabaseUtil.getConnection();
@@ -336,7 +315,33 @@ public class BookManagementDAO {
         return bookLendingCnt;
      }
 
-	 
+		public int updateBookManagementDetail(String bookIsbn) {
+		      String sqlQuery = "UPDATE BOOK_MANAGEMENT "
+		            + "SET booklendingavailability = 'false', bookReservationAvailability= 'false', bookLendingCnt = bookLendingCnt + 1 "
+		            + "WHERE bookIsbn = ? AND "
+		            + "bookNo = (SELECT BOOKNO FROM(SELECT * FROM BOOK_MANAGEMENT WHERE bookIsbn = ? AND ROWNUM = 1 AND booklendingavailability = 'true' ORDER BY BOOKNO) BOOK_MANAGEMENT)";
+		      
+		      int result = 0;
+		      
+		      Connection conn = null;
+		        PreparedStatement psmt = null;
+		        ResultSet rs = null;
+		      
+		        try {
+		            conn = DatabaseUtil.getConnection();
+		            psmt = conn.prepareStatement(sqlQuery);
+		            psmt.setString(1, bookIsbn);
+		            psmt.setString(2, bookIsbn);
+		            result = psmt.executeUpdate();
+		         } catch (Exception e) {
+		            e.printStackTrace();
+		         } finally {
+		            try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		         }
+		         return result;
+		   }
 	   
 	public static String getBookData() {
 	       String bookStr = "";
