@@ -12,7 +12,7 @@ public class UserInfoDAO {
 	public String selectUserNo(String userID) {
         String sqlQuery = "SELECT userNo FROM USER_INFO WHERE userId = ?";
         
-        String getUserID = null;
+        String getUserNo = null;
         
         Connection conn = null;
         PreparedStatement psmt = null;
@@ -25,7 +25,7 @@ public class UserInfoDAO {
            rs = psmt.executeQuery();
            
            if(rs.next()) {
-        	 getUserID = rs.getString("userNo");
+        	  getUserNo = rs.getString("userNo");
            }
         } catch (Exception e) {
            e.printStackTrace();
@@ -34,10 +34,36 @@ public class UserInfoDAO {
            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
         }
-        return getUserID;
+        return getUserNo;
      }
 	
-		
+	public String selectUserName(String userID) {
+        String sqlQuery = "SELECT userName FROM USER_INFO WHERE userId = ?";
+        
+        String getUserName = null;
+        
+        Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        
+        try {
+           conn = DatabaseUtil.getConnection();
+           psmt = conn.prepareStatement(sqlQuery);
+           psmt.setString(1, userID);
+           rs = psmt.executeQuery();
+           
+           if(rs.next()) {
+        	 getUserName = rs.getString("userName");
+           }
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+           try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+        }
+        return getUserName;
+     }
 	
 		public int login(String userID, String userPassword) {
 			String SQL = "SELECT userPassword FROM USER_INFO WHERE userID = ?";
@@ -51,12 +77,12 @@ public class UserInfoDAO {
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
 					if(rs.getString(1).equals(userPassword)) {
-						return 1; // �α��� ����
+						return 1; // 占싸깍옙占쏙옙 占쏙옙占쏙옙
 					} else {
-						return 0; // ��й�ȣ Ʋ��
+						return 0; // 占쏙옙橘占싫� 틀占쏙옙
 					}
 				}
-				return -1; // ���̵� ����
+				return -1; // 占쏙옙占싱듸옙 占쏙옙占쏙옙
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -64,7 +90,7 @@ public class UserInfoDAO {
 				try {if(pstmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
 				try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
 			}
-			return -2; // �����ͺ��̽� ����
+			return -2; // 占쏙옙占쏙옙占싶븝옙占싱쏙옙 占쏙옙占쏙옙
 		}
 
 	public int insertUserInfo(UserInfoDTO ud) {

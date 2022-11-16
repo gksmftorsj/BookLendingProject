@@ -48,36 +48,49 @@
 		bookLendDTO.setBookNo(bookNo);
 		bookLendDTO.setExtensionStatus(extensionStatus);
 		bookLendDTO.setExtensionAvailabilityCnt(extensionAvailabilityCnt);
-		int blResult = 0;
-		int bmResult = 0;
-		int umResult = 0;
+		int bliResult = 0;
+		int bmuResult = 0;
+		int umuResult = 0;
+		int umsResult = 0;
 		script.println("<script>");
 		script.println("alert('여기 들어옴." + bookIsbn + "')");
 		script.println("</script>");
 		
-		blResult = bookLendDAO.insertBookLend(bookLendDTO);
-		bmResult = bookManagementDAO.updateBookManagementDetail(bookIsbn);
-		umResult = userManagementDAO.updateUserManagement(userNo);
-		
-		script.println("<script>");
-		script.println("alert('blResult: " + blResult + "')");
-		script.println("alert('bmResult: " + bmResult + "')");
-		script.println("alert('umResult: " + umResult + "')");
-		script.println("</script>");
-		if (blResult > 0 && bmResult > 0 && umResult > 0) {
+		umsResult = userManagementDAO.selectCurrentLendingCnt(userNo);
+		if (umsResult <= 5) {
+			bliResult = bookLendDAO.insertBookLend(bookLendDTO);
+			bmuResult = bookManagementDAO.updateBookManagementDetail(bookIsbn);
+			umuResult = userManagementDAO.updateUserManagement(userNo);
+			
 			script.println("<script>");
-			script.println("alert('대여 완료되었습니다.');");
-			script.println("location.href = './index.jsp';");
+			script.println("alert('bliResult: " + bliResult + "')");
+			script.println("alert('bmuResult: " + bmuResult + "')");
+			script.println("alert('umuResult: " + umuResult + "')");
+			script.println("alert('umsResult: " + umsResult + "')");
 			script.println("</script>");
-			script.close();
-			return;
-		} else if (blResult == 0 || bmResult == 0 || umResult == 0) {
+			
+			if (bliResult > 0 && bmuResult > 0 && umuResult > 0) {
+				script.println("<script>");
+				script.println("alert('대여 완료되었습니다.');");
+				script.println("location.href = './index.jsp';");
+				script.println("</script>");
+				script.close();
+				return;
+			} else if (bliResult == 0 || bmuResult == 0 || umuResult == 0) {
+				script.println("<script>");
+				script.println("alert('대여에 실패하였습니다. 다시 시도해주세요.');");
+				script.println("history.back();");
+				script.println("</script>");
+				script.close();
+				return;
+			}
+		} else{
 			script.println("<script>");
-			script.println("alert('대여에 실패하였습니다. 다시 시도해주세요.');");
+			script.println("alert('현재 총 대여권수가 5권입니다. 반납 후 이용하시길 바랍니다.');");
 			script.println("history.back();");
 			script.println("</script>");
 			script.close();
-			return;
 		}
 %>
+<%=bookIsbn%>
 

@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/main/java/bookInfo/BookInfoDAO.java=UTF-8
-encoding//src/main/java/bookLend/BookLendDTO.java=UTF-8
 encoding//src/main/java/bookManagement/BookManagementDAO.java=UTF-8
-encoding//src/main/java/bookManagement/BookManagementDTO.java=UTF-8
+encoding//src/main/java/bookReview/BookReviewDAO.java=UTF-8
+encoding//src/main/java/userInfo/UserInfoDAO.java=UTF-8
 encoding/<project>=x-windows-949

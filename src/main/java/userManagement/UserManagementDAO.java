@@ -3,7 +3,10 @@ package userManagement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
+import bookInfo.BookInfoDTO;
 import userInfo.UserInfoDTO;
 import util.DatabaseUtil;
 
@@ -61,4 +64,36 @@ public class UserManagementDAO {
          }
          return result;
 	}
+	
+	public int selectCurrentLendingCnt(String userNo) {
+	      String sqlQuery = "SELECT currentLendingCnt FROM USER_MANAGEMENT WHERE userNo = ?";
+
+	      Connection conn = null;
+	      PreparedStatement psmt = null;
+	      ResultSet rs = null;
+
+	      int currentLendingCnt = 0;
+	      
+	      try {
+	         conn = DatabaseUtil.getConnection();
+	         psmt = conn.prepareStatement(sqlQuery);
+	         
+	         psmt.setString(1, userNo);
+	         
+	         rs = psmt.executeQuery();
+	         
+	         if (rs.next()) {
+	            currentLendingCnt = rs.getInt("currentLendingCnt");
+
+	         }
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	         try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	         try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	      }
+	      return currentLendingCnt;
+	   }
 }

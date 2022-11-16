@@ -38,7 +38,7 @@ public class BookManagementDAO {
 	         psmt.setString(5, bm.bookIsbn);
 	         int result = psmt.executeUpdate();
 	         if(result > 0) {
-	            System.out.println("insert �꽦怨�");
+	            System.out.println("insert 占쎄쉐�⑨옙");
 	         }
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -54,7 +54,8 @@ public class BookManagementDAO {
         				+ "FROM BOOK_MANAGEMENT "
         				+ "WHERE BOOKISBN = ? AND "
         				+ "BOOKLENDINGAVAILABILITY = 'true' AND "
-        				+ "ROWNUM = 1";
+        				+ "ROWNUM = 1 "
+        				+ "ORDER BY BOOKNO";
         
         BookManagementDTO bookManagementDTO = null;
         
@@ -85,6 +86,37 @@ public class BookManagementDAO {
            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
         }
         return bookManagementDTO;
+     }
+	
+	public int selectBookLendingCnt(String isbn) {
+        String sqlQuery = "SELECT cnt FROM (SELECT COUNT(*) cnt "
+        				+ "FROM BOOK_MANAGEMENT "
+        				+ "WHERE BOOKISBN = ? AND "
+        				+ "BOOKLENDINGAVAILABILITY = 'false')";
+        
+        int bookLendingCnt = 0;
+        
+        Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        
+        try {
+           conn = DatabaseUtil.getConnection();
+           psmt = conn.prepareStatement(sqlQuery);
+           psmt.setString(1, isbn);
+           rs = psmt.executeQuery();
+           
+           if(rs.next()) {
+        	   bookLendingCnt = rs.getInt("cnt");
+           }
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+           try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+        }
+        return bookLendingCnt;
      }
 	
 	public int updateBookManagementDetail(String bookIsbn) {
