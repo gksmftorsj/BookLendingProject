@@ -53,9 +53,6 @@ public class UserManagementDAO {
 		}
 		return -1;
 	}
-<<<<<<< HEAD
-
-=======
 	
 	
 	public List<UserManagementDTO> selectAdminUserManagement(){
@@ -226,7 +223,6 @@ public class UserManagementDAO {
     return userManagementList;
  }
 	
->>>>>>> 77b38b325cc22a561a7216969b34c4f7bf6879c5
 	public int updateUserManagement(String userNo) {
 		String sqlQuery = "UPDATE USER_MANAGEMENT "
 				+ "SET currentLendingCnt = currentLendingCnt + 1, totalLendingCnt = totalLendingCnt +1 "

@@ -271,15 +271,9 @@ public class BookLendDAO {
 	}
 
 	public List<BookLendDTO> selectBookLendByBookByTitle(String title) {
-<<<<<<< HEAD
-		String sqlQuery = "SELECT * FROM BOOK_LEND "
-				+ "WHERE bookNo = (SELECT bookNo FROM  BOOK_MANAGEMENT "
-				+ "WHERE bookIsbn = (SELECT bookIsbn FROM BOOK_INFO WHERE bookTitle = ?));";
-=======
 	      String sqlQuery = "SELECT * FROM BOOK_LEND "
 	      		+ "WHERE bookNo = (SELECT bookNo FROM  BOOK_MANAGEMENT "
 	      		+ "WHERE bookIsbn = (SELECT bookIsbn FROM BOOK_INFO WHERE bookTitle like %?%));";
->>>>>>> 77b38b325cc22a561a7216969b34c4f7bf6879c5
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -444,15 +438,9 @@ public class BookLendDAO {
 	}
 
 	public List<BookLendDTO> selectBookLendByLendDateAndTitle(LocalDateTime localDate, String title) {
-<<<<<<< HEAD
-		String sqlQuery = "SELECT * FROM BOOK_LEND WHERE (lendDate=?) AND "
-				+ "(bookNo = (SELECT bookNo FROM  BOOK_MANAGEMENT "
-				+ "WHERE bookIsbn = (SELECT bookIsbn FROM BOOK_INFO WHERE bookTitle = ?)))";
-=======
 	      String sqlQuery = "SELECT * FROM BOOK_LEND WHERE (lendDate=?) AND "
 		      			+ "(bookNo = (SELECT bookNo FROM  BOOK_MANAGEMENT "
 		    	      		+ "WHERE bookIsbn = (SELECT bookIsbn FROM BOOK_INFO WHERE bookTitle like %?%)))";
->>>>>>> 77b38b325cc22a561a7216969b34c4f7bf6879c5
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
