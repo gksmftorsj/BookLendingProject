@@ -15,6 +15,7 @@ public class BookInfoDTO {
 	public String publisher;
 	public int bookCnt;
 	public int bookTotalLendingCnt;
+<<<<<<< HEAD
 	
 
 	public String bookNo;
@@ -25,6 +26,8 @@ public class BookInfoDTO {
 	
 	
 	
+=======
+>>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 	
 	public BookInfoDTO() {
 		
@@ -152,6 +155,14 @@ public class BookInfoDTO {
 
 	public void setBookCnt(int bookCnt) {
 		this.bookCnt = bookCnt;
+	}
+	
+	public int getBookTotalLendingCnt() {
+		return bookTotalLendingCnt;
+	}
+	
+	public void setBookTotalLendingCnt(int bookTotalLendingCnt) {
+		this.bookTotalLendingCnt = bookTotalLendingCnt;
 	}
 
 	public int getBookTotalLendingCnt() {

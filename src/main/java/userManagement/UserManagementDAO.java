@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import userManagement.UserManagementDTO;
+=======
+import bookInfo.BookInfoDTO;
+>>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 import userInfo.UserInfoDTO;
 import util.DatabaseUtil;
 
@@ -39,6 +43,7 @@ public class UserManagementDAO {
 		return -1;
 	}
 	
+<<<<<<< HEAD
 	
 	public List<UserManagementDTO> selectAdminUserManagement(){
 		
@@ -208,4 +213,63 @@ public class UserManagementDAO {
     return userManagementList;
  }
 	
+=======
+	public int updateUserManagement(String userNo) {
+		String sqlQuery = "UPDATE USER_MANAGEMENT "
+				+ "SET currentLendingCnt = currentLendingCnt + 1, totalLendingCnt = totalLendingCnt +1 "
+				+ "WHERE userNo = ?";
+		
+		int result = 0;
+		
+		Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+		
+        try {
+            conn = DatabaseUtil.getConnection();
+            psmt = conn.prepareStatement(sqlQuery);
+            psmt.setString(1, userNo);
+            result = psmt.executeUpdate();
+         } catch (Exception e) {
+            e.printStackTrace();
+         } finally {
+            try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+         }
+         return result;
+	}
+	
+	public int selectCurrentLendingCnt(String userNo) {
+	      String sqlQuery = "SELECT currentLendingCnt FROM USER_MANAGEMENT WHERE userNo = ?";
+
+	      Connection conn = null;
+	      PreparedStatement psmt = null;
+	      ResultSet rs = null;
+
+	      int currentLendingCnt = 0;
+	      
+	      try {
+	         conn = DatabaseUtil.getConnection();
+	         psmt = conn.prepareStatement(sqlQuery);
+	         
+	         psmt.setString(1, userNo);
+	         
+	         rs = psmt.executeQuery();
+	         
+	         if (rs.next()) {
+	            currentLendingCnt = rs.getInt("currentLendingCnt");
+
+	         }
+	         
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	         try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	         try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	      }
+	      return currentLendingCnt;
+	   }
+>>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 }

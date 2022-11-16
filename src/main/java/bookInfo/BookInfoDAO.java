@@ -48,7 +48,11 @@ public class BookInfoDAO {
          psmt.setInt(12, bi.bookTotalLendingCnt);
          int resultCnt = psmt.executeUpdate();
          if(resultCnt>0) {
+<<<<<<< HEAD
             System.out.println("insert 성공");
+=======
+            System.out.println("insert 占쎄쉐�⑨옙");
+>>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -110,8 +114,13 @@ public class BookInfoDAO {
       return BookInfoList;
    }
    
+<<<<<<< HEAD
    public List<BookInfoDTO> selectBookInfoByTitle(String title) {
          String sqlQuery = "SELECT * FROM BOOK_INFO WHERE BOOKTITLE like '%'||?||'%'";
+=======
+   public BookInfoDTO selectBookDetail(String title) {
+         String sqlQuery = "SELECT * FROM BOOK_INFO WHERE BOOKTITLE = ?";
+>>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
          
          List<BookInfoDTO> bookInfoList = null;
          
@@ -376,7 +385,11 @@ public class BookInfoDAO {
 	   }
 	   return total;
    }
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
    public static void main(String[] args) throws java.text.ParseException{
        String book = getBookData();
        JSONParser parser = new JSONParser();
