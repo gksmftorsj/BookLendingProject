@@ -5,12 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
-<<<<<<< HEAD
 import userManagement.UserManagementDTO;
-=======
 import bookInfo.BookInfoDTO;
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 import userInfo.UserInfoDTO;
 import util.DatabaseUtil;
 
@@ -43,7 +39,6 @@ public class UserManagementDAO {
 		return -1;
 	}
 	
-<<<<<<< HEAD
 	
 	public List<UserManagementDTO> selectAdminUserManagement(){
 		
@@ -213,7 +208,6 @@ public class UserManagementDAO {
     return userManagementList;
  }
 	
-=======
 	public int updateUserManagement(String userNo) {
 		String sqlQuery = "UPDATE USER_MANAGEMENT "
 				+ "SET currentLendingCnt = currentLendingCnt + 1, totalLendingCnt = totalLendingCnt +1 "
@@ -271,5 +265,4 @@ public class UserManagementDAO {
 	      }
 	      return currentLendingCnt;
 	   }
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 }

@@ -1,19 +1,11 @@
 package bookManagement;
 
 public class BookManagementDTO {
-<<<<<<< HEAD
 
 	public String bookNo;
 	public String bookLendingAvailability;
 	public String bookReservationAvailability;
 	public int bookLendingCnt;
-=======
-	// ���뿬媛��뒫�뿬遺�媛� true�씪 �븣 �삁�빟媛��뒫�뿬遺��뒗 false
-	public String bookNo;
-	public String bookLendingAvailability; // boolean ���뿬媛��뒫�뿬遺�
-	public String bookReservationAvailability; // boolean �삁�빟媛��뒫�뿬遺�
-	public int bookLendingCnt; // �씠 梨낆씠 珥� 紐뉖쾲 ���뿬�릺�뿀�뒗吏�
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 	public String bookIsbn;
 
 	public int rank;
@@ -32,15 +24,9 @@ public class BookManagementDTO {
 	public BookManagementDTO() {
 
 	}
-<<<<<<< HEAD
 
 	public BookManagementDTO(String bookNo, String bookLendingAvailability,
 			String bookReservationAvailability, int bookLendingCnt, String bookIsbn) {
-=======
-	
-	public BookManagementDTO(String bookNo, String bookLendingAvailability, String bookReservationAvailability,
-			int bookLendingCnt, String bookIsbn) {
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 		super();
 		this.bookNo = bookNo;
 		this.bookLendingAvailability = bookLendingAvailability;
@@ -113,7 +99,6 @@ public class BookManagementDTO {
 		this.bookIsbn = bookIsbn;
 	}
 	
-<<<<<<< HEAD
 
 	public int getRank() {
 		return rank;
@@ -205,7 +190,3 @@ public class BookManagementDTO {
 	
 
 }
-=======
-	
-}
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7

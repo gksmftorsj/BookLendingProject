@@ -27,10 +27,6 @@ public class BookManagementDAO {
 
 	public void insertBookManagement(BookManagementDTO bm) {
 	      String sqlQuery = "INSERT INTO BOOK_MANAGEMENT VALUES(?||5, ?, ?, ?, ?)";
-<<<<<<< HEAD
-
-=======
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 	      Connection conn = null;
 	      PreparedStatement psmt = null;
 	      ResultSet rs = null;
@@ -44,15 +40,9 @@ public class BookManagementDAO {
 	         psmt.setString(3, bm.bookReservationAvailability);
 	         psmt.setInt(4, bm.bookLendingCnt);
 	         psmt.setString(5, bm.bookIsbn);
-<<<<<<< HEAD
 	         int resultCnt = psmt.executeUpdate();
 	         if(resultCnt>0) {
 	            System.out.println("insert 성공");
-=======
-	         int result = psmt.executeUpdate();
-	         if(result > 0) {
-	            System.out.println("insert 占쎄쉐�⑨옙");
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 	         }
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -102,36 +92,21 @@ public class BookManagementDAO {
         return bookManagementDTO;
      }
 	
-<<<<<<< HEAD
 	public List<BookManagementDTO> selectAdminBookManagementDetailByIsbn(String isbn) {
 		String sqlQuery = "SELECT * FROM book_info bi, book_MANAGEMENT bm WHERE bi.bookisbn = bm.bookisbn AND bi.bookisbn = ?";
-        
 
-=======
-	public int selectBookLendingCnt(String isbn) {
-        String sqlQuery = "SELECT cnt FROM (SELECT COUNT(*) cnt "
-        				+ "FROM BOOK_MANAGEMENT "
-        				+ "WHERE BOOKISBN = ? AND "
-        				+ "BOOKLENDINGAVAILABILITY = 'false')";
-        
-        int bookLendingCnt = 0;
-        
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
+        List<BookManagementDTO> bookManagementList = null;
+		
         Connection conn = null;
         PreparedStatement psmt = null;
         ResultSet rs = null;
         
-<<<<<<< HEAD
-        List<BookManagementDTO> bookManagementList = null;
 
-=======
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
         try {
            conn = DatabaseUtil.getConnection();
            psmt = conn.prepareStatement(sqlQuery);
            psmt.setString(1, isbn);
            rs = psmt.executeQuery();
-<<<<<<< HEAD
 
            bookManagementList = new ArrayList<BookManagementDTO>();
            
@@ -163,12 +138,6 @@ public class BookManagementDAO {
           	 	
           	 	bookManagementList.add(bmd);
              }
-=======
-           
-           if(rs.next()) {
-        	   bookLendingCnt = rs.getInt("cnt");
-           }
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
         } catch (Exception e) {
            e.printStackTrace();
         } finally {
@@ -176,7 +145,6 @@ public class BookManagementDAO {
            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
         }
-<<<<<<< HEAD
         return bookManagementList;
      }
 
@@ -291,39 +259,6 @@ public class BookManagementDAO {
         return bookManagementList;
      }
 	
-=======
-        return bookLendingCnt;
-     }
-	
-	public int updateBookManagementDetail(String bookIsbn) {
-		String sqlQuery = "UPDATE BOOK_MANAGEMENT "
-				+ "SET booklendingavailability = 'false', bookReservationAvailability= 'false', bookLendingCnt = bookLendingCnt + 1 "
-				+ "WHERE bookIsbn = ? AND "
-				+ "bookNo = (SELECT BOOKNO FROM(SELECT * FROM BOOK_MANAGEMENT WHERE bookIsbn = ? AND ROWNUM = 1 AND booklendingavailability = 'true' ORDER BY BOOKNO) BOOK_MANAGEMENT)";
-		
-		int result = 0;
-		
-		Connection conn = null;
-        PreparedStatement psmt = null;
-        ResultSet rs = null;
-		
-        try {
-            conn = DatabaseUtil.getConnection();
-            psmt = conn.prepareStatement(sqlQuery);
-            psmt.setString(1, bookIsbn);
-            psmt.setString(2, bookIsbn);
-            result = psmt.executeUpdate();
-         } catch (Exception e) {
-            e.printStackTrace();
-         } finally {
-            try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-         }
-         return result;
-	}
-
->>>>>>> 3a99ff6519b0fdc6fa4024f28fbc302ce17391d7
 	public static void main(String[] args) throws java.text.ParseException{
 	       String book = getBookData();
 	       JSONParser parser = new JSONParser();
@@ -348,6 +283,39 @@ public class BookManagementDAO {
 	         e.printStackTrace();
 	      }
 	    }
+
+		public int selectBookLendingCnt(String isbn) {
+        String sqlQuery = "SELECT cnt FROM (SELECT COUNT(*) cnt "
+                    + "FROM BOOK_MANAGEMENT "
+                    + "WHERE BOOKISBN = ? AND "
+                    + "BOOKLENDINGAVAILABILITY = 'false')";
+        
+        int bookLendingCnt = 0;
+        
+        Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        
+        try {
+           conn = DatabaseUtil.getConnection();
+           psmt = conn.prepareStatement(sqlQuery);
+           psmt.setString(1, isbn);
+           rs = psmt.executeQuery();
+           
+           if(rs.next()) {
+              bookLendingCnt = rs.getInt("cnt");
+           }
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+           try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+        }
+        return bookLendingCnt;
+     }
+
+	 
 	   
 	public static String getBookData() {
 	       String bookStr = "";
