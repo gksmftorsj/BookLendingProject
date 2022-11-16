@@ -10,7 +10,7 @@ public class UserInfoDTO {
 	private String userEmailChecked;
 	private String userAddress;
 	private String userTel;
-
+	
 	public UserInfoDTO() {
 		
 	}
@@ -27,6 +27,7 @@ public class UserInfoDTO {
 		this.userAddress = userAddress;
 		this.userTel = userTel;
 	}
+	
 	public String getUserName() {
 		return userName;
 	}
