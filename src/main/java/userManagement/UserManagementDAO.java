@@ -11,10 +11,10 @@ import userInfo.UserInfoDTO;
 import util.DatabaseUtil;
 
 public class UserManagementDAO {
-	
+
 	public int insertUserManagement(UserManagementDTO um) {
 		String SQL = "INSERT INTO USER_MANAGEMENT "
-				   + "VALUES(?, TO_DATE(SUBSTR(?, 1, 8), 'YYYYMMDD'), ?, ?, ?, ?, ?)";
+				+ "VALUES(?, TO_DATE(SUBSTR(?, 1, 8), 'YYYYMMDD'), ?, ?, ?, ?, ?)";
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -32,68 +32,113 @@ public class UserManagementDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-			try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-			try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return -1;
 	}
-	
+
 	public int updateUserManagement(String userNo) {
 		String sqlQuery = "UPDATE USER_MANAGEMENT "
 				+ "SET currentLendingCnt = currentLendingCnt + 1, totalLendingCnt = totalLendingCnt +1 "
 				+ "WHERE userNo = ?";
-		
+
 		int result = 0;
-		
+
 		Connection conn = null;
-        PreparedStatement psmt = null;
-        ResultSet rs = null;
-		
-        try {
-            conn = DatabaseUtil.getConnection();
-            psmt = conn.prepareStatement(sqlQuery);
-            psmt.setString(1, userNo);
-            result = psmt.executeUpdate();
-         } catch (Exception e) {
-            e.printStackTrace();
-         } finally {
-            try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-         }
-         return result;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userNo);
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
 	}
-	
+
 	public int selectCurrentLendingCnt(String userNo) {
-	      String sqlQuery = "SELECT currentLendingCnt FROM USER_MANAGEMENT WHERE userNo = ?";
+		String sqlQuery = "SELECT currentLendingCnt FROM USER_MANAGEMENT WHERE userNo = ?";
 
-	      Connection conn = null;
-	      PreparedStatement psmt = null;
-	      ResultSet rs = null;
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 
-	      int currentLendingCnt = 0;
-	      
-	      try {
-	         conn = DatabaseUtil.getConnection();
-	         psmt = conn.prepareStatement(sqlQuery);
-	         
-	         psmt.setString(1, userNo);
-	         
-	         rs = psmt.executeQuery();
-	         
-	         if (rs.next()) {
-	            currentLendingCnt = rs.getInt("currentLendingCnt");
+		int currentLendingCnt = 0;
 
-	         }
-	         
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	      } finally {
-	         try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-	         try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-	         try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-	      }
-	      return currentLendingCnt;
-	   }
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+
+			psmt.setString(1, userNo);
+
+			rs = psmt.executeQuery();
+
+			if (rs.next()) {
+				currentLendingCnt = rs.getInt("currentLendingCnt");
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return currentLendingCnt;
+	}
 }

@@ -96,7 +96,6 @@ public class BookInfoDAO {
 
             BookInfoList.add(bi);
          }
-         
       } catch (Exception e) {
          e.printStackTrace();
       } finally {

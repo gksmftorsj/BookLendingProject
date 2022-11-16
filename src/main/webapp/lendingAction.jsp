@@ -24,23 +24,14 @@
 		
 		BookManagementDAO bookManagementDAO = new BookManagementDAO();
 		BookManagementDTO bookManagementDTO = bookManagementDAO.selectBookManagementDetail(bookIsbn);
-		script.println("<script>");
-		script.println("alert('bookIsbn: " + bookIsbn + "')");
-		script.println("alert('bookNo: " + bookManagementDTO.getBookNo() + "')");
-		script.println("alert('bookLendingAvailability: " + bookManagementDTO.getBookLendingAvailability() + "')");
-		script.println("alert('bookReservationAvailability: " + bookManagementDTO.getBookReservationAvailability() + "')");
-		script.println("alert('bookIsbn: " + bookManagementDTO.getBookIsbn() + "')");
-		script.println("</script>");
+
 		UserInfoDAO userInfoDAO = new UserInfoDAO();
 		BookLendDAO bookLendDAO = new BookLendDAO();
 		UserManagementDAO userManagementDAO = new UserManagementDAO();
 		
 		String userNo = userInfoDAO.selectUserNo(userID);
 		String bookNo = bookManagementDTO.getBookNo();
-		script.println("<script>");
-		script.println("alert('userNo: " + userNo + "')");
-		script.println("alert('bookNo: " + bookNo + "')");
-		script.println("</script>");
+
 		String extensionStatus = "true";
 		int extensionAvailabilityCnt = 1;
 		BookLendDTO bookLendDTO = new BookLendDTO();
@@ -52,22 +43,12 @@
 		int bmuResult = 0;
 		int umuResult = 0;
 		int umsResult = 0;
-		script.println("<script>");
-		script.println("alert('여기 들어옴." + bookIsbn + "')");
-		script.println("</script>");
-		
+
 		umsResult = userManagementDAO.selectCurrentLendingCnt(userNo);
 		if (umsResult <= 5) {
 			bliResult = bookLendDAO.insertBookLend(bookLendDTO);
 			bmuResult = bookManagementDAO.updateBookManagementDetail(bookIsbn);
 			umuResult = userManagementDAO.updateUserManagement(userNo);
-			
-			script.println("<script>");
-			script.println("alert('bliResult: " + bliResult + "')");
-			script.println("alert('bmuResult: " + bmuResult + "')");
-			script.println("alert('umuResult: " + umuResult + "')");
-			script.println("alert('umsResult: " + umsResult + "')");
-			script.println("</script>");
 			
 			if (bliResult > 0 && bmuResult > 0 && umuResult > 0) {
 				script.println("<script>");

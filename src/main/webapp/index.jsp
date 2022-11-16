@@ -1,3 +1,5 @@
+<%@page import="bookLend.BookLendDAO"%>
+<%@page import="userInfo.UserInfoDAO"%>
 <%@page import="bookManagement.BookManagementDAO"%>
 <%@ page import="bookInfo.BookInfoDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -40,6 +42,9 @@ a {
 	}
 	
 	BookManagementDAO bookManagementDAO = new BookManagementDAO();
+	BookLendDAO bookLendDAO = new BookLendDAO();
+	UserInfoDAO userInfoDAO = new UserInfoDAO();
+	String userNo = userInfoDAO.selectUserNo(userID);
 	%>
 	<%@ include file="userNavbar.jsp"%>
 	<div id="carouselExampleInterval" class="container carousel slide mt-5"
@@ -124,15 +129,16 @@ a {
 				
 				<%
 				for (BookInfoDTO bi : bookInfoList) {
-					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(bi.isbn);				
+					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(bi.isbn);
+					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, bi.isbn);
 				%>
 				<tr>
 					<th scope="row" class="text-center"><%=bi.rank%></th>
 					<td><a class="bookTitle"
 						style="text-decoration: none; color: black;"
 						href="./bookDetail.jsp?title=<%=bi.title%>"><%=bi.title%></a></td>
-					<td><%=bi.author%><%=bookLendingCnt%></td>
-
+					<td><%=bi.author%></td>
+					
 					<td>
 					<% 
 					if(userID == null){
@@ -143,11 +149,12 @@ a {
 					<% 
 						} else{
 					%>		
-						<button type="button" class="btn btn-primary lendBtn"
+						<button type="button" class="btn btn-warning lendBtn"
 							style="width: 100px;">예약가능</button> 
 					<%
 						}
 					} else{
+						if(userLendingStatus == null){
 						if(bookLendingCnt < 5){
 					%>
 						<button type="button" class="btn btn-primary"
@@ -181,10 +188,8 @@ a {
 					<%
 						} else{
 					%>	
-						<button type="button" class="btn btn-primary"
+						<button type="button" class="btn btn-warning"
 							style="width: 100px;">예약가능</button>
-						
-						
 						<%
 					}
 						%>
@@ -193,7 +198,12 @@ a {
 				</tr>
 
 				<%
+					} else{
+				%>
+					<button type="button" class="btn btn-danger" style="width: 100px;">대여중</button>
+				<%		
 					}
+				}
 				}
 				%>
 			</tbody>
@@ -254,7 +264,6 @@ a {
         	alert("대여가 취소되었습니다.");
         } else {
 			const isbn = localStorage.getItem("isbn");
-			alert(isbn);
 			lendForm.setAttribute("action", "./lendingAction.jsp?isbn=" + isbn);
         	lendForm.submit();
         	}
