@@ -39,12 +39,11 @@
 		if (umsResult < 5) {
 			briResult = bookReservationDAO.insertBookReservation(userNo, bookNo);
 			
-			bmuResult = bookManagementDAO.updateReservationAvailabilityFlase(bookNo);
-			umuResult = userManagementDAO.updateCurrentReservationCnt(userNo);
+			bmuResult = bookManagementDAO.updateReservationAvailabilityFlase(bookIsbn);
+			umuResult = userManagementDAO.updateCurrentReservationCntPlus(userNo);
 			
 			if (briResult > 0 && bmuResult > 0 && umuResult > 0) {
 				script.println("<script>");
-				script.println("alert('"+bmuResult+"');");
 				script.println("alert('예약 완료되었습니다.');");
 				script.println("location.href = './index.jsp';");
 				script.println("</script>");

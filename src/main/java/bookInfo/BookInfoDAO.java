@@ -24,7 +24,7 @@ import util.DatabaseUtil;
 public class BookInfoDAO {
 
    public void insertBookInfo(BookInfoDTO bi) {
-      String sqlQuery = "INSERT INTO BOOK_INFO VALUES(?, ?, ?, ?, ?, ?, ?, SUBSTR(?, 6, INSTR(?, '>', 1, 2)-6), ?, ?)";
+      String sqlQuery = "INSERT INTO BOOK_INFO VALUES(?, ?, ?, ?, ?, ?, ?, SUBSTR(?, 6, INSTR(?, '>', 1, 2)-6), ?, ?, ?)";
 
       Connection conn = null;
       PreparedStatement psmt = null;
@@ -45,6 +45,7 @@ public class BookInfoDAO {
          psmt.setString(9, bi.categoryName);
          psmt.setString(10, bi.publisher);
          psmt.setInt(11, bi.bookCnt);
+         psmt.setInt(12, bi.bookTotalLendingCnt);
          int resultCnt = psmt.executeUpdate();
          if(resultCnt>0) {
             System.out.println("insert 성공");

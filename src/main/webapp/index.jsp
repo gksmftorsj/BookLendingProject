@@ -251,8 +251,9 @@ a {
 						%>
 						
 						
-						
-						<button type="button" class="btn btn-warning lendTitle" style="width: 100px;">예약중</button>
+						<form action="./reservationCancelAction.jsp?isbn=<%=bi.isbn%>" method="post">
+							<button type="submit" class="btn btn-warning lendTitle" style="width: 100px;">예약취소</button>						
+						</form>
 						
 						
 						<%
