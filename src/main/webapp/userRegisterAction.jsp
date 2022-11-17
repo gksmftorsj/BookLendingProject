@@ -30,7 +30,7 @@
 	}
 	if(request.getParameter("userAddress") != null){
 		if(request.getParameter("userAddressDetail") != null){
-			userAddress = request.getParameter("userAddress") + request.getParameter("userAddressDetail");
+			userAddress = request.getParameter("userAddress") +" "+request.getParameter("userAddressDetail");
 		} else{
 			userAddress = request.getParameter("userAddress");
 		}

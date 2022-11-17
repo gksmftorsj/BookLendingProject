@@ -1,3 +1,4 @@
+<%@page import="bookReservation.BookReservationDAO"%>
 <%@page import="bookLend.BookLendDAO"%>
 <%@page import="userInfo.UserInfoDAO"%>
 <%@page import="bookManagement.BookManagementDAO"%>
@@ -10,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>메인페이지</title>
 <style>
 a {
 	text-decoration: none;
@@ -43,6 +44,7 @@ a {
 	
 	BookManagementDAO bookManagementDAO = new BookManagementDAO();
 	BookLendDAO bookLendDAO = new BookLendDAO();
+	BookReservationDAO bookReservationDAO = new BookReservationDAO();
 	UserInfoDAO userInfoDAO = new UserInfoDAO();
 	String userNo = userInfoDAO.selectUserNo(userID);
 	%>
@@ -126,12 +128,20 @@ a {
 				</tr>
 			</thead>
 			<tbody>
-				
+			
+			
+			
+			
 				<%
 				for (BookInfoDTO bi : bookInfoList) {
 					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(bi.isbn);
 					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, bi.isbn);
+					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, bi.isbn);
 				%>
+				
+
+
+
 				<tr>
 					<th scope="row" class="text-center"><%=bi.rank%></th>
 					<td><a class="bookTitle"
@@ -140,26 +150,36 @@ a {
 					<td><%=bi.author%></td>
 					
 					<td>
+					
+					
 					<% 
 					if(userID == null){
 						if(bookLendingCnt < 5){
 					%>
-						<button type="button" class="btn btn-primary lendBtn"
-							style="width: 100px;">대여가능</button> 
+					
+						<button type="button" class="btn btn-primary lendBtn lendTitle" style="width: 100px;">대여가능</button> 
+							
 					<% 
-						} else{
+						} else {
 					%>		
-						<button type="button" class="btn btn-warning lendBtn"
-							style="width: 100px;">예약가능</button> 
+					
+						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+							
 					<%
 						}
-					} else{
+					} else {
+						
 						if(userLendingStatus == null){
-						if(bookLendingCnt < 5){
+							
+							if(bookLendingCnt < 5){
 					%>
-						<button type="button" class="btn btn-primary"
+					
+						<button type="button" class="btn btn-primary lendTitle"
 							style="width: 100px;" data-bs-toggle="modal"
-							data-bs-target="#exampleModal" onclick="localStorage.setItem('isbn', '<%=bi.isbn%>')">대여가능</button>
+							data-bs-target="#exampleModal"
+							onclick="{
+							localStorage.setItem('isbn', '<%=bi.isbn%>');
+							localStorage.setItem('title', '<%=bi.title%>')}">대여가능</button>
 						
 						<form id="lendForm" method="post" name="lendForm">
 							<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -167,16 +187,14 @@ a {
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h1 class="modal-title fs-5" id="exampleModalLabel">대여할
-												권수를 선택하세요.</h1>
+											<h1 class="modal-title fs-5" id="exampleModalLabel">지니북스</h1>
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
 										<div class="modal-body d-flex justify-content-center">
-											안녕하세요
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-primary" id="lendBtn"
+											<button type="button" class="btn btn-primary"
 												onclick="checkLendBtn()">대여하기</button>
 											<button type="button" class="btn btn-secondary"
 												data-bs-dismiss="modal">닫기</button>
@@ -185,27 +203,79 @@ a {
 								</div>
 							</div>
 						</form>  
+						
+						
+						
 					<%
-						} else{
+							} else {
+								
+								if(userReservationStatus == null){
 					%>	
-						<button type="button" class="btn btn-warning"
-							style="width: 100px;">예약가능</button>
+					
+					
+					
+						<button type="button" class="btn btn-warning lendTitle"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal1"
+							onclick="{
+							localStorage.setItem('isbn', '<%=bi.isbn%>');
+							localStorage.setItem('title', '<%=bi.title%>')}">예약가능</button>
+						
+						<form id="reservateForm" method="post" name="reservateForm">
+							<div class="modal fade" id="exampleModal1" tabindex="-1"
+								aria-labelledby="exampleModalLabel1" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel1">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body1 d-flex justify-content-center">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkReservateBtn()">예약하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+						
+						
+						
 						<%
-					}
+								} else {
 						%>
-
+						
+						
+						
+						<button type="button" class="btn btn-warning lendTitle" style="width: 100px;">예약중</button>
+						
+						
+						<%
+									}
+								
+								}
+							
+							
+							
+						} else {
+						%>
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+						<%
+						}
+					}
+						
+						%>						
 					</td>
 				</tr>
-
-				<%
-					} else{
-				%>
-					<button type="button" class="btn btn-danger" style="width: 100px;">대여중</button>
-				<%		
-					}
+			<%
 				}
-				}
-				%>
+			%>
+				
 			</tbody>
 
 
@@ -258,6 +328,17 @@ a {
 			}
 		}
 		
+		const lendTitle = document.querySelectorAll(".lendTitle");
+	    const modalBody = document.querySelector(".modal-body");
+	    const modalBody1 = document.querySelector(".modal-body1");
+	    for (let i = 0; i <<%=bookInfoList.size()%>; i++) {
+	        lendTitle[i].addEventListener("click", () => {
+	          const title = localStorage.getItem("title");
+	          modalBody.innerText = title;
+	          modalBody1.innerText = title;
+	        })
+	      }
+		
 		const lendForm = document.getElementById("lendForm");
 		function checkLendBtn() {
         if (!confirm("대여기간은 총 10일입니다. 추가연장은 총 1회 가능하며 추가연장 기간은 총 5일입니다. 대여하시겠습니까?")) {
@@ -265,6 +346,18 @@ a {
         } else {
 			const isbn = localStorage.getItem("isbn");
 			lendForm.setAttribute("action", "./lendingAction.jsp?isbn=" + isbn);
+        	lendForm.submit();
+        	}
+        }
+		
+		const reservateForm = document.getElementById("reservateForm");
+		function checkReservateBtn() {
+			
+        if (!confirm("예약메세지")) {
+        	alert("예약이 취소되었습니다..");
+        } else {
+			const isbn = localStorage.getItem("isbn");
+			lendForm.setAttribute("action", "./reservationAction.jsp?isbn=" + isbn);
         	lendForm.submit();
         	}
         }

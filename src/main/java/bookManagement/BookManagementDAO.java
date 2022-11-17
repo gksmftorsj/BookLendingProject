@@ -122,6 +122,54 @@ public class BookManagementDAO {
       return bookManagementDTO;
    }
 
+   public String selectBookReservationTrue(String isbn) {
+	      String sqlQuery = "SELECT * "
+	            + "FROM BOOK_MANAGEMENT "
+	            + "WHERE BOOKISBN = ? AND "
+	            + "BOOKRESERVATIONAVAILABILITY = 'true' AND "
+	            + "ROWNUM = 1 "
+	            + "ORDER BY BOOKNO";
+
+	      String bookNo = null;
+
+	      Connection conn = null;
+	      PreparedStatement psmt = null;
+	      ResultSet rs = null;
+
+	      try {
+	         conn = DatabaseUtil.getConnection();
+	         psmt = conn.prepareStatement(sqlQuery);
+	         psmt.setString(1, isbn);
+	         rs = psmt.executeQuery();
+
+	         if (rs.next()) {
+	            bookNo = rs.getString("bookNo");
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            if (conn != null)
+	               conn.close();
+	         } catch (Exception e) {
+	            e.printStackTrace();
+	         }
+	         try {
+	            if (psmt != null)
+	               conn.close();
+	         } catch (Exception e) {
+	            e.printStackTrace();
+	         }
+	         try {
+	            if (rs != null)
+	               conn.close();
+	         } catch (Exception e) {
+	            e.printStackTrace();
+	         }
+	      }
+	      return bookNo;
+	   }
+
    public List<BookManagementDTO> selectAdminBookManagementDetailByIsbn(String isbn) {
       String sqlQuery = "SELECT * FROM book_info bi, book_MANAGEMENT bm WHERE bi.bookisbn = bm.bookisbn AND bi.bookisbn = ?";
 
@@ -349,7 +397,7 @@ public class BookManagementDAO {
 
             String bookNo = null;
             String bookLendingAvailability = "true";
-            String bookReservationAvailability = "false";
+            String bookReservationAvailability = "true";
             int bookLendingCnt = 0;
             String isbn = (String) itemObj.get("isbn");
 
@@ -412,7 +460,7 @@ public class BookManagementDAO {
 
    public int updateBookManagementDetail(String bookIsbn) {
       String sqlQuery = "UPDATE BOOK_MANAGEMENT "
-            + "SET booklendingavailability = 'false', bookReservationAvailability= 'false', bookLendingCnt = bookLendingCnt + 1 "
+            + "SET booklendingavailability = 'false', bookLendingCnt = bookLendingCnt + 1 "
             + "WHERE bookIsbn = ? AND "
             + "bookNo = (SELECT BOOKNO FROM(SELECT * FROM BOOK_MANAGEMENT WHERE bookIsbn = ? AND ROWNUM = 1 AND booklendingavailability = 'true' ORDER BY BOOKNO) BOOK_MANAGEMENT)";
 
@@ -451,6 +499,47 @@ public class BookManagementDAO {
          }
       }
       return result;
+   }
+   
+   public int updateReservationAvailabilityFlase(String bookNo) {
+	   String sqlQuery = "UPDATE BOOK_MANAGEMENT "
+			   + "SET bookReservationAvailability = 'false' "
+			   + "WHERE bookNo = ?";
+	   
+	   int result = 0;
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   psmt.setString(1, bookNo);
+		   result = psmt.executeUpdate();
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {
+			   if (conn != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+		   try {
+			   if (psmt != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+		   try {
+			   if (rs != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+	   }
+	   return result;
    }
 
    public static String getBookData() {

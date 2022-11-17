@@ -22,14 +22,14 @@ import org.json.simple.parser.ParseException;
 import util.DatabaseUtil;
 
 public class BookInfoDAO {
-   
+
    public void insertBookInfo(BookInfoDTO bi) {
-      String sqlQuery = "INSERT INTO BOOK_INFO VALUES(?, ?, ?, ?, ?, ?, ?, SUBSTR(?, 6, INSTR(?, '>', 1, 2)-6), ?, ?, ?)";
+      String sqlQuery = "INSERT INTO BOOK_INFO VALUES(?, ?, ?, ?, ?, ?, ?, SUBSTR(?, 6, INSTR(?, '>', 1, 2)-6), ?, ?)";
 
       Connection conn = null;
       PreparedStatement psmt = null;
       ResultSet rs = null;
-      
+
       try {
          conn = DatabaseUtil.getConnection();
          psmt = conn.prepareStatement(sqlQuery);
@@ -45,7 +45,6 @@ public class BookInfoDAO {
          psmt.setString(9, bi.categoryName);
          psmt.setString(10, bi.publisher);
          psmt.setInt(11, bi.bookCnt);
-         psmt.setInt(12, bi.bookTotalLendingCnt);
          int resultCnt = psmt.executeUpdate();
          if(resultCnt>0) {
             System.out.println("insert 성공");
@@ -95,7 +94,6 @@ public class BookInfoDAO {
             bi.isbn = rs.getString("bookIsbn");
             bi.publisher = rs.getString("bookPublisher");
             bi.bookCnt = rs.getInt("bookCnt");
-            bi.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
 
             BookInfoList.add(bi);
          }
@@ -138,7 +136,6 @@ public class BookInfoDAO {
             	bi.categoryName = rs.getString("bookcategoryName");
             	bi.publisher = rs.getString("bookPublisher");
             	bi.bookCnt = rs.getInt("bookCnt");
-            	bi.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
               
             	bookInfoList.add(bi);
             }
@@ -181,7 +178,6 @@ public class BookInfoDAO {
             	bi.categoryName = rs.getString("bookcategoryName");
             	bi.publisher = rs.getString("bookPublisher");
             	bi.bookCnt = rs.getInt("bookCnt");
-            	bi.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
               
             	bookInfoList.add(bi);
             }
@@ -224,7 +220,6 @@ public class BookInfoDAO {
           	bi.categoryName = rs.getString("bookcategoryName");
           	bi.publisher = rs.getString("bookPublisher");
           	bi.bookCnt = rs.getInt("bookCnt");
-          	bi.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
             
           	bookInfoList.add(bi);
           }
@@ -267,7 +262,6 @@ public class BookInfoDAO {
             bookInfoDTO.categoryName = rs.getString("bookcategoryName");
             bookInfoDTO.publisher = rs.getString("bookPublisher");
             bookInfoDTO.bookCnt = rs.getInt("bookCnt");
-            bookInfoDTO.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
             bookInfoDTO.bookNo = rs.getString("bookNo");
        	 	if(rs.getString("bookLendingAvailability").equals("false")) {
        	 		bookInfoDTO.bookLendingAvailability = "대여중";
@@ -322,7 +316,6 @@ public class BookInfoDAO {
             bookInfoDTO.categoryName = rs.getString("bookcategoryName");
             bookInfoDTO.publisher = rs.getString("bookPublisher");
             bookInfoDTO.bookCnt = rs.getInt("bookCnt");
-            bookInfoDTO.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
             bookInfoDTO.bookNo = rs.getString("bookNo");
        	 	if(rs.getString("bookLendingAvailability").equals("false")) {
        	 		bookInfoDTO.bookLendingAvailability = "대여중";
@@ -418,7 +411,47 @@ public BookInfoDTO selectBookDetail(String title) {
 	   }
 	   return total;
    }
-
+   
+   public int updateBookTotalLendingCnt(String bookIsbn) {
+	   String sqlQuery = "UPDATE BOOK_INFO "
+			   + "SET bookTotalLendingCnt = bookTotalLendingCnt + 1 "
+			   + "WHERE bookIsbn = ?";
+	   
+	   int result = 0;
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   psmt.setString(1, bookIsbn);
+		   result = psmt.executeUpdate();
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {
+			   if (conn != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+		   try {
+			   if (psmt != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+		   try {
+			   if (rs != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+	   }
+	   return result;
+   }
    
    public static void main(String[] args) throws java.text.ParseException{
        String book = getBookData();
@@ -458,7 +491,7 @@ public BookInfoDTO selectBookDetail(String title) {
             urlBuilder.append("?" + URLEncoder.encode("ttbkey","UTF-8") + "=ttbksh9909131602002"); 
             urlBuilder.append("&" + URLEncoder.encode("QueryType","UTF-8") + "=" + URLEncoder.encode("Bestseller", "UTF-8")); 
             urlBuilder.append("&" + URLEncoder.encode("MaxResults","UTF-8") + "=" + URLEncoder.encode("50", "UTF-8")); 
-            urlBuilder.append("&" + URLEncoder.encode("start","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); 
+            urlBuilder.append("&" + URLEncoder.encode("start","UTF-8") + "=" + URLEncoder.encode("2", "UTF-8")); 
             urlBuilder.append("&" + URLEncoder.encode("SearchTarget","UTF-8") + "=" + URLEncoder.encode("Book", "UTF-8")); 
             urlBuilder.append("&" + URLEncoder.encode("output","UTF-8") + "=" + URLEncoder.encode("js", "UTF-8")); 
             urlBuilder.append("&" + URLEncoder.encode("Version","UTF-8") + "=" + URLEncoder.encode("20131101", "UTF-8")); 

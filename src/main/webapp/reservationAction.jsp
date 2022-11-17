@@ -1,4 +1,4 @@
-<%@page import="bookInfo.BookInfoDAO"%>
+<%@page import="bookReservation.BookReservationDAO"%>
 <%@page import="userManagement.UserManagementDAO"%>
 <%@page import="bookLend.BookLendDTO"%>
 <%@page import="bookLend.BookLendDAO"%>
@@ -24,46 +24,35 @@
 		}
 		
 		BookManagementDAO bookManagementDAO = new BookManagementDAO();
-		BookManagementDTO bookManagementDTO = bookManagementDAO.selectBookManagementDetail(bookIsbn);
-
-		UserInfoDAO userInfoDAO = new UserInfoDAO();
-		BookLendDAO bookLendDAO = new BookLendDAO();
+		BookReservationDAO bookReservationDAO = new BookReservationDAO();
 		UserManagementDAO userManagementDAO = new UserManagementDAO();
-		BookInfoDAO bookInfoDAO = new BookInfoDAO();
+		UserInfoDAO userInfoDAO = new UserInfoDAO();
 		
 		String userNo = userInfoDAO.selectUserNo(userID);
-		String bookNo = bookManagementDTO.getBookNo();
-
-		String extensionStatus = "true";
-		int extensionAvailabilityCnt = 1;
-		BookLendDTO bookLendDTO = new BookLendDTO();
-		bookLendDTO.setUserNo(userNo);
-		bookLendDTO.setBookNo(bookNo);
-		bookLendDTO.setExtensionStatus(extensionStatus);
-		bookLendDTO.setExtensionAvailabilityCnt(extensionAvailabilityCnt);
-		int bliResult = 0;
+		String bookNo = bookManagementDAO.selectBookReservationTrue(bookIsbn);
+		int briResult = 0;
 		int bmuResult = 0;
 		int umuResult = 0;
 		int umsResult = 0;
-		int biuResult = 0;
 
-		umsResult = userManagementDAO.selectCurrentLendingCnt(userNo);
+		umsResult = userManagementDAO.selectCurrentReservationCnt(userNo);
 		if (umsResult < 5) {
-			bliResult = bookLendDAO.insertBookLend(bookLendDTO);
-			bmuResult = bookManagementDAO.updateBookManagementDetail(bookIsbn);
-			umuResult = userManagementDAO.updateUserManagement(userNo);
-			biuResult = bookInfoDAO.updateBookTotalLendingCnt(bookIsbn);
+			briResult = bookReservationDAO.insertBookReservation(userNo, bookNo);
 			
-			if (bliResult > 0 && bmuResult > 0 && umuResult > 0 && biuResult >0) {
+			bmuResult = bookManagementDAO.updateReservationAvailabilityFlase(bookNo);
+			umuResult = userManagementDAO.updateCurrentReservationCnt(userNo);
+			
+			if (briResult > 0 && bmuResult > 0 && umuResult > 0) {
 				script.println("<script>");
-				script.println("alert('대여 완료되었습니다.');");
+				script.println("alert('"+bmuResult+"');");
+				script.println("alert('예약 완료되었습니다.');");
 				script.println("location.href = './index.jsp';");
 				script.println("</script>");
 				script.close();
 				return;
-			} else if (bliResult == 0 || bmuResult == 0 || umuResult == 0 || biuResult == 0) {
+			} else if (briResult == 0 || bmuResult == 0 || umuResult == 0) {
 				script.println("<script>");
-				script.println("alert('대여에 실패하였습니다. 다시 시도해주세요.');");
+				script.println("alert('예약에 실패하였습니다. 다시 시도해주세요.');");
 				script.println("history.back();");
 				script.println("</script>");
 				script.close();
@@ -71,11 +60,9 @@
 			}
 		} else{
 			script.println("<script>");
-			script.println("alert('현재 총 대여권수가 5권입니다. 반납 후 이용하시길 바랍니다.');");
+			script.println("alert('현재 총 예약권수가 5권입니다. 예약취소 후 이용하시길 바랍니다.');");
 			script.println("history.back();");
 			script.println("</script>");
 			script.close();
 		}
 %>
-<%=bookIsbn%>
-

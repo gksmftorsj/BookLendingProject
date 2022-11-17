@@ -15,22 +15,16 @@ public class BookInfoDTO {
 	public String publisher;
 	public int bookCnt;
 	public int bookTotalLendingCnt;
-	
 
 	public String bookNo;
 	public String bookLendingAvailability;
 	public String bookReservationAvailability;
 	public int bookLendingCnt;
 	public String bookIsbn;
-	
-	
-	
-	
+
 	public BookInfoDTO() {
-		
+
 	}
-	
-	
 
 	public BookInfoDTO(int rank, String title, String author, String pubDate, String description, String isbn,
 			String cover, String categoryName, String publisher, int bookCnt, int bookTotalLendingCnt) {
@@ -47,8 +41,6 @@ public class BookInfoDTO {
 		this.bookCnt = bookCnt;
 		this.bookTotalLendingCnt = bookTotalLendingCnt;
 	}
-	
-	
 
 	public BookInfoDTO(int rank, String title, String author, String pubDate, String description, String isbn,
 			String cover, String categoryName, String publisher, int bookCnt, int bookTotalLendingCnt, String bookNo,
@@ -71,8 +63,14 @@ public class BookInfoDTO {
 		this.bookLendingCnt = bookLendingCnt;
 		this.bookIsbn = bookIsbn;
 	}
-	
-	
+
+	public int getBookTotalLendingCnt() {
+		return bookTotalLendingCnt;
+	}
+
+	public void setBookTotalLendingCnt(int bookTotalLendingCnt) {
+		this.bookTotalLendingCnt = bookTotalLendingCnt;
+	}
 
 	public int getRank() {
 		return rank;
@@ -153,15 +151,7 @@ public class BookInfoDTO {
 	public void setBookCnt(int bookCnt) {
 		this.bookCnt = bookCnt;
 	}
-	
-	public int getBookTotalLendingCnt() {
-		return bookTotalLendingCnt;
-	}
-	
-	public void setBookTotalLendingCnt(int bookTotalLendingCnt) {
-		this.bookTotalLendingCnt = bookTotalLendingCnt;
-	}
-	
+
 	public String getBookNo() {
 		return bookNo;
 	}
@@ -202,9 +192,4 @@ public class BookInfoDTO {
 		this.bookIsbn = bookIsbn;
 	}
 
-	
-	
-	
-	
-	
 }
