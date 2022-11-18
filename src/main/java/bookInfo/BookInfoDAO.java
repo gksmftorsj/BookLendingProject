@@ -107,6 +107,198 @@ public class BookInfoDAO {
       }
       return BookInfoList;
    }
+   
+   public List<BookInfoDTO> selectBookInfoSortRank(int startIndex, int endIndex) {
+	   String sqlQuery = "SELECT * "
+			   + "FROM("
+			   + "		SELECT ROWNUM AS RN, BI.* "
+			   + "     FROM (SELECT * FROM BOOK_INFO ORDER BY BOOKRANK) BI) "
+			   + "WHERE RN BETWEEN ? AND ?";
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   List<BookInfoDTO> BookInfoList = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   
+		   psmt.setInt(1, startIndex);
+		   psmt.setInt(2, endIndex);
+		   
+		   rs = psmt.executeQuery();
+		   
+		   BookInfoList = new ArrayList<BookInfoDTO>();
+		   
+		   while (rs.next()) {
+			   BookInfoDTO bi = new BookInfoDTO();
+			   bi.rank = rs.getInt("bookRank");
+			   bi.title = rs.getString("bookTitle");
+			   bi.author = rs.getString("bookAuthor");
+			   bi.cover = rs.getString("bookCover");
+			   bi.categoryName = rs.getString("bookCategoryName");
+			   bi.isbn = rs.getString("bookIsbn");
+			   bi.publisher = rs.getString("bookPublisher");
+			   bi.bookCnt = rs.getInt("bookCnt");
+			   
+			   BookInfoList.add(bi);
+		   }
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	   }
+	   return BookInfoList;
+   }
+   
+   public List<BookInfoDTO> selectBookInfoSortLatest(int startIndex, int endIndex) {
+	   String sqlQuery = "SELECT * "
+			   + "FROM("
+			   + "		SELECT ROWNUM AS RN, BI.* "
+			   + "     FROM (SELECT * "
+			   + "FROM (SELECT BOOKRANK, BOOKTITLE, BOOKAUTHOR, BOOKPUBDATE, BOOKDESCRIPTION, BOOKISBN, BOOKCOVER, BOOKCATEGORYNAME, BOOKPUBLISHER, BOOKCNT, BOOKTOTALLENDINGCNT, TO_DATE(BOOKPUBDATE, 'YYYY-MM-DD') PUBDATE FROM BOOK_INFO) "
+			   + "ORDER BY PUBDATE DESC) BI) "
+			   + "WHERE RN BETWEEN ? AND ?";
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   List<BookInfoDTO> BookInfoList = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   
+		   psmt.setInt(1, startIndex);
+		   psmt.setInt(2, endIndex);
+		   
+		   rs = psmt.executeQuery();
+		   
+		   BookInfoList = new ArrayList<BookInfoDTO>();
+		   
+		   while (rs.next()) {
+			   BookInfoDTO bi = new BookInfoDTO();
+			   bi.rank = rs.getInt("bookRank");
+			   bi.title = rs.getString("bookTitle");
+			   bi.author = rs.getString("bookAuthor");
+			   bi.cover = rs.getString("bookCover");
+			   bi.categoryName = rs.getString("bookCategoryName");
+			   bi.isbn = rs.getString("bookIsbn");
+			   bi.publisher = rs.getString("bookPublisher");
+			   bi.bookCnt = rs.getInt("bookCnt");
+			   
+			   BookInfoList.add(bi);
+		   }
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	   }
+	   return BookInfoList;
+   }
+   
+   public List<BookInfoDTO> selectBookInfoSortName(int startIndex, int endIndex) {
+	   String sqlQuery = "SELECT * "
+			   + "FROM("
+			   + "		SELECT ROWNUM AS RN, BI.* "
+			   + "     FROM (SELECT * FROM BOOK_INFO ORDER BY BOOKTITLE) BI) "
+			   + "WHERE RN BETWEEN ? AND ?";
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   List<BookInfoDTO> BookInfoList = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   
+		   psmt.setInt(1, startIndex);
+		   psmt.setInt(2, endIndex);
+		   
+		   rs = psmt.executeQuery();
+		   
+		   BookInfoList = new ArrayList<BookInfoDTO>();
+		   
+		   while (rs.next()) {
+			   BookInfoDTO bi = new BookInfoDTO();
+			   bi.rank = rs.getInt("bookRank");
+			   bi.title = rs.getString("bookTitle");
+			   bi.author = rs.getString("bookAuthor");
+			   bi.cover = rs.getString("bookCover");
+			   bi.categoryName = rs.getString("bookCategoryName");
+			   bi.isbn = rs.getString("bookIsbn");
+			   bi.publisher = rs.getString("bookPublisher");
+			   bi.bookCnt = rs.getInt("bookCnt");
+			   
+			   BookInfoList.add(bi);
+		   }
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	   }
+	   return BookInfoList;
+   }
+   
+   public List<BookInfoDTO> selectBookInfoByCategoryName(int startIndex, int endIndex, String categoryName) {
+	   String sqlQuery = "SELECT * "
+			   + "FROM("
+			   + "		SELECT ROWNUM AS RN, BI.* "
+			   + "     FROM (SELECT * FROM BOOK_INFO WHERE BOOKCATEGORYNAME LIKE ?) BI) "
+			   + "WHERE RN BETWEEN ? AND ?";
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   List<BookInfoDTO> BookInfoList = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   
+		   psmt.setString(1, "%"+categoryName+"%");
+		   psmt.setInt(2, startIndex);
+		   psmt.setInt(3, endIndex);
+		   
+		   
+		   rs = psmt.executeQuery();
+		   
+		   BookInfoList = new ArrayList<BookInfoDTO>();
+		   
+		   while (rs.next()) {
+			   BookInfoDTO bi = new BookInfoDTO();
+			   bi.rank = rs.getInt("bookRank");
+			   bi.title = rs.getString("bookTitle");
+			   bi.author = rs.getString("bookAuthor");
+			   bi.cover = rs.getString("bookCover");
+			   bi.categoryName = rs.getString("bookCategoryName");
+			   bi.isbn = rs.getString("bookIsbn");
+			   bi.publisher = rs.getString("bookPublisher");
+			   bi.bookCnt = rs.getInt("bookCnt");
+			   
+			   BookInfoList.add(bi);
+		   }
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	   }
+	   return BookInfoList;
+   }
 
    public List<BookInfoDTO> selectAdminBookInfo(){
 	   String sqlQuery = "SELECT * FROM book_info bi, (SELECT bookIsbn, count(*) bookLendingStatus FROM book_management WHERE bookLendingAvailability = 'false' GROUP BY bookIsbn) bm WHERE bi.bookIsbn = bm.bookIsbn(+)";
@@ -445,6 +637,35 @@ public BookInfoDTO selectBookDetail(String title) {
 	   try {
 		   conn = DatabaseUtil.getConnection();
 		   psmt = conn.prepareStatement(sqlQuery);
+		   rs = psmt.executeQuery();
+		   
+		   if(rs.next()) {
+			   total = rs.getInt("total");
+			   
+		   }
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	   }
+	   return total;
+   }
+   
+   public int selectBookCategoryTotal(String category) {
+	   String sqlQuery = "SELECT count(*) total FROM BOOK_INFO WHERE bookCategoryName LIKE ?";
+	   
+	   int total = 0;
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   psmt.setString(1, "%" + category + "%");
 		   rs = psmt.executeQuery();
 		   
 		   if(rs.next()) {
