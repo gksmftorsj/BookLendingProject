@@ -72,20 +72,20 @@ p{
 		<h2>관리자 페이지</h2>
 		<form name="adminForm" class="adminForm" method="post">
 			<div class="col-auto">
-				<label for="name">회원정보</label>
+				<label for="name">회원정보상세</label>
 				<fieldset>
 					<div class="order_box01">
 
 						<div class="order_box02">
 
 							<div class="account_select03" style="width: 100%">
-								<form action="userManager.jsp" method="post">
+								<form action="userManagerDetail.jsp" method="post">
 									<div class="input-group">
 										<select name="userOption" required
 											class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
 											id="inputGroupSelect01">
 											<ul class="dropdown-menu">
-												<li><option class="dropdown-item" selected>회원정보</option></li>
+												<li><option class="dropdown-item" selected>회원정보상세</option></li>
 												<li><option class="dropdown-item" value="userName">회원명</option></li>
 												<li><option class="dropdown-item" value="userId">아이디</option></li>
 												<li><option class="dropdown-divider" disabled>-------</option></li>
@@ -95,7 +95,7 @@ p{
 
 										<input type="text" class="form-control"
 											aria-label="Text input with 2 dropdown buttons"
-											placeholder="검색어를 입력하세요"
+											placeholder="검색어를 정확하게 입력하세요"
 											name="searching" value="" required>
 										<button class="btn btn-outline-secondary" type="submit">검색</button>
 										</label>
@@ -110,7 +110,7 @@ p{
 
 			<fieldset>
 				<div class="col-auto">
-					<label for="name">회원정보</label>
+					<label for="name">회원상세</label>
 					<div class="myTable">
 						<table class="userTable container">
 							<thead>
@@ -118,11 +118,12 @@ p{
 									<th scope="col"><p>회원번호</p></th>
 									<th scope="col"><p>회원명</p></th>
 									<th scope="col"><p>ID</p></th>
- 									<th scope="col"><p>현재대여건수</p></th>
-									<th scope="col"><p>현재예약건수</p></th>
-									<th scope="col"><p>총대여건수</p></th>
-									<th scope="col"><p>비고(연체정보)</p></th>
+									<th scope="col"><p>Email</p></th>
+									<th scope="col"><p>연락처</p></th>
+									<th scope="col"><p>주소</p></th>
+									<th scope="col"><p>비고</p></th>
 								</tr>
+
 							</thead>
 
 							<tbody>
@@ -130,24 +131,45 @@ p{
 	UserManagementDAO userManagementDao = new UserManagementDAO();
 	List<UserManagementDTO> userAdminList = null;
 							
-	if( request.getParameter("searching") == null) {
-		userAdminList = userManagementDao.selectAdminUserManagement();
-		if(userAdminList != null && userAdminList.size()>0) {
+	if( request.getParameter("searching") == null ) {
+		if( request.getParameter("userNo") != null ) {
+			String userNo = request.getParameter("userNo");
+			userAdminList = userManagementDao.selectAdminUserManagementByUserNo(userNo);
+			if(userAdminList != null && userAdminList.size()>0) {
+				for(UserManagementDTO userInfo : userAdminList){
+					
+	%>
+					<tr>
+ 						<td><p><%=userInfo.getUserNo() %></p></td>
+						<td><p><%=userInfo.getUserName() %></p></td>
+						<td><p><%=userInfo.getUserID() %></p></td>
+						<td><p><%=userInfo.getUserEmail() %></p></td>
+						<td><p><%=userInfo.getUserTel() %></p></td>
+						<td><p><%=userInfo.getUserAddress() %></p></td>
+						<td><p></p></td>
+					</tr>
+	<%
+					}
+				}
+		} else {
+			userAdminList = userManagementDao.selectAdminUserManagement();
+			if(userAdminList != null && userAdminList.size()>0) {
 				for(UserManagementDTO userInfo : userAdminList){
 	%>
-							<tr>
- 								<td><p><a href="userManagerDetail.jsp?userNo=<%=userInfo.getUserNo() %>"><%=userInfo.getUserNo() %></a></p></td>
-								<td><p><%=userInfo.getUserName() %></p></td>
-								<td><p><%=userInfo.getUserID() %></p></td>
- 								<td><p><%=userInfo.getCurrentLendingCnt() %></p></td>
-								<td><p><%=userInfo.getCurrentReservationCnt() %></p></td>
-								<td><p><%=userInfo.getTotalLendingCnt() %></p></td>
-								<td><p><%=userInfo.getOverDueCnt() %></p></td>
-							</tr>
-	<%
-				}
+					<tr>
+ 						<td><p><%=userInfo.getUserNo() %></p></td>
+						<td><p><%=userInfo.getUserName() %></p></td>
+						<td><p><%=userInfo.getUserID() %></p></td>
+						<td><p><%=userInfo.getUserEmail() %></p></td>
+						<td><p><%=userInfo.getUserTel() %></p></td>
+						<td><p><%=userInfo.getUserAddress() %></p></td>
+						<td><p></p></td>
+					</tr>
+	<%			}
+			}
 		}
 	} else {
+
 		String search = request.getParameter("searching");		
 		String option = request.getParameter("userOption");
 		
@@ -156,15 +178,15 @@ p{
 			if(userAdminList != null && userAdminList.size()>0) {
 				for(UserManagementDTO userInfo : userAdminList){
 	%>
-							<tr>
- 								<td><p><a href="userManagerDetail.jsp?userNo=<%=userInfo.getUserNo() %>"><%=userInfo.getUserNo() %></a></p></td>
-								<td><p><%=userInfo.getUserName() %></p></td>
-								<td><p><%=userInfo.getUserID() %></p></td>
- 								<td><p><%=userInfo.getCurrentLendingCnt() %></p></td>
-								<td><p><%=userInfo.getCurrentReservationCnt() %></p></td>
-								<td><p><%=userInfo.getTotalLendingCnt() %></p></td>
-								<td><p><%=userInfo.getOverDueCnt() %></p></td>
-							</tr>
+					<tr>
+ 						<td><p><%=userInfo.getUserNo() %></p></td>
+						<td><p><%=userInfo.getUserName() %></p></td>
+						<td><p><%=userInfo.getUserID() %></p></td>
+						<td><p><%=userInfo.getUserEmail() %></p></td>
+						<td><p><%=userInfo.getUserTel() %></p></td>
+						<td><p><%=userInfo.getUserAddress() %></p></td>
+						<td><p></p></td>
+					</tr>
 	<%
 					}
   				}
@@ -173,31 +195,32 @@ p{
 			if(userAdminList != null && userAdminList.size()>0) {
 				for(UserManagementDTO userInfo : userAdminList){
 	%>
-							<tr>
- 								<td><p><a href="userManagerDetail.jsp?userNo=<%=userInfo.getUserNo() %>"><%=userInfo.getUserNo() %></a></p></td>
-								<td><p><%=userInfo.getUserName() %></p></td>
-								<td><p><%=userInfo.getUserID() %></p></td>
- 								<td><p><%=userInfo.getCurrentLendingCnt() %></p></td>
-								<td><p><%=userInfo.getCurrentReservationCnt() %></p></td>
-								<td><p><%=userInfo.getTotalLendingCnt() %></p></td>
-								<td><p><%=userInfo.getOverDueCnt() %></p></td>
-							</tr>
+					<tr>
+ 						<td><p><%=userInfo.getUserNo() %></p></td>
+						<td><p><%=userInfo.getUserName() %></p></td>
+						<td><p><%=userInfo.getUserID() %></p></td>
+						<td><p><%=userInfo.getUserEmail() %></p></td>
+						<td><p><%=userInfo.getUserTel() %></p></td>
+						<td><p><%=userInfo.getUserAddress() %></p></td>
+						<td><p></p></td>
+					</tr>
 	<%
-					}}
+				}
+			}
 		} else if( option.equals("userNo") ) {
 			userAdminList = userManagementDao.selectAdminUserManagementByUserNo(search);
 			if(userAdminList != null && userAdminList.size()>0) {
 				for(UserManagementDTO userInfo : userAdminList){
 	%>
-							<tr>
- 								<td><p><a href="userManagerDetail.jsp?userNo=<%=userInfo.getUserNo() %>"><%=userInfo.getUserNo() %></a></p></td>
-								<td><p><%=userInfo.getUserName() %></p></td>
-								<td><p><%=userInfo.getUserID() %></p></td>
- 								<td><p><%=userInfo.getCurrentLendingCnt() %></p></td>
-								<td><p><%=userInfo.getCurrentReservationCnt() %></p></td>
-								<td><p><%=userInfo.getTotalLendingCnt() %></p></td>
-								<td><p><%=userInfo.getOverDueCnt() %></p></td>
-							</tr>
+					<tr>
+ 						<td><p><%=userInfo.getUserNo() %></p></td>
+						<td><p><%=userInfo.getUserName() %></p></td>
+						<td><p><%=userInfo.getUserID() %></p></td>
+						<td><p><%=userInfo.getUserEmail() %></p></td>
+						<td><p><%=userInfo.getUserTel() %></p></td>
+						<td><p><%=userInfo.getUserAddress() %></p></td>
+						<td><p></p></td>
+					</tr>
 	<%
 					}
 				}

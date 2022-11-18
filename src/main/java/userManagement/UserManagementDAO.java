@@ -57,7 +57,7 @@ public class UserManagementDAO {
 	
 	public List<UserManagementDTO> selectAdminUserManagement(){
 		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo;";
+	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo";
     
 
     Connection conn = null;
@@ -99,7 +99,7 @@ public class UserManagementDAO {
 	
 	public List<UserManagementDTO> selectAdminUserManagementByUserName(String userName){
 		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userName LIKE '%'||?||'%';";
+	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userName LIKE '%'||?||'%'";
 
     Connection conn = null;
     PreparedStatement psmt = null;
@@ -141,7 +141,7 @@ public class UserManagementDAO {
 	
 	public List<UserManagementDTO> selectAdminUserManagementByUserId(String userId){
 		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userID = ?";
+	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userID LIKE '%'||?||'%'";
 
     Connection conn = null;
     PreparedStatement psmt = null;
@@ -183,7 +183,133 @@ public class UserManagementDAO {
 	
 	public List<UserManagementDTO> selectAdminUserManagementByUserNo(String userNo){
 		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userNo = ?";
+	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userNo LIKE '%'||?||'%'";
+
+    Connection conn = null;
+    PreparedStatement psmt = null;
+    ResultSet rs = null;
+    
+    List<UserManagementDTO> userManagementList = null;
+
+    try {
+       conn = DatabaseUtil.getConnection();
+       psmt = conn.prepareStatement(sqlQuery);
+       psmt.setString(1, userNo);
+       rs = psmt.executeQuery();
+
+       userManagementList = new ArrayList<UserManagementDTO>();
+       
+       while(rs.next()) {
+    	   UserManagementDTO umd = new UserManagementDTO();
+    	   umd.userNo = rs.getString("userNo");
+    	   umd.setUserName(rs.getString("userName"));
+    	   umd.setUserID(rs.getString("userId"));
+    	   umd.setUserEmail(rs.getString("userEmail"));
+    	   umd.setUserTel(rs.getString("userTel"));
+    	   umd.setUserAddress(rs.getString("userAddress"));
+    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+    	   umd.overDueCnt = rs.getInt("overDueCnt");
+
+    	   userManagementList.add(umd);
+         }
+    } catch (Exception e) {
+       e.printStackTrace();
+    } finally {
+       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+    }
+    return userManagementList;
+ }
+	
+	public List<UserManagementDTO> selectAdminUserManagementDetailByUserName(String userName){
+		
+	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userName = ?";
+
+    Connection conn = null;
+    PreparedStatement psmt = null;
+    ResultSet rs = null;
+    
+    List<UserManagementDTO> userManagementList = null;
+
+    try {
+       conn = DatabaseUtil.getConnection();
+       psmt = conn.prepareStatement(sqlQuery);
+       psmt.setString(1, userName);
+       rs = psmt.executeQuery();
+
+       userManagementList = new ArrayList<UserManagementDTO>();
+       
+       while(rs.next()) {
+    	   UserManagementDTO umd = new UserManagementDTO();
+    	   umd.userNo = rs.getString("userNo");
+    	   umd.setUserName(rs.getString("userName"));
+    	   umd.setUserID(rs.getString("userId"));
+    	   umd.setUserEmail(rs.getString("userEmail"));
+    	   umd.setUserTel(rs.getString("userTel"));
+    	   umd.setUserAddress(rs.getString("userAddress"));
+    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+    	   umd.overDueCnt = rs.getInt("overDueCnt");
+
+    	   userManagementList.add(umd);
+         }
+    } catch (Exception e) {
+       e.printStackTrace();
+    } finally {
+       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+    }
+    return userManagementList;
+ }
+	
+	public List<UserManagementDTO> selectAdminUserManagementDetailByUserId(String userId){
+		
+	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userID = ?";
+
+    Connection conn = null;
+    PreparedStatement psmt = null;
+    ResultSet rs = null;
+    
+    List<UserManagementDTO> userManagementList = null;
+
+    try {
+       conn = DatabaseUtil.getConnection();
+       psmt = conn.prepareStatement(sqlQuery);
+       psmt.setString(1, userId);
+       rs = psmt.executeQuery();
+
+       userManagementList = new ArrayList<UserManagementDTO>();
+       
+       while(rs.next()) {
+    	   UserManagementDTO umd = new UserManagementDTO();
+    	   umd.userNo = rs.getString("userNo");
+    	   umd.setUserName(rs.getString("userName"));
+    	   umd.setUserID(rs.getString("userId"));
+    	   umd.setUserEmail(rs.getString("userEmail"));
+    	   umd.setUserTel(rs.getString("userTel"));
+    	   umd.setUserAddress(rs.getString("userAddress"));
+    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+    	   umd.overDueCnt = rs.getInt("overDueCnt");
+
+    	   userManagementList.add(umd);
+         }
+    } catch (Exception e) {
+       e.printStackTrace();
+    } finally {
+       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+    }
+    return userManagementList;
+ }
+	
+	public List<UserManagementDTO> selectAdminUserManagementDetailByUserNo(String userNo){
+		
+	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userNo =?";
 
     Connection conn = null;
     PreparedStatement psmt = null;

@@ -107,9 +107,52 @@ public class BookInfoDAO {
       }
       return BookInfoList;
    }
-   
+
+   public List<BookInfoDTO> selectAdminBookInfo(){
+	   String sqlQuery = "SELECT * FROM book_info bi, (SELECT bookIsbn, count(*) bookLendingStatus FROM book_management WHERE bookLendingAvailability = 'false' GROUP BY bookIsbn) bm WHERE bi.bookIsbn = bm.bookIsbn(+)";
+
+       List<BookInfoDTO> bookInfoList = null;
+       
+       Connection conn = null;
+       PreparedStatement psmt = null;
+       ResultSet rs = null;
+       
+       try {
+          conn = DatabaseUtil.getConnection();
+          psmt = conn.prepareStatement(sqlQuery);
+          rs = psmt.executeQuery();
+          
+          bookInfoList = new ArrayList<BookInfoDTO>();
+          
+          while(rs.next()) {
+          	BookInfoDTO bi = new BookInfoDTO();
+          	bi.rank = rs.getInt("bookRank");
+          	bi.title = rs.getString("bookTitle");
+          	bi.author = rs.getString("bookAuthor");
+          	bi.pubDate = rs.getString("bookPubDate");
+          	bi.description = rs.getString("bookDescription");
+          	bi.isbn = rs.getString("bookIsbn");
+          	bi.cover = rs.getString("bookCover");
+          	bi.categoryName = rs.getString("bookcategoryName");
+          	bi.publisher = rs.getString("bookPublisher");
+          	bi.bookCnt = rs.getInt("bookCnt");
+          	bi.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
+          	bi.bookLendingCnt = rs.getInt("bookLendingStatus");
+          	
+          	bookInfoList.add(bi);
+          }
+       } catch (Exception e) {
+          e.printStackTrace();
+       } finally {
+          try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+          try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+          try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+       }
+       return bookInfoList;
+    }
+
    public List<BookInfoDTO> selectBookInfoByTitle(String title) {
-         String sqlQuery = "SELECT * FROM BOOK_INFO WHERE BOOKTITLE like '%'||?||'%'";
+         String sqlQuery = "SELECT * FROM book_info bi, (SELECT bookIsbn, count(*) bookLendingStatus FROM book_management WHERE bookLendingAvailability = 'false' GROUP BY bookIsbn) bm WHERE bi.bookIsbn = bm.bookIsbn(+) AND bi.BOOKTITLE like '%'||?||'%'";
          
          List<BookInfoDTO> bookInfoList = null;
          
@@ -137,6 +180,8 @@ public class BookInfoDAO {
             	bi.categoryName = rs.getString("bookcategoryName");
             	bi.publisher = rs.getString("bookPublisher");
             	bi.bookCnt = rs.getInt("bookCnt");
+            	bi.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
+            	bi.bookLendingCnt = rs.getInt("bookLendingStatus");
               
             	bookInfoList.add(bi);
             }
@@ -151,7 +196,7 @@ public class BookInfoDAO {
       }
 
    public List<BookInfoDTO> selectBookInfoByAuthor(String author) {
-         String sqlQuery = "SELECT * FROM BOOK_INFO WHERE BOOKAUTHOR like '%'||?||'%'";
+         String sqlQuery = "SELECT * FROM book_info bi, (SELECT bookIsbn, count(*) bookLendingStatus FROM book_management WHERE bookLendingAvailability = 'false' GROUP BY bookIsbn) bm WHERE bi.bookIsbn = bm.bookIsbn(+) AND bi.BOOKAUTHOR like '%'||?||'%'";
          
          List<BookInfoDTO> bookInfoList = null;
          
@@ -179,6 +224,8 @@ public class BookInfoDAO {
             	bi.categoryName = rs.getString("bookcategoryName");
             	bi.publisher = rs.getString("bookPublisher");
             	bi.bookCnt = rs.getInt("bookCnt");
+            	bi.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
+              	bi.bookLendingCnt = rs.getInt("bookLendingStatus");
               
             	bookInfoList.add(bi);
             }
@@ -193,7 +240,7 @@ public class BookInfoDAO {
       }
 
    public List<BookInfoDTO> selectBookInfoByIsbn(String isbn) {
-       String sqlQuery = "SELECT * FROM BOOK_INFO WHERE BOOKISBN=?";
+       String sqlQuery = "SELECT * FROM book_info bi, (SELECT bookIsbn, count(*) bookLendingStatus FROM book_management WHERE bookLendingAvailability = 'false' GROUP BY bookIsbn) bm WHERE bi.bookIsbn = bm.bookIsbn(+) AND bi.bookisbn LIKE '%'||UPPER(?)||'%'";
        
        List<BookInfoDTO> bookInfoList = null;
        
@@ -221,6 +268,8 @@ public class BookInfoDAO {
           	bi.categoryName = rs.getString("bookcategoryName");
           	bi.publisher = rs.getString("bookPublisher");
           	bi.bookCnt = rs.getInt("bookCnt");
+          	bi.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
+          	bi.bookLendingCnt = rs.getInt("bookLendingStatus");
             
           	bookInfoList.add(bi);
           }
@@ -235,7 +284,7 @@ public class BookInfoDAO {
     }
 
    public List<BookInfoDTO> selectAdminBookInfoDetail() {
-       String sqlQuery = "SELECT * FROM book_info bi, book_MANAGEMENT bm WHERE bi.bookisbn = bm.bookisbn";
+       String sqlQuery = "SELECT * FROM book_info bi, (SELECT bookIsbn, count(*) bookLendingStatus FROM book_management WHERE bookLendingAvailability = 'false' GROUP BY bookIsbn) bm WHERE bi.bookIsbn = bm.bookIsbn(+)";
        
        List<BookInfoDTO> bookInfoList = null;
        
@@ -289,7 +338,7 @@ public class BookInfoDAO {
     }
 
    public List<BookInfoDTO> selectAdminBookInfoDetailByIsbn(String isbn) {
-       String sqlQuery = "SELECT * FROM book_info bi, book_MANAGEMENT bm WHERE bi.bookisbn = bm.bookisbn AND bi.bookisbn = ?";
+       String sqlQuery = "SELECT * FROM book_info bi, book_MANAGEMENT bm WHERE bi.bookisbn = bm.bookisbn AND bi.bookisbn LIKE '%'||UPPER(?)||'%'";
        
        List<BookInfoDTO> bookInfoList = null;
        
@@ -384,7 +433,6 @@ public BookInfoDTO selectBookDetail(String title) {
          return bookInfoDTO;
       }
 
-
    public int selectBookTotal() {
 	   String sqlQuery = "SELECT count(*) total FROM BOOK_INFO";
 	   
@@ -412,6 +460,7 @@ public BookInfoDTO selectBookDetail(String title) {
 	   }
 	   return total;
    }
+
    
    public int updateBookTotalLendingCnt(String bookIsbn) {
 	   String sqlQuery = "UPDATE BOOK_INFO "

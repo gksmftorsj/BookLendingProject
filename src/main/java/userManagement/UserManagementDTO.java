@@ -1,12 +1,12 @@
 package userManagement;
 
 public class UserManagementDTO {
-	String userNo;
-	String overDueStatus;
-	int overDueCnt;
-	int currentLendingCnt;
-	int currentReservationCnt;
-	int totalLendingCnt;
+	public String userNo;
+	public String overDueStatus;
+	public int overDueCnt;
+	public int currentLendingCnt;
+	public int currentReservationCnt;
+	public int totalLendingCnt;
 	
 	private String userName;
 	private String userID;

@@ -74,6 +74,66 @@ request.setCharacterEncoding("UTF-8");
             </div>
          </div>
 <!-- 리뷰 Section -->
+		<div class="bar mt-5" style="border-bottom: 1px solid gray; width: 100%;"></div>
+		<div class="reviewSection form-floating" style="width: 100%; height: 100%;">
+			<h5 style="margin: 50px; font-weight: bold;">한 줄 리뷰</h5>
+			<form id="reviewForm" name="reviewForm" class="row g-3" method="post" action="reviewAction.jsp">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-10">
+							<input type="hidden" name="isbn" value="<%=bookIsbn%>">
+							<textarea class="form-control" placeholder="Leave a comment here"
+								id="floatingTextarea2" name="reviewContent"
+								style="display: inline-block; height: 100px">
+								
+							지니북스가 훈훈해지는 댓글 부탁드립니다.
+							<%=userID%>
+							</textarea>
+
+						</div>
+						<div class="col-sm-2">
+							<button type="submit" class="btn btn-outline-secondary"
+								value="페이지 새로 고침">
+								등록
+															<%=
+
+								// if ()
+															%>
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<table class="table" style="position: relative; top: 50px;">
+			<thead>
+				<tr>
+					<th scope="col" style="text-align: center;">book</th>
+					<th scope="col" style="text-align: center;">리뷰</th>
+				</tr>
+			</thead>
+			<tbody>
+
+
+				<%
+				if (selectReviewList != null && selectReviewList.size() > 0) {
+					for (BookReviewDTO srl : selectReviewList) {
+				%>
+				<tr>
+					<td scope="row"><img src=<%=bookInfoDTO.getCover()%>
+						style="width: 100px; height: 100px"></td>
+					<td scope="row"><%=srl.getReviewContent()%></td>
+				</tr>
+				<%
+				}
+				}
+				%>
+			</tbody>
+		</table>
+	</div> --%>
+	<script>
+		window.location.href;
+	</script>
       <div class="bar mt-5" style="border-bottom: 1px solid gray; width: 100%;"></div>
       <div class="reviewSection form-floating" style="width: 100%; height: 100%; ">
          <h5 style="margin: 50px; font-weight: bold;">리뷰 작성</h5>

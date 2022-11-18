@@ -3,11 +3,54 @@ package userInfo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import bookManagement.BookManagementDTO;
+import userManagement.UserManagementDTO;
 import util.DatabaseUtil;
 
 public class UserInfoDAO {
+
+	public List<UserInfoDTO> selectAdminUserInfo(){
+		
+	String sqlQuery = "SELECT * FROM user_info;";
+    
+
+    Connection conn = null;
+    PreparedStatement psmt = null;
+    ResultSet rs = null;
+    
+    List<UserInfoDTO> userInfoList = null;
+
+    try {
+       conn = DatabaseUtil.getConnection();
+       psmt = conn.prepareStatement(sqlQuery);
+       rs = psmt.executeQuery();
+
+       userInfoList = new ArrayList<UserInfoDTO>();
+       
+       while(rs.next()) {
+    	   UserInfoDTO ui = new UserInfoDTO();
+    	   ui.userNo = rs.getString("userNo");
+    	   ui.setUserName(rs.getString("userName"));
+    	   ui.setUserID(rs.getString("userId"));
+    	   ui.setUserEmail(rs.getString("userEmail"));
+    	   ui.setUserTel(rs.getString("userTel"));
+    	   ui.setUserAddress(rs.getString("userAddress"));
+
+    	   userInfoList.add(ui);
+         }
+    } catch (Exception e) {
+       e.printStackTrace();
+    } finally {
+       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+    }
+    return userInfoList;
+ }
+	
 	
 	public String selectUserNo(String userID) {
         String sqlQuery = "SELECT userNo FROM USER_INFO WHERE userId = ?";

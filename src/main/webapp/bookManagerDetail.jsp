@@ -95,6 +95,7 @@ p{
 
 										<input type="text" class="form-control"
 											aria-label="Text input with 2 dropdown buttons"
+											placeholder="검색어를 입력하세요"
 											name="searching" value="" required>
 										<button class="btn btn-outline-secondary" type="submit">검색</button>
 										</label>
@@ -125,18 +126,18 @@ p{
 						</thead>
 						
 						<tbody>
-								<%
+	<%
 		BookManagementDAO bookMdao = new BookManagementDAO();
+		List<BookManagementDTO> bookMlist = null;
+
 		if( request.getParameter("searching") == null){
 			if( request.getParameter("isbn") != null ){
 				String isbn = request.getParameter("isbn");
-				List<BookManagementDTO> bookMlist = bookMdao.selectAdminBookManagementDetailByIsbn(isbn);
-			
+				bookMlist = bookMdao.selectAdminBookManagementDetailByIsbn(isbn);
 	
-						if(bookMlist != null && bookMlist.size()>0) {
-			  				for(BookManagementDTO bmd : bookMlist){
-						%>
-						
+					if(bookMlist != null && bookMlist.size()>0) {
+			  			for(BookManagementDTO bmd : bookMlist){
+	%>
 						<tr>
 								<td><p><%=bmd.getBookNo() %></p></td>
 								<td><p>
@@ -148,24 +149,23 @@ p{
 								<td><p><%=bmd.getPublisher() %></p></td>
 								<td><p>
 								<%if( (bmd.getBookLendingAvailability()).equals("대여중") ) {
-								%> <button type="button" class="btn btn-lg btn-danger" 
-								data-bs-toggle="popover" data-bs-title="대여중" 
+								%> <button type="button" class="btn btn-danger" 
+								data-toggle="popover" data-bs-title="대여중" 
 								data-bs-content="And here's some amazing content.">
 								대여중</button> <% } else {%> 대여가능 <% } %></p></td>
 								<td><p><%=bmd.getBookReservationAvailability() %></p></td>
 							</tr>
 						<%
-			  				}
-						}
-		}}
-	
-		if( request.getParameter("searching") != null ){
-			List<BookManagementDTO> bookMlist = null;
+			  			}
+					}
+			}
+		}
+		if( request.getParameter("searching") != null ) {
+
 			String search = request.getParameter("searching");		
 			String option = request.getParameter("bookOption");
 	
 			if( option.equals("title") ){
-				out.print(search);
 				bookMlist = bookMdao.selectAdminBookManagementDetailByTitle(search);
 					if(bookMlist != null && bookMlist.size()>0) {
 	  				for(BookManagementDTO bmd : bookMlist){
@@ -181,8 +181,8 @@ p{
 								<td><p><%=bmd.getPublisher() %></p></td>
 								<td><p>
 								<%if( (bmd.getBookLendingAvailability()).equals("대여중") ) {
-								%> <button type="button" class="btn btn-lg btn-danger" 
-								data-bs-toggle="popover" data-bs-title="대여중" 
+								%> <button type="button" class="btn btn-danger" 
+								data-toggle="popover" data-bs-title="대여중" 
 								data-bs-content="And here's some amazing content.">
 								대여중</button> <% } else {%> 대여가능 <% } %></p></td>
 								<td><p><%=bmd.getBookReservationAvailability() %></p></td>
@@ -206,8 +206,8 @@ p{
 								<td><p><%=bmd.getPublisher() %></p></td>
 								<td><p>
 								<%if( (bmd.getBookLendingAvailability()).equals("대여중") ) {
-								%> <button type="button" class="btn btn-lg btn-danger" 
-								data-bs-toggle="popover" data-bs-title="대여중" 
+								%> <button type="button" class="btn btn-danger" 
+								data-toggle="popover" data-bs-title="대여중" 
 								data-bs-content="And here's some amazing content.">
 								대여중</button> <% } else {%> 대여가능 <% } %></p></td>
 								<td><p><%=bmd.getBookReservationAvailability() %></p></td>
@@ -231,8 +231,8 @@ p{
 								<td><p><%=bmd.getPublisher() %></p></td>
 								<td><p>
 								<%if( (bmd.getBookLendingAvailability()).equals("대여중") ) {
-								%> <button type="button" class="btn btn-lg btn-danger" 
-								data-bs-toggle="popover" data-bs-title="대여중" 
+								%> <button type="button" class="btn btn-danger" 
+								data-toggle="popover" data-bs-title="대여중" 
 								data-bs-content="And here's some amazing content.">
 								대여중</button> <% } else {%> 대여가능 <% } %></p></td>
 								<td><p><%=bmd.getBookReservationAvailability() %></p></td>
@@ -251,5 +251,15 @@ p{
 			</fieldset>
 		</form>
 	</div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+      $( function () {
+        $( '[data-toggle="popover"]' ).popover()
+      } );
+    </script>
+
 </body>
 </html>
