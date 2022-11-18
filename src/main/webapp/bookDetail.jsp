@@ -5,7 +5,7 @@
 <%@page import="userInfo.UserInfoDAO"%>
 <%@page import="userInfo.UserInfoDTO"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%
 request.setCharacterEncoding("UTF-8");
@@ -18,62 +18,61 @@ request.setCharacterEncoding("UTF-8");
 
 <style type="text/css">
 .reviewTable {
-	position: relative;
-	top: 50px;
+   position: relative;
+   top: 50px;
 }
 </style>
 
 </head>
 <body>
 
-	<%
-	String title = (String) request.getParameter("title");
-	BookInfoDAO bookInfoDAO = new BookInfoDAO();
-	BookInfoDTO bookInfoDTO = bookInfoDAO.selectBookDetail(title);
+   <%
+   String title = (String) request.getParameter("title");
+   BookInfoDAO bookInfoDAO = new BookInfoDAO();
+   BookInfoDTO bookInfoDTO = bookInfoDAO.selectBookDetail(title);
 
-	String userID = null;
-	if (session.getAttribute("userID") != null) {
-		userID = (String) session.getAttribute("userID");
-	}
+   String userID = null;
+   if (session.getAttribute("userID") != null) {
+      userID = (String) session.getAttribute("userID");
+   }
 
-	UserInfoDAO userInfoDAO = new UserInfoDAO();
-	UserInfoDTO userInfoDTO = new UserInfoDTO();
+   UserInfoDAO userInfoDAO = new UserInfoDAO();
+   UserInfoDTO userInfoDTO = new UserInfoDTO();
 
-	String bookIsbn = bookInfoDTO.getIsbn();
-	BookReviewDAO bookReviewDAO = new BookReviewDAO();
-	List<BookReviewDTO> selectReviewList = bookReviewDAO.selectReviewList(bookIsbn);
-	
-	%>
-	<%=bookIsbn %>
-	<%-- <%@ include file="userNavbar.jsp"%>
-	
+   String bookIsbn = bookInfoDTO.getIsbn();
+   BookReviewDAO bookReviewDAO = new BookReviewDAO();
+   List<BookReviewDTO> selectReviewList = bookReviewDAO.selectReviewList(bookIsbn);
+   %>
+
+   <%@ include file="userNavbar.jsp"%>
+
 <!-- 책설명 Section -->
-	<div style="margin: 50px;">
-		<div class="bookTitle text-center">
-			<h2> " <%=bookInfoDTO.getTitle()%> "
-			</h2>
-		</div>
-		<div class="container text-center">
-			<h5 class="writerAndPubilsher"> <%=bookInfoDTO.getAuthor()%> / <%=bookInfoDTO.getPublisher()%></h5>
-		</div>
-		<div class="bar mt-5" style="border-bottom: 1px solid gray; width: 100%;"></div>
-			<div class="imgArray row" style="margin: 80px;">
-				<div class="col">
-					<img src=<%=bookInfoDTO.getCover()%> style="height: 400px; width: 300px; margin-left: 30px; box-shadow: 0 5px 18px -7px rgba(0, 0, 0, 1);"></img>
-				</div>
-				<div class="col">
-					<p>분야 > <%=bookInfoDTO.getCategoryName()%></p>
-					<p style="font-weight: bold;">출간일<%=bookInfoDTO.getPubDate()%></p>
-					<p style="font-weight: bold;">책소개</p>
-					<p><%=bookInfoDTO.getDescription()%></p>
-					<p>대출 가능한 권 수 <%=bookInfoDTO.getBookCnt()%>
-						<button type="button" class="btn btn-outline-secondary">대출하기</button>
-						<button type="button" class="btn btn-outline-secondary">예약하기</button>
-						<button type="button" class="btn btn-outline-secondary" style>찜하기 
-							<img src="https://cdn-icons-png.flaticon.com/512/138/138533.png" style="width: 10px; height: 10px;"></img></button>
-					</p>
-				</div>
-			</div>
+   <div style="margin: 50px;">
+      <div class="bookTitle text-center">
+         <h2> " <%=bookInfoDTO.getTitle()%> "
+         </h2>
+      </div>
+      <div class="container text-center">
+         <h5 class="writerAndPubilsher"> <%=bookInfoDTO.getAuthor()%> / <%=bookInfoDTO.getPublisher()%></h5>
+      </div>
+      <div class="bar mt-5" style="border-bottom: 1px solid gray; width: 100%;"></div>
+         <div class="imgArray row" style="margin: 80px;">
+            <div class="col">
+               <img src=<%=bookInfoDTO.getCover()%> style="height: 400px; width: 300px; margin-left: 30px; box-shadow: 0 5px 18px -7px rgba(0, 0, 0, 1);"></img>
+            </div>
+            <div class="col">
+               <p>분야 > <%=bookInfoDTO.getCategoryName()%></p>
+               <p style="font-weight: bold;">출간일<%=bookInfoDTO.getPubDate()%></p>
+               <p style="font-weight: bold;">책소개</p>
+               <p><%=bookInfoDTO.getDescription()%></p>
+               <p>대출 가능한 권 수 <%=bookInfoDTO.getBookCnt()%>
+                  <button type="button" class="btn btn-outline-secondary">대출하기</button>
+                  <button type="button" class="btn btn-outline-secondary">예약하기</button>
+                  <button type="button" class="btn btn-outline-secondary" style>찜하기 
+                     <img src="https://cdn-icons-png.flaticon.com/512/138/138533.png" style="width: 10px; height: 10px;"></img></button>
+               </p>
+            </div>
+         </div>
 <!-- 리뷰 Section -->
 		<div class="bar mt-5" style="border-bottom: 1px solid gray; width: 100%;"></div>
 		<div class="reviewSection form-floating" style="width: 100%; height: 100%;">
@@ -135,5 +134,54 @@ request.setCharacterEncoding("UTF-8");
 	<script>
 		window.location.href;
 	</script>
+      <div class="bar mt-5" style="border-bottom: 1px solid gray; width: 100%;"></div>
+      <div class="reviewSection form-floating" style="width: 100%; height: 100%; ">
+         <h5 style="margin: 50px; font-weight: bold;">리뷰 작성</h5>
+         <form id="reviewForm" name="reviewForm" class="row g-3" method="post" action="reviewAction.jsp">
+            <div class="container" style="border: 1px solid gray; height:180px; border-radius: 10px; ">
+               <div class="row">
+                  <div class="col-sm-10">
+                     <input type="hidden" name="isbn" value="<%=bookIsbn%>">
+                        <div style="margin: 10px;"><%=userID%></div>
+                        <textarea class="form-control" placeholder="Leave a comment here"
+                           id="floatingTextarea2" name="reviewContent"
+                           style="display: inline-block; height: 100px; margin-left:20px;" maxlength="2048">
+                        </textarea></div>
+                  <div class="col-sm-2" style="margin:auto; margin-bottom:40px;">
+                  <button type="submit" class="btn btn-outline-secondary" value="등록">리뷰등록</button>
+                  </div>
+               </div>
+            </div>
+         </form>
+      </div>
+<!-- 한 줄 리뷰 -->
+      <h5 style="margin: 50px; font-weight: bold;">한 줄 리뷰</h5>
+         <table class="table" style="position: relative;">
+            <thead>
+               <tr>
+                  <th scope="col" style="text-align: center;">별점</th>
+                  <th scope="col" style="text-align: center;">리뷰</th>
+               </tr>
+            </thead>
+            <tbody>
+               <%
+                  if (selectReviewList != null && selectReviewList.size() > 0) {
+                     for (BookReviewDTO srd : selectReviewList) {
+               %>
+               <tr>
+                  <td scope="row"><img src=<%=bookInfoDTO.getCover()%>
+                     style="width: 100px; height: 100px"></td>
+                  <td scope="row"><%=srd.getReviewContent()%></td>
+               </tr>
+               <%
+                  }
+               }
+               %>
+            </tbody>
+         </table>
+   </div>
+   <script>
+      window.location.href;
+   </script>
 </body>
 </html>

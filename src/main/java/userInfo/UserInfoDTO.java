@@ -11,7 +11,7 @@ public class UserInfoDTO {
 	private String userEmailChecked;
 	private String userAddress;
 	private String userTel;
-
+	
 	public UserInfoDTO() {
 		
 	}

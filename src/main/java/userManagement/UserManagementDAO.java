@@ -389,6 +389,89 @@ public class UserManagementDAO {
 		}
 		return result;
 	}
+	
+	public int updateCurrentReservationCntPlus(String userNo) {
+		String sqlQuery = "UPDATE USER_MANAGEMENT "
+				+ "SET currentReservationCnt = currentReservationCnt + 1 "
+				+ "WHERE userNo = ?";
+
+		int result = 0;
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userNo);
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	public int updateCurrentReservationCntMinus(String userNo) {
+		String sqlQuery = "UPDATE USER_MANAGEMENT "
+				+ "SET currentReservationCnt = currentReservationCnt - 1 "
+				+ "WHERE userNo = ?";
+		
+		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userNo);
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
 
 	public int selectCurrentLendingCnt(String userNo) {
 		String sqlQuery = "SELECT currentLendingCnt FROM USER_MANAGEMENT WHERE userNo = ?";
@@ -435,5 +518,52 @@ public class UserManagementDAO {
 			}
 		}
 		return currentLendingCnt;
+	}
+	
+	public int selectCurrentReservationCnt(String userNo) {
+		String sqlQuery = "SELECT currentReservationCnt FROM USER_MANAGEMENT WHERE userNo = ?";
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		int currentReservationCnt = 0;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+
+			psmt.setString(1, userNo);
+
+			rs = psmt.executeQuery();
+
+			if (rs.next()) {
+				currentReservationCnt = rs.getInt("currentReservationCnt");
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return currentReservationCnt;
 	}
 }

@@ -22,14 +22,14 @@ import org.json.simple.parser.ParseException;
 import util.DatabaseUtil;
 
 public class BookInfoDAO {
-   
+
    public void insertBookInfo(BookInfoDTO bi) {
       String sqlQuery = "INSERT INTO BOOK_INFO VALUES(?, ?, ?, ?, ?, ?, ?, SUBSTR(?, 6, INSTR(?, '>', 1, 2)-6), ?, ?, ?)";
 
       Connection conn = null;
       PreparedStatement psmt = null;
       ResultSet rs = null;
-      
+
       try {
          conn = DatabaseUtil.getConnection();
          psmt = conn.prepareStatement(sqlQuery);
@@ -95,7 +95,6 @@ public class BookInfoDAO {
             bi.isbn = rs.getString("bookIsbn");
             bi.publisher = rs.getString("bookPublisher");
             bi.bookCnt = rs.getInt("bookCnt");
-            bi.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
 
             BookInfoList.add(bi);
          }
@@ -313,7 +312,6 @@ public class BookInfoDAO {
             bookInfoDTO.categoryName = rs.getString("bookcategoryName");
             bookInfoDTO.publisher = rs.getString("bookPublisher");
             bookInfoDTO.bookCnt = rs.getInt("bookCnt");
-            bookInfoDTO.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
             bookInfoDTO.bookNo = rs.getString("bookNo");
        	 	if(rs.getString("bookLendingAvailability").equals("false")) {
        	 		bookInfoDTO.bookLendingAvailability = "대여중";
@@ -368,7 +366,6 @@ public class BookInfoDAO {
             bookInfoDTO.categoryName = rs.getString("bookcategoryName");
             bookInfoDTO.publisher = rs.getString("bookPublisher");
             bookInfoDTO.bookCnt = rs.getInt("bookCnt");
-            bookInfoDTO.bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");
             bookInfoDTO.bookNo = rs.getString("bookNo");
        	 	if(rs.getString("bookLendingAvailability").equals("false")) {
        	 		bookInfoDTO.bookLendingAvailability = "대여중";
@@ -464,6 +461,48 @@ public BookInfoDTO selectBookDetail(String title) {
 	   return total;
    }
 
+   
+   public int updateBookTotalLendingCnt(String bookIsbn) {
+	   String sqlQuery = "UPDATE BOOK_INFO "
+			   + "SET bookTotalLendingCnt = bookTotalLendingCnt + 1 "
+			   + "WHERE bookIsbn = ?";
+	   
+	   int result = 0;
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   psmt.setString(1, bookIsbn);
+		   result = psmt.executeUpdate();
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {
+			   if (conn != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+		   try {
+			   if (psmt != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+		   try {
+			   if (rs != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+	   }
+	   return result;
+   }
+   
    public static void main(String[] args) throws java.text.ParseException{
        String book = getBookData();
        JSONParser parser = new JSONParser();

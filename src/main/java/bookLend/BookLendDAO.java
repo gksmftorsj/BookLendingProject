@@ -59,8 +59,6 @@ public class BookLendDAO {
 		return result;
 	}
 
-	
-
 	public List<BookLendDTO> selectAdminBookLendDetailToday() {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate, bl.ExtensionStatus,"
 		      		+ " bl.extensionAvailabilityCnt, br.returnNo, br.reservationNo, br.returnDate,"
@@ -99,7 +97,6 @@ public class BookLendDAO {
 					bl.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 					
 					bl.returnNo = rs.getString("returnNo");
-					bl.reservationNo = rs.getString("reservationNo");
 					bl.returnDate = rs.getTimestamp("returnDate");
 
 					bl.setUserName(rs.getString("userName"));
@@ -258,9 +255,6 @@ public class BookLendDAO {
 			return BookLendList;
 	}
 	
-	
-	
-	
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDate(Timestamp lendDate) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate, bl.ExtensionStatus,"
 		      		+ " bl.extensionAvailabilityCnt, br.returnNo, br.reservationNo, br.returnDate,"
@@ -300,7 +294,6 @@ public class BookLendDAO {
 					bl.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 					
 					bl.returnNo = rs.getString("returnNo");
-					bl.reservationNo = rs.getString("reservationNo");
 					bl.returnDate = rs.getTimestamp("returnDate");
 
 					bl.setUserName(rs.getString("userName"));
@@ -653,38 +646,222 @@ public class BookLendDAO {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			} return BookLendList;
+		}
+
+	public List<BookLendDTO> selectBookLendByLendDateAndLendNo(LocalDateTime localDate, int lendNo) {
+		String sqlQuery = "SELECT * FROM BOOK_LEND WHERE (lendDate=?) AND (lendNo=?)";
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		LocalDateTime date = localDate;
+		java.sql.Timestamp lendDate = java.sql.Timestamp.valueOf(localDate);
+
+		List<BookLendDTO> BookLendList = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setTimestamp(1, lendDate);
+			psmt.setInt(2, lendNo);
+			rs = psmt.executeQuery();
+
+			BookLendList = new ArrayList<BookLendDTO>();
+
+			while (rs.next()) {
+				BookLendDTO bld = new BookLendDTO();
+				bld.lendNo = rs.getString("lendNo");
+				bld.userNo = rs.getString("userNo");
+				bld.bookNo = rs.getString("bookNo");
+				bld.extensionStatus = rs.getString("extensionStatus");
+				bld.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
+
+				BookLendList.add(bld);
 			}
-			return BookLendList;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return BookLendList;
 	}
-	
+
+	public List<BookLendDTO> selectBookLendByLendDateAndUserNo(LocalDateTime localDate, int userNo) {
+		String sqlQuery = "SELECT * FROM BOOK_LEND WHERE (lendDate=?) AND (userNo=?)";
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		LocalDateTime date = localDate;
+		java.sql.Timestamp lendDate = java.sql.Timestamp.valueOf(localDate);
+
+		List<BookLendDTO> BookLendList = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setTimestamp(1, lendDate);
+			psmt.setInt(2, userNo);
+			rs = psmt.executeQuery();
+
+			BookLendList = new ArrayList<BookLendDTO>();
+
+			while (rs.next()) {
+				BookLendDTO bld = new BookLendDTO();
+				bld.lendNo = rs.getString("lendNo");
+				bld.userNo = rs.getString("userNo");
+				bld.bookNo = rs.getString("bookNo");
+				bld.extensionStatus = rs.getString("extensionStatus");
+				bld.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
+
+				BookLendList.add(bld);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return BookLendList;
+	}
+
+	public List<BookLendDTO> selectBookLendByLendDateAndTitle(LocalDateTime localDate, String title) {
+		String sqlQuery = "SELECT * FROM BOOK_LEND WHERE (lendDate=?) AND "
+				+ "(bookNo = (SELECT bookNo FROM  BOOK_MANAGEMENT "
+				+ "WHERE bookIsbn = (SELECT bookIsbn FROM BOOK_INFO WHERE bookTitle like %?%)))";
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		LocalDateTime date = localDate;
+		java.sql.Timestamp lendDate = java.sql.Timestamp.valueOf(localDate);
+
+		List<BookLendDTO> BookLendList = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setTimestamp(1, lendDate);
+			psmt.setString(2, title);
+			rs = psmt.executeQuery();
+
+			BookLendList = new ArrayList<BookLendDTO>();
+
+			while (rs.next()) {
+				BookLendDTO bld = new BookLendDTO();
+				bld.lendNo = rs.getString("lendNo");
+				bld.userNo = rs.getString("userNo");
+				bld.bookNo = rs.getString("bookNo");
+				bld.extensionStatus = rs.getString("extensionStatus");
+				bld.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
+
+				BookLendList.add(bld);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return BookLendList;
+	}
+
 	public String selectUserLendingStatus(String userNo, String isbn) {
-        String sqlQuery = "SELECT * FROM BOOK_LEND WHERE USERNO = ? AND SUBSTR(BOOKNO, 1, 10) = ?";
-        
-        String lendNo = null;
-        
-        Connection conn = null;
-        PreparedStatement psmt = null;
-        ResultSet rs = null;
-        
-        try {
-           conn = DatabaseUtil.getConnection();
-           psmt = conn.prepareStatement(sqlQuery);
-           psmt.setString(1, userNo);
-           psmt.setString(2, isbn);
-           
-           rs = psmt.executeQuery();
-           
-           if(rs.next()) {
-        	   lendNo = rs.getString("lendNo");
-           }
-        } catch (Exception e) {
-           e.printStackTrace();
-        } finally {
-           try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-           try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-           try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-        }
-        return lendNo;
-     }
+		String sqlQuery = "SELECT * FROM BOOK_LEND WHERE USERNO = ? AND SUBSTR(BOOKNO, 1, 10) = ?";
+
+		String lendNo = null;
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userNo);
+			psmt.setString(2, isbn);
+
+			rs = psmt.executeQuery();
+
+			if (rs.next()) {
+				lendNo = rs.getString("lendNo");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return lendNo;
+	}
 
 }

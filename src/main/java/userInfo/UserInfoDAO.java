@@ -120,12 +120,12 @@ public class UserInfoDAO {
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
 					if(rs.getString(1).equals(userPassword)) {
-						return 1; // 占싸깍옙占쏙옙 占쏙옙占쏙옙
+						return 1; 
 					} else {
-						return 0; // 占쏙옙橘占싫� 틀占쏙옙
+						return 0; 
 					}
 				}
-				return -1; // 占쏙옙占싱듸옙 占쏙옙占쏙옙
+				return -1; 
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
