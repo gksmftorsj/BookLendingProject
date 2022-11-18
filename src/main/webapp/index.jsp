@@ -129,18 +129,12 @@ a {
 			</thead>
 			<tbody>
 			
-			
-			
-			
 				<%
 				for (BookInfoDTO bi : bookInfoList) {
 					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(bi.isbn);
 					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, bi.isbn);
 					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, bi.isbn);
 				%>
-				
-
-
 
 				<tr>
 					<th scope="row" class="text-center"><%=bi.rank%></th>
@@ -150,7 +144,6 @@ a {
 					<td><%=bi.author%></td>
 					
 					<td>
-					
 					
 					<% 
 					if(userID == null){
@@ -173,13 +166,12 @@ a {
 							
 							if(bookLendingCnt < 5){
 					%>
-					
 						<button type="button" class="btn btn-primary lendTitle"
 							style="width: 100px;" data-bs-toggle="modal"
 							data-bs-target="#exampleModal"
 							onclick="{
 							localStorage.setItem('isbn', '<%=bi.isbn%>');
-							localStorage.setItem('title', '<%=bi.title%>')}">대여가능</button>
+							localStorage.setItem('title', '<%=bi.title%>');}">대여가능</button>
 						
 						<form id="lendForm" method="post" name="lendForm">
 							<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -204,25 +196,20 @@ a {
 							</div>
 						</form>  
 						
-						
-						
 					<%
 							} else {
 								
 								if(userReservationStatus == null){
 					%>	
 					
-					
-					
 						<button type="button" class="btn btn-warning lendTitle"
 							style="width: 100px;" data-bs-toggle="modal"
 							data-bs-target="#exampleModal1"
-							onclick="{
-							localStorage.setItem('isbn', '<%=bi.isbn%>');
-							localStorage.setItem('title', '<%=bi.title%>')}">예약가능</button>
-						
-						<form id="reservateForm" method="post" name="reservateForm">
-							<div class="modal fade" id="exampleModal1" tabindex="-1"
+							onclick="{ localStorage.setItem('isbn', '<%=bi.isbn%>'); 
+									   localStorage.setItem('title', '<%=bi.title%>');}">예약가능</button> 
+ 						
+ 						<form id="reservateForm" method="post" name="reservateForm"> 
+ 							<div class="modal fade" id="exampleModal1" tabindex="-1" 
 								aria-labelledby="exampleModalLabel1" aria-hidden="true">
 								<div class="modal-dialog">
 									<div class="modal-content">
@@ -244,25 +231,20 @@ a {
 							</div>
 						</form>  
 						
-						
-						
 						<%
 								} else {
 						%>
 						
 						
 						<form action="./reservationCancelAction.jsp?isbn=<%=bi.isbn%>" method="post">
-							<button type="submit" class="btn btn-warning lendTitle" style="width: 100px;">예약취소</button>						
+							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
 						</form>
-						
 						
 						<%
 									}
 								
 								}
-							
-							
-							
+						
 						} else {
 						%>
 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>

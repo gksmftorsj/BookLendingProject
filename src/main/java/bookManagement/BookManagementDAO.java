@@ -170,15 +170,14 @@ public class BookManagementDAO {
 	      return bookNo;
 	   }
 //   리스트로 값 받아줘서 하나씩 들어가도록 하고 값 찾아줘야 하나?
-   public String selectBookReservationFalse(String isbn) {
+   public List<String> selectBookReservationFalse(String isbn) {
 	      String sqlQuery = "SELECT * "
 	            + "FROM BOOK_MANAGEMENT "
 	            + "WHERE BOOKISBN = ? AND "
-	            + "BOOKRESERVATIONAVAILABILITY = 'true' AND "
-	            + "ROWNUM = 1 "
+	            + "BOOKRESERVATIONAVAILABILITY = 'false' "
 	            + "ORDER BY BOOKNO";
-
-	      String bookNo = null;
+	      
+	      List<String> falseReservationList = null;
 
 	      Connection conn = null;
 	      PreparedStatement psmt = null;
@@ -189,9 +188,11 @@ public class BookManagementDAO {
 	         psmt = conn.prepareStatement(sqlQuery);
 	         psmt.setString(1, isbn);
 	         rs = psmt.executeQuery();
-
-	         if (rs.next()) {
-	            bookNo = rs.getString("bookNo");
+	         
+	         falseReservationList = new ArrayList<String>();
+	         
+	         while (rs.next()) {
+	        	 falseReservationList.add(rs.getString("bookNo"));
 	         }
 	      } catch (Exception e) {
 	         e.printStackTrace();
@@ -215,7 +216,7 @@ public class BookManagementDAO {
 	            e.printStackTrace();
 	         }
 	      }
-	      return bookNo;
+	      return falseReservationList;
 	   }
 
    public List<BookManagementDTO> selectAdminBookManagementDetailByIsbn(String isbn) {
@@ -594,8 +595,8 @@ public class BookManagementDAO {
    
    public int updateReservationAvailabilityTrue(String bookNo) {
 	   String sqlQuery = "UPDATE BOOK_MANAGEMENT "
-			   + "SET bookReservationAvailability = 'false' "
-			   + "WHERE bookNo = ?";
+			   + "SET bookReservationAvailability = 'true' "
+			   + "WHERE bookNo = ?";	
 	   
 	   int result = 0;
 	   
