@@ -2,6 +2,7 @@ package userInfo;
 
 public class UserInfoDTO {
 	
+	public String userNo;
 	private String userName;
 	private String userID;
 	private String userPassword;
@@ -15,7 +16,7 @@ public class UserInfoDTO {
 		
 	}
 	
-	public UserInfoDTO(String userName, String userID, String userPassword, String userEmail,
+	public UserInfoDTO( String userName, String userID, String userPassword, String userEmail,
 			String userEmailHash, String userEmailChecked, String userAddress, String userTel) {
 		super();
 		this.userName = userName;
@@ -27,6 +28,29 @@ public class UserInfoDTO {
 		this.userAddress = userAddress;
 		this.userTel = userTel;
 	}
+	
+	public UserInfoDTO(String userNo, String userName, String userID, String userPassword, String userEmail,
+			String userEmailHash, String userEmailChecked, String userAddress, String userTel) {
+		super();
+		this.userNo = userNo;
+		this.userName = userName;
+		this.userID = userID;
+		this.userPassword = userPassword;
+		this.userEmail = userEmail;
+		this.userEmailHash = userEmailHash;
+		this.userEmailChecked = userEmailChecked;
+		this.userAddress = userAddress;
+		this.userTel = userTel;
+	}
+	
+	public String getUserNo() {
+		return userNo;
+	}
+	
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+	
 	public String getUserName() {
 		return userName;
 	}

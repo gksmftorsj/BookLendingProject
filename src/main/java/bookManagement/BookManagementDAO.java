@@ -93,7 +93,7 @@ public class BookManagementDAO {
      }
 	
 	public List<BookManagementDTO> selectAdminBookManagementDetailByIsbn(String isbn) {
-		String sqlQuery = "SELECT * FROM book_info bi, book_MANAGEMENT bm WHERE bi.bookisbn = bm.bookisbn AND bi.bookisbn = ?";
+		String sqlQuery = "SELECT * FROM book_info bi, book_management bm, (SELECT bookIsbn, count(*) bookLendingStatus FROM book_management WHERE bookLendingAvailability = 'false' GROUP BY bookIsbn) bm2 WHERE bi.bookIsbn = bm.bookIsbn AND bm.bookIsbn = bm2.bookIsbn(+) AND bi.bookIsbn LIKE '%'||UPPER(?)||'%'";
 
         List<BookManagementDTO> bookManagementList = null;
 		
@@ -105,6 +105,7 @@ public class BookManagementDAO {
         try {
            conn = DatabaseUtil.getConnection();
            psmt = conn.prepareStatement(sqlQuery);
+           psmt.setString(1, isbn);
            psmt.setString(1, isbn);
            rs = psmt.executeQuery();
 
@@ -132,9 +133,9 @@ public class BookManagementDAO {
           	 	if(rs.getString("bookReservationAvailability").equals("true")) {
           	 		bmd.bookReservationAvailability = "예약가능";
           	 	} else {
-          	 		bmd.bookReservationAvailability = "예약불가";
+          	 		bmd.bookReservationAvailability = "예약중";
           	 	};
-          	 	bmd.bookLendingCnt = rs.getInt("bookLendingCnt");
+              	bmd.bookLendingCnt = rs.getInt("bookLendingStatus");
           	 	
           	 	bookManagementList.add(bmd);
              }
@@ -149,7 +150,7 @@ public class BookManagementDAO {
      }
 
 	public List<BookManagementDTO> selectAdminBookManagementDetailByTitle(String title) {
-		String sqlQuery = "SELECT * FROM book_info bi, book_MANAGEMENT bm WHERE bi.bookisbn = bm.bookisbn AND bi.booktitle LIKE '%'||?||'%'";
+		String sqlQuery = "SELECT * FROM book_info bi, book_management bm, (SELECT bookIsbn, count(*) bookLendingStatus FROM book_management WHERE bookLendingAvailability = 'false' GROUP BY bookIsbn) bm2 WHERE bi.bookIsbn = bm.bookIsbn AND bm.bookIsbn = bm2.bookIsbn(+) AND bi.booktitle LIKE '%'||?||'%'";
 
         Connection conn = null;
         PreparedStatement psmt = null;
@@ -187,9 +188,9 @@ public class BookManagementDAO {
           	 	if(rs.getString("bookReservationAvailability").equals("true")) {
           	 		bmd.bookReservationAvailability = "예약가능";
           	 	} else {
-          	 		bmd.bookReservationAvailability = "예약불가";
+          	 		bmd.bookReservationAvailability = "예약중";
           	 	};
-          	 	bmd.bookLendingCnt = rs.getInt("bookLendingCnt");
+          	 	bmd.bookLendingCnt = rs.getInt("bookLendingStatus");
           	 	
           	 	bookManagementList.add(bmd);
              }
@@ -204,7 +205,7 @@ public class BookManagementDAO {
      }
 
 	public List<BookManagementDTO> selectAdminBookManagementDetailByAuthor(String author) {
-		String sqlQuery = "SELECT * FROM book_info bi, book_MANAGEMENT bm WHERE bi.bookisbn = bm.bookisbn AND bi.bookauthor LIKE '%'||?||'%'";
+		String sqlQuery = "SELECT * FROM book_info bi, book_management bm, (SELECT bookIsbn, count(*) bookLendingStatus FROM book_management WHERE bookLendingAvailability = 'false' GROUP BY bookIsbn) bm2 WHERE bi.bookIsbn = bm.bookIsbn AND bm.bookIsbn = bm2.bookIsbn(+) AND bi.bookauthor LIKE '%'||?||'%'";
         
 
         Connection conn = null;
@@ -243,9 +244,9 @@ public class BookManagementDAO {
           	 	if(rs.getString("bookReservationAvailability").equals("true")) {
           	 		bmd.bookReservationAvailability = "예약가능";
           	 	} else {
-          	 		bmd.bookReservationAvailability = "예약불가";
+          	 		bmd.bookReservationAvailability = "예약중";
           	 	};
-          	 	bmd.bookLendingCnt = rs.getInt("bookLendingCnt");
+          	 	bmd.bookLendingCnt = rs.getInt("bookLendingStatus");
           	 	
           	 	bookManagementList.add(bmd);
              }
@@ -258,6 +259,34 @@ public class BookManagementDAO {
         }
         return bookManagementList;
      }
+	
+	public int selectBookTotalLendingCntByIsbn(String isbn) {
+		String sqlQuery = "SELECT sum(bookLendingCnt) bookTotalLendingCnt FROM book_management WHERE bookIsbn LIKE '%'||?||'%' GROUP BY bookIsbn";
+
+        Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        
+        int bookTotalLendingCnt = 0;
+
+        try {
+           conn = DatabaseUtil.getConnection();
+           psmt = conn.prepareStatement(sqlQuery);
+           psmt.setString(1, isbn);
+           rs = psmt.executeQuery();
+           
+           if(rs.next()) {
+          	 bookTotalLendingCnt = rs.getInt("bookTotalLendingCnt");               
+             }
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+           try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+           try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+        }
+        return bookTotalLendingCnt;
+	}
 	
 	public static void main(String[] args) throws java.text.ParseException{
 	       String book = getBookData();
@@ -314,7 +343,7 @@ public class BookManagementDAO {
         }
         return bookLendingCnt;
      }
-
+		
 		public int updateBookManagementDetail(String bookIsbn) {
 		      String sqlQuery = "UPDATE BOOK_MANAGEMENT "
 		            + "SET booklendingavailability = 'false', bookReservationAvailability= 'false', bookLendingCnt = bookLendingCnt + 1 "

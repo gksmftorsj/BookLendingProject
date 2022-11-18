@@ -42,10 +42,11 @@ request.setCharacterEncoding("UTF-8");
 	String bookIsbn = bookInfoDTO.getIsbn();
 	BookReviewDAO bookReviewDAO = new BookReviewDAO();
 	List<BookReviewDTO> selectReviewList = bookReviewDAO.selectReviewList(bookIsbn);
+	
 	%>
-
-	<%@ include file="userNavbar.jsp"%>
-
+	<%=bookIsbn %>
+	<%-- <%@ include file="userNavbar.jsp"%>
+	
 <!-- 책설명 Section -->
 	<div style="margin: 50px;">
 		<div class="bookTitle text-center">
@@ -95,10 +96,10 @@ request.setCharacterEncoding("UTF-8");
 							<button type="submit" class="btn btn-outline-secondary"
 								value="페이지 새로 고침">
 								등록
-								<%-- 							<%= --%>
+															<%=
 
 								// if ()
-								<%-- 							%> --%>
+															%>
 							</button>
 						</div>
 					</div>
@@ -130,7 +131,7 @@ request.setCharacterEncoding("UTF-8");
 				%>
 			</tbody>
 		</table>
-	</div>
+	</div> --%>
 	<script>
 		window.location.href;
 	</script>

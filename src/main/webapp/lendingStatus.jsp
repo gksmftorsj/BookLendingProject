@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.time.LocalDateTime"%>
+<%@ page import="java.sql.Timestamp"%>
+<%@ page import="bookLend.BookLendDAO" %>
+<%@ page import="bookLend.BookLendDTO" %>
+<% request.setCharacterEncoding("UTF-8"); %>
 
 <!DOCTYPE html>
 <html>
@@ -53,7 +58,17 @@ display: inline;
 </head>
 <body>
 	<%@ include file="adminNavbar.jsp"%>
+
+	<%
+
 	
+	String date = ("2009-03-20"+" 00:00:00.0"); // 형식을 지켜야 함
+	LocalDateTime now = LocalDateTime.now();
+	Timestamp today = Timestamp.valueOf(now);
+	out.print(today);
+	%>
+
+
 	<div class="container">
 		<h2>관리자 페이지</h2>
 		<form name="lendingInfoForm" class="lendingInfoForm" method="post">
@@ -105,10 +120,8 @@ display: inline;
 									<button class="btn btn-outline-secondary dropdown-toggle"
 										type="button" data-bs-toggle="dropdown" aria-expanded="false">대여내역조회</button>
 									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">대여도서명</a></li>
 										<li><a class="dropdown-item" href="#">대여번호</a></li>
 										<li><hr class="dropdown-divider"></li>
-										<li><a class="dropdown-item" href="#">회원명</a></li>
 										<li><a class="dropdown-item" href="#">회원번호</a></li>
 									</ul>
 									<input type="text" class="form-control"
@@ -131,45 +144,45 @@ display: inline;
 								<th scope="col"><p>대여일자</p></th>
 								<th scope="col"><p>대여번호</p></th>
 								<th scope="col"><p>회원명</p></th>
-								<th scope="col"><p>대여목록</p></th>
-								<th scope="col"><p>반납일자</p></th>
+								<th scope="col"><p>도서명</p></th>
+								<th scope="col"><p>반납</p></th>
 								<th scope="col"><p>연장</p></th>
-								<th scope="col"><p>비고(연체정보)</p></th>
+								<th scope="col"><p>비고</p></th>
 							</tr>
 						</thead>
 						<tbody>
-							<%
-							for (int i = 0; i < 5; i++) {
-							%>
-							<tr>
-								<td><p>YYYY-MM-DD</p></td>
-								<td><p>
-										<a href="#">YYMMDDLD0001</a>
-									</p></td>
-								<td><p>
-										회원명<%=i + 1%><a href="#">회원번호<%=i + 1%></a></p>
-										</td>
-								<td><p>
-										대여목록<%=i + 1%></p></td>
-								<td><p>YYYY-MM-DD</p></td>
-								<td><p><%
-										if (i % 6 == 0) {
-										%><a href="#">연장가능</a>
-										<%
-										} else {
-										%>기간만료<%}%>
-										</a>
-									</p></td>
-								<td><p><%
-										if ((i+1)%4 == 0) {
-										%>연체
-										<%
-										} else {
-										%><%}%>
-										</p></td>
-							</tr>
+	<%
+		BookLendDAO bookLendDao = new BookLendDAO();
+		List<BookLendDTO> bookLendList = bookLendDao.selectAdminBookLendDetail();
+			if(bookLendList != null && bookLendList.size()>0) {
+			  	for(BookLendDTO bookLend : bookLendList){
+	%>
+						<tr>
+							<td><p><%=bookLend.getLendDate() %></p></td>
+							<td><p>
+									<a href="#"><%=bookLend.getLendNo() %></a>
+							</p></td>
+							<td><p>
+								<a href="#"><%=bookLend.getUserName() %></a>
+							</p></td>
+							<td><p><%=bookLend.getTitle() %></p></td>
+							<td><p><%=bookLend.getReturnDate() %></p></td>
+							<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
+								%>만료
+								<%} else {%>
+								<a href="#">가능</a>
+								<%}%>
+							</p></td>
+							<td><p><%if (bookLend.getOverDueCnt() != 0) {
+								bookLend.getOverDueCnt(); %>/3<%
+								} else {%>
+								연체없음
+								<%}%>
+							</p></td>
+						</tr>
 							<%
 							}
+					}
 							%>
 						</tbody>
 					</table>
