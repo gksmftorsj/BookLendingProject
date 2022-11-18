@@ -15,12 +15,12 @@
 <body>
 	<%@ include file="userNavbar.jsp"%>
 	<div class="container mt-3" style="max-width: 560px;">
-		<form method="post" action="./userLoginAction.jsp">
+		<form method="post" action="./userPasswordFindAction.jsp">
 			<div class="form-group">
-				<label>비밀번호 찾기</label> <input type="password" name="userPassword"
+				<label>비밀번호 찾기</label> <input type="text" name="userID"
 					class="form-control" placeholder="비밀번호를 찾고자 하는 아이디를 입력해 주세요.">
 			</div>
-			<button type="submit" class="btn btn-secondary mt-3 me-2">다음</button>
+			<button type="submit" class="btn btn-secondary mt-3 me-2">비밀번호 찾기</button>
 		</form>
 	</div>
 

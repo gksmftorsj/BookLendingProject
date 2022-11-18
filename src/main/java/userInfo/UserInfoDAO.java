@@ -142,6 +142,30 @@ public class UserInfoDAO {
 			}
 			return null;
 		}
+		
+		public String getUserId(String userName, String userEmail) {
+			String SQL = "SELECT userId FROM USER_INFO WHERE userName = ? AND userEmail = ?";
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+			try {
+				conn = DatabaseUtil.getConnection();
+				psmt = conn.prepareStatement(SQL);
+				psmt.setString(1, userName);
+				psmt.setString(2, userEmail);
+				rs = psmt.executeQuery();
+				if(rs.next()) {
+					return rs.getString(1);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+				try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+				try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+			}
+			return null;
+		}
 
 		public String getUserEmailChecked(String userID) {
 			String SQL = "SELECT userEmailChecked FROM USER_INFO WHERE userID = ?";
@@ -185,6 +209,69 @@ public class UserInfoDAO {
 				try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
 			}
 			return "false";
+		}
+		
+		public String getRamdomPassword(int len) {
+			  char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7',
+					'8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
+					'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
+					'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+			  int idx = 0;
+			  StringBuffer sb = new StringBuffer();
+			  
+			  System.out.println("charSet.length :::: "+charSet.length);
+			  
+			  for (int i = 0; i < len; i++) {
+				
+				  idx = (int) (charSet.length * Math.random()); // 36 * 생성된 난수를  Int로 추출 (소숫점제거)
+				  System.out.println("idx :::: "+idx);
+				  sb.append(charSet[idx]);
+			  }
+
+			  return sb.toString();
+		}
+		
+		public int updateRandomPassword(String randomPassword, String userID) {
+			String sqlQuery = "UPDATE USER_INFO "
+					+ "SET userPassword = ? "
+					+ "WHERE userID = ?";
+
+			int result = 0;
+
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+
+			try {
+				conn = DatabaseUtil.getConnection();
+				psmt = conn.prepareStatement(sqlQuery);
+				psmt.setString(1, randomPassword);
+				psmt.setString(2, userID);
+				result = psmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (conn != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (psmt != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (rs != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
 		}
 	
 }
