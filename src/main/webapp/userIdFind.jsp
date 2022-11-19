@@ -10,7 +10,7 @@
 <body>
 	<%@ include file="userNavbar.jsp"%>
 	<div class="container mt-3" style="max-width: 560px;">
-		<form method="post" action="./userLoginAction.jsp">
+		<form method="post" action="./userIdFindAction.jsp">
 			<div>아이디 찾기</div>
 			<div class="form-group">
 				<label>이름</label>
@@ -20,7 +20,7 @@
 				<label>이메일</label>
 				<input type="email" name="userEmail" class="form-control" placeholder="이메일을 입력해주세요" required>
 			</div>
-			<button type="submit" class="btn btn-secondary mt-3 me-2">다음</button>
+			<button type="submit" class="btn btn-secondary mt-3 me-2">아이디찾기</button>
 		</form>
 	</div>
 	<footer class="my-3 text-center text-small">

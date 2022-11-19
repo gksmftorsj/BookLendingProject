@@ -20,6 +20,19 @@ a {
 </style>
 <body>
 	<%
+	String sort = null;
+	
+	
+	if(request.getParameter("sort") != null){
+		sort = request.getParameter("sort");
+	}
+	
+	String category = null;
+	
+	if(request.getParameter("category") != null){
+		category = request.getParameter("category");
+	}
+	
 	String viewPage = request.getParameter("viewPage");
 	if (viewPage == null) {
 		viewPage = "1";
@@ -33,9 +46,14 @@ a {
 
 	List<BookInfoDTO> topRankBookInfoList = bookInfoDAO.selectBookInfoByIndex(1, 10);
 	List<BookInfoDTO> bookInfoList = bookInfoDAO.selectBookInfoByIndex(startIndex, endIndex);
+	List<BookInfoDTO> sortRankList = bookInfoDAO.selectBookInfoSortRank(startIndex, endIndex);
+	List<BookInfoDTO> sortLatestList = bookInfoDAO.selectBookInfoSortLatest(startIndex, endIndex);
+	List<BookInfoDTO> sortNameList = bookInfoDAO.selectBookInfoSortName(startIndex, endIndex);
 
 	int total = bookInfoDAO.selectBookTotal();
+	int categoryTotal = bookInfoDAO.selectBookCategoryTotal(category);
 	int endPage = (int) Math.ceil((double) total / 10);
+	int categoryEndPage = (int) Math.ceil((double) categoryTotal / 10);
 	
 	String userID = null;
 	if(session.getAttribute("userID") != null){
@@ -47,6 +65,10 @@ a {
 	BookReservationDAO bookReservationDAO = new BookReservationDAO();
 	UserInfoDAO userInfoDAO = new UserInfoDAO();
 	String userNo = userInfoDAO.selectUserNo(userID);
+	
+	List<BookInfoDTO> categoryList = bookInfoDAO.selectBookInfoByCategoryName(startIndex, endIndex, category);
+	
+	
 	%>
 	<%@ include file="userNavbar.jsp"%>
 	<div id="carouselExampleInterval" class="container carousel slide mt-5"
@@ -80,9 +102,11 @@ a {
 	</div>
 
 	<div class="container sortBook d-flex justify-content-end mt-5">
-		<span class="me-3">랭킹순</span> <span class="me-3">최신순</span> <span
-			class="me-3">이름순</span> <select class="form-select text-center"
-			style="width: 160px;" onchange="selectCategory(this)">
+		<a href="./index.jsp?sort=rank" class="me-3 d-flex align-items-center" style="text-decoration: none; color: black;">랭킹순</a>
+		<a href="./index.jsp?sort=latest" class="me-3 d-flex align-items-center" style="text-decoration: none; color: black;">최신순</a>
+		<a href="./index.jsp?sort=name" class="me-3 d-flex align-items-center" style="text-decoration: none; color: black;">이름순</a>
+		
+		<select class="form-select text-center" style="width: 160px;">
 			<option selected>장르</option>
 			<option value="유아">유아</option>
 			<option value="종교">어린이</option>
@@ -128,7 +152,540 @@ a {
 				</tr>
 			</thead>
 			<tbody>
-			
+				<%
+				if(sort != null && sort.equals("rank")){
+				%>
+				<%
+				for (BookInfoDTO sr : sortRankList) {
+					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(sr.isbn);
+					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, sr.isbn);
+					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, sr.isbn);
+				%>
+
+				<tr>
+					<th scope="row" class="text-center"><%=sr.rank%></th>
+					<td><a class="bookTitle"
+						style="text-decoration: none; color: black;"
+						href="./bookDetail.jsp?title=<%=sr.title%>"><%=sr.title%></a></td>
+					<td><%=sr.author%></td>
+					
+					<td>
+					
+					<% 
+					if(userID == null){
+						if(bookLendingCnt < 5){
+					%>
+					
+						<button type="button" class="btn btn-primary lendBtn lendTitle" style="width: 100px;">대여가능</button> 
+							
+					<% 
+						} else {
+					%>		
+					
+						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+							
+					<%
+						}
+					} else {
+						
+						if(userLendingStatus == null){
+							
+							if(bookLendingCnt < 5){
+					%>
+						<button type="button" class="btn btn-primary lendTitle"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal"
+							onclick="{
+							localStorage.setItem('isbn', '<%=sr.isbn%>');
+							localStorage.setItem('title', '<%=sr.title%>');}">대여가능</button>
+						
+						<form id="lendForm" method="post" name="lendForm">
+							<div class="modal fade" id="exampleModal" tabindex="-1"
+								aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body d-flex justify-content-center">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkLendBtn()">대여하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+						
+					<%
+							} else {
+								
+								if(userReservationStatus == null){
+					%>	
+					
+						<button type="button" class="btn btn-warning lendTitle"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal1"
+							onclick="{ localStorage.setItem('isbn', '<%=sr.isbn%>'); 
+									   localStorage.setItem('title', '<%=sr.title%>');}">예약가능</button> 
+ 						
+ 						<form id="reservateForm" method="post" name="reservateForm"> 
+ 							<div class="modal fade" id="exampleModal1" tabindex="-1" 
+								aria-labelledby="exampleModalLabel1" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel1">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body1 d-flex justify-content-center">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkReservateBtn()">예약하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+						
+						<%
+								} else {
+						%>
+						
+						
+						<form action="./reservationCancelAction.jsp?isbn=<%=sr.isbn%>" method="post">
+							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
+						</form>
+						
+						<%
+									}
+								
+								}
+						
+						} else {
+						%>
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+						<%
+						}
+					}
+						
+						%>						
+					</td>
+				</tr>
+			<%
+				}
+			%>
+				<%	
+				} else if(sort != null && sort.equals("latest")){
+				%>
+				<%
+				for (BookInfoDTO sl : sortLatestList) {
+					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(sl.isbn);
+					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, sl.isbn);
+					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, sl.isbn);
+				%>
+
+				<tr>
+					<th scope="row" class="text-center"><%=sl.rank%></th>
+					<td><a class="bookTitle"
+						style="text-decoration: none; color: black;"
+						href="./bookDetail.jsp?title=<%=sl.title%>"><%=sl.title%></a></td>
+					<td><%=sl.author%></td>
+					
+					<td>
+					
+					<% 
+					if(userID == null){
+						if(bookLendingCnt < 5){
+					%>
+					
+						<button type="button" class="btn btn-primary lendBtn lendTitle" style="width: 100px;">대여가능</button> 
+							
+					<% 
+						} else {
+					%>		
+					
+						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+							
+					<%
+						}
+					} else {
+						
+						if(userLendingStatus == null){
+							
+							if(bookLendingCnt < 5){
+					%>
+						<button type="button" class="btn btn-primary lendTitle"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal"
+							onclick="{
+							localStorage.setItem('isbn', '<%=sl.isbn%>');
+							localStorage.setItem('title', '<%=sl.title%>');}">대여가능</button>
+						
+						<form id="lendForm" method="post" name="lendForm">
+							<div class="modal fade" id="exampleModal" tabindex="-1"
+								aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body d-flex justify-content-center">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkLendBtn()">대여하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+						
+					<%
+							} else {
+								
+								if(userReservationStatus == null){
+					%>	
+					
+						<button type="button" class="btn btn-warning lendTitle"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal1"
+							onclick="{ localStorage.setItem('isbn', '<%=sl.isbn%>'); 
+									   localStorage.setItem('title', '<%=sl.title%>');}">예약가능</button> 
+ 						
+ 						<form id="reservateForm" method="post" name="reservateForm"> 
+ 							<div class="modal fade" id="exampleModal1" tabindex="-1" 
+								aria-labelledby="exampleModalLabel1" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel1">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body1 d-flex justify-content-center">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkReservateBtn()">예약하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+						
+						<%
+								} else {
+						%>
+						
+						
+						<form action="./reservationCancelAction.jsp?isbn=<%=sl.isbn%>" method="post">
+							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
+						</form>
+						
+						<%
+									}
+								
+								}
+						
+						} else {
+						%>
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+						<%
+						}
+					}
+						
+						%>						
+					</td>
+				</tr>
+			<%
+				}
+			%>
+				<%	
+				} else if(sort != null && sort.equals("name")){
+				%>
+				<%
+				for (BookInfoDTO sn : sortNameList) {
+					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(sn.isbn);
+					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, sn.isbn);
+					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, sn.isbn);
+				%>
+
+				<tr>
+					<th scope="row" class="text-center"><%=sn.rank%></th>
+					<td><a class="bookTitle"
+						style="text-decoration: none; color: black;"
+						href="./bookDetail.jsp?title=<%=sn.title%>"><%=sn.title%></a></td>
+					<td><%=sn.author%></td>
+					
+					<td>
+					
+					<% 
+					if(userID == null){
+						if(bookLendingCnt < 5){
+					%>
+					
+						<button type="button" class="btn btn-primary lendBtn lendTitle" style="width: 100px;">대여가능</button> 
+							
+					<% 
+						} else {
+					%>		
+					
+						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+							
+					<%
+						}
+					} else {
+						
+						if(userLendingStatus == null){
+							
+							if(bookLendingCnt < 5){
+					%>
+						<button type="button" class="btn btn-primary lendTitle"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal"
+							onclick="{
+							localStorage.setItem('isbn', '<%=sn.isbn%>');
+							localStorage.setItem('title', '<%=sn.title%>');}">대여가능</button>
+						
+						<form id="lendForm" method="post" name="lendForm">
+							<div class="modal fade" id="exampleModal" tabindex="-1"
+								aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body d-flex justify-content-center">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkLendBtn()">대여하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+						
+					<%
+							} else {
+								
+								if(userReservationStatus == null){
+					%>	
+					
+						<button type="button" class="btn btn-warning lendTitle"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal1"
+							onclick="{ localStorage.setItem('isbn', '<%=sn.isbn%>'); 
+									   localStorage.setItem('title', '<%=sn.title%>');}">예약가능</button> 
+ 						
+ 						<form id="reservateForm" method="post" name="reservateForm"> 
+ 							<div class="modal fade" id="exampleModal1" tabindex="-1" 
+								aria-labelledby="exampleModalLabel1" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel1">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body1 d-flex justify-content-center">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkReservateBtn()">예약하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+						
+						<%
+								} else {
+						%>
+						
+						
+						<form action="./reservationCancelAction.jsp?isbn=<%=sn.isbn%>" method="post">
+							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
+						</form>
+						
+						<%
+									}
+								
+								}
+						
+						} else {
+						%>
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+						<%
+						}
+					}
+						
+						%>						
+					</td>
+				</tr>
+			<%
+				}
+			%>
+				<%	
+				} else if(category != null){
+				%>
+				
+				<%
+				for (BookInfoDTO cl : categoryList) {
+					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(cl.isbn);
+					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, cl.isbn);
+					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, cl.isbn);
+				%>
+				
+				<tr>
+					<th scope="row" class="text-center"><%=cl.rank%></th>
+					<td><a class="bookTitle"
+						style="text-decoration: none; color: black;"
+						href="./bookDetail.jsp?title=<%=cl.title%>"><%=cl.title%></a></td>
+					<td><%=cl.author%></td>
+					
+					<td>
+					
+					<% 
+					if(userID == null){
+						if(bookLendingCnt < 5){
+					%>
+					
+						<button type="button" class="btn btn-primary lendBtn lendTitle" style="width: 100px;">대여가능</button> 
+							
+					<% 
+						} else {
+					%>		
+					
+						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+							
+					<%
+						}
+					} else {
+						
+						if(userLendingStatus == null){
+							
+							if(bookLendingCnt < 5){
+					%>
+						<button type="button" class="btn btn-primary lendTitle"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal"
+							onclick="{
+							localStorage.setItem('isbn', '<%=cl.isbn%>');
+							localStorage.setItem('title', '<%=cl.title%>');}">대여가능</button>
+						
+						<form id="lendForm" method="post" name="lendForm">
+							<div class="modal fade" id="exampleModal" tabindex="-1"
+								aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body d-flex justify-content-center">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkLendBtn()">대여하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+						
+					<%
+							} else {
+								
+								if(userReservationStatus == null){
+					%>	
+					
+						<button type="button" class="btn btn-warning lendTitle"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal1"
+							onclick="{ localStorage.setItem('isbn', '<%=cl.isbn%>'); 
+									   localStorage.setItem('title', '<%=cl.title%>');}">예약가능</button> 
+ 						
+ 						<form id="reservateForm" method="post" name="reservateForm"> 
+ 							<div class="modal fade" id="exampleModal1" tabindex="-1" 
+								aria-labelledby="exampleModalLabel1" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel1">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body1 d-flex justify-content-center">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkReservateBtn()">예약하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+						
+						<%
+								} else {
+						%>
+						
+						
+						<form action="./reservationCancelAction.jsp?isbn=<%=cl.isbn%>" method="post">
+							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
+						</form>
+						
+						<%
+									}
+								
+								}
+						
+						} else {
+						%>
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+						<%
+						}
+					}
+						
+						%>						
+					</td>
+				</tr>
+			<%
+				}
+			%>
+				
+				<%	
+				} else {
+				%>
+				
 				<%
 				for (BookInfoDTO bi : bookInfoList) {
 					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(bi.isbn);
@@ -257,13 +814,114 @@ a {
 				</tr>
 			<%
 				}
+				}
 			%>
 				
 			</tbody>
 
 
 		</table>
-
+		
+		<%
+			if(sort != null && sort.equals("rank")){
+		%>
+		<nav aria-label="Page navigation example"
+			class="d-flex justify-content-center">
+			<ul class="pagination">
+				<li class="page-item"><a class="page-link"
+					href="./index.jsp?viewPage=<%=view_page - 1%>&sort=rank"
+					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+				</a></li>
+				<%
+				for (int i = 1; i <= endPage; i++) {
+				%>
+				<li class="page-item"><a class="page-link"
+					href="./index.jsp?viewPage=<%=i%>&sort=rank"><%=i%></a></li>
+				<%
+				}
+				%>
+				<li class="page-item"><a class="page-link"
+					href="./index.jsp?viewPage=<%=view_page + 1%>&sort=rank" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+				</a></li>
+			</ul>
+		</nav>
+		<%
+			} else if(sort != null && sort.equals("latest")){
+				
+		%>
+		<nav aria-label="Page navigation example"
+			class="d-flex justify-content-center">
+			<ul class="pagination">
+				<li class="page-item"><a class="page-link"
+					href="./index.jsp?viewPage=<%=view_page - 1%>&sort=latest"
+					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+				</a></li>
+				<%
+				for (int i = 1; i <= endPage; i++) {
+				%>
+				<li class="page-item"><a class="page-link"
+					href="./index.jsp?viewPage=<%=i%>&sort=latest"><%=i%></a></li>
+				<%
+				}
+				%>
+				<li class="page-item"><a class="page-link"
+					href="./index.jsp?viewPage=<%=view_page + 1%>&sort=latest" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+				</a></li>
+			</ul>
+		</nav>
+		<%
+			} else if(sort != null && sort.equals("name")){
+		%>
+		<nav aria-label="Page navigation example"
+			class="d-flex justify-content-center">
+			<ul class="pagination">
+				<li class="page-item"><a class="page-link"
+					href="./index.jsp?viewPage=<%=view_page - 1%>&sort=name"
+					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+				</a></li>
+				<%
+				for (int i = 1; i <= endPage; i++) {
+				%>
+				<li class="page-item"><a class="page-link"
+					href="./index.jsp?viewPage=<%=i%>&sort=name"><%=i%></a></li>
+				<%
+				}
+				%>
+				<li class="page-item"><a class="page-link"
+					href="./index.jsp?viewPage=<%=view_page + 1%>&sort=name" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+				</a></li>
+			</ul>
+		</nav>
+		<%		
+			} else if(category != null){
+				%>
+				<nav aria-label="Page navigation example"
+					class="d-flex justify-content-center">
+					<ul class="pagination">
+						<li class="page-item"><a class="page-link"
+							href="./index.jsp?viewPage=<%=view_page - 1%>&category=<%=category%>"
+							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+						</a></li>
+						<%
+						for (int i = 1; i <= categoryEndPage; i++) {
+						%>
+						<li class="page-item"><a class="page-link"
+							href="./index.jsp?viewPage=<%=i%>&category=<%=category%>"><%=i%></a></li>
+						<%
+						}
+						%>
+						<li class="page-item"><a class="page-link"
+							href="./index.jsp?viewPage=<%=view_page + 1%>&category=<%=category%>" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+						</a></li>
+					</ul>
+				</nav>
+				<%		
+					} else {
+		%>
 		<nav aria-label="Page navigation example"
 			class="d-flex justify-content-center">
 			<ul class="pagination">
@@ -285,6 +943,9 @@ a {
 				</a></li>
 			</ul>
 		</nav>
+		<%
+			}
+		%>
 	</div>
 
 
@@ -292,14 +953,22 @@ a {
 		<p class="mb-1">&copy; 2022 지니북스</p>
 	</footer>
 	<script>
+	
+		
 		const slideImg = document.querySelector(".carousel-item");
 		slideImg.classList.add("active");
-
-		function selectCategory(target) {
-			console.log(target.value);
-			location.href = `./index.jsp?category=${target.value}`;
+	
+		const selectForm = document.querySelector(".form-select");
+		
+		if("<%=category%>" != "null"){
+			selectForm.value = "<%=category%>";
 		}
 		
+	      selectForm.addEventListener("change", (e) => {
+	        e.preventDefault();
+			location.href = "./index.jsp?category=" + e.target.value ;
+	      })
+	      
 		const userID = "<%=userID%>";
 		
 		if(userID === "null"){
