@@ -184,7 +184,7 @@ display: inline;
 								%><button type="button" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button><%
 								} else {%>반납완료<%}%>
 							</p></td>
-							<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
+							<td><p><%if (bookLend.getExtensionStatus() == "false") {
 								%>만료
 								<%} else {%>
 								<button type="button" class="btn btn-success extensionBtn extensionTitle" style="width: 100px;">연장가능</button>
@@ -216,7 +216,7 @@ display: inline;
 							%><a href="#">반납가능</a><%
 							} else {%>반납완료<%}%>
 						</p></td>
-						<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
+						<td><p><%if (bookLend.getExtensionStatus() == "false") {
 							%>만료
 							<%} else {%>
 							<a href="#">연장가능</a>
@@ -248,7 +248,7 @@ display: inline;
 							%><a href="#">반납가능</a><%
 							} else {%>반납완료<%}%>
 						</p></td>
-						<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
+						<td><p><%if (bookLend.getExtensionStatus() == "false") {
 							%>만료
 							<%} else {%>
 							<a href="#">연장가능</a>
@@ -283,7 +283,7 @@ display: inline;
 									%><a href="#">반납가능</a><%
 									} else {%>반납완료<%}%>
 								</p></td>
-								<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
+								<td><p><%if (bookLend.getExtensionStatus() == "false") {
 									%>만료
 									<%} else {%>
 									<a href="#">연장가능</a>
@@ -315,7 +315,7 @@ display: inline;
 								%><a href="#">반납가능</a><%
 								} else {%>반납완료<%}%>
 							</p></td>
-							<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
+							<td><p><%if (bookLend.getExtensionStatus() == "false") {
 								%>만료
 								<%} else {%>
 								<a href="#">연장가능</a>
@@ -347,7 +347,7 @@ display: inline;
 								%><a href="#">반납가능</a><%
 								} else {%>반납완료<%}%>
 							</p></td>
-							<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
+							<td><p><%if (bookLend.getExtensionStatus() == "false") {
 								%>만료
 								<%} else {%>
 								<a href="#">연장가능</a>
@@ -383,7 +383,7 @@ display: inline;
 								%><a href="#">반납가능</a><%
 								} else {%>반납완료<%}%>
 						</p></td>
-						<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
+						<td><p><%if (bookLend.getExtensionStatus() == "false") {
 								%>만료
 								<%} else {%>
 								<a href="#">연장가능</a>

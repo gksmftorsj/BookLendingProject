@@ -10,7 +10,6 @@ public class BookLendDTO {
 	public String bookNo;
 	public Timestamp lendDate;
 	public String extensionStatus;
-	public int extensionAvailabilityCnt;
 	public Timestamp expectedReturnDate;
 	public String returnStatus;
 
@@ -36,7 +35,7 @@ public class BookLendDTO {
 
 	
 	public BookLendDTO(String lendNo, String userNo, String bookNo, Timestamp lendDate, String extensionStatus,
-			int extensionAvailabilityCnt, Timestamp expectedReturnDate, String returnStatus, String bookIsbn,
+			Timestamp expectedReturnDate, String returnStatus, String bookIsbn,
 			String title, String userName) {
 		super();
 		this.lendNo = lendNo;
@@ -91,14 +90,6 @@ public class BookLendDTO {
 
 	public void setExtensionStatus(String extensionStatus) {
 		this.extensionStatus = extensionStatus;
-	}
-
-	public int getExtensionAvailabilityCnt() {
-		return extensionAvailabilityCnt;
-	}
-
-	public void setExtensionAvailabilityCnt(int extensionAvailabilityCnt) {
-		this.extensionAvailabilityCnt = extensionAvailabilityCnt;
 	}
 	
 	public String getTitle() {

@@ -29,7 +29,9 @@ public class BookReservationDAO {
 			psmt.setString(1, userNo);
 			psmt.setString(2, bookNo);
 			result = psmt.executeUpdate();
+			
 			return result;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
