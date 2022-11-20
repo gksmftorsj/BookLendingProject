@@ -16,7 +16,7 @@ public class BookLendDAO {
 	public int insertBookLend(BookLendDTO bld) {
 		String sqlQuery = "INSERT INTO BOOK_LEND "
 				+ "VALUES(to_char(sysdate, 'yyyymmdd')||'LDN'||LPAD(LDN_SEQ.NEXTVAL, 4, 0),"
-				+ " ?, ?, sysdate, ?, ?)";
+				+ " ?, ?, sysdate, ?,sysdate + 10, 'false')";
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -31,7 +31,6 @@ public class BookLendDAO {
 			psmt.setString(1, bld.userNo);
 			psmt.setString(2, bld.bookNo);
 			psmt.setString(3, bld.extensionStatus);
-			psmt.setInt(4, bld.extensionAvailabilityCnt);
 			result = psmt.executeUpdate();
 			return result;
 		} catch (Exception e) {
@@ -58,10 +57,51 @@ public class BookLendDAO {
 		}
 		return result;
 	}
+	
+	public int updateExtension(String bookNo) {
+		   String sqlQuery = "UPDATE BOOK_LEND "
+				   + "SET extensionStatus = 'false', expectedReturnDate = expectedReturnDate + 5 "
+				   + "WHERE bookNo = ?";
+		   
+		   int result = 0;
+		   
+		   Connection conn = null;
+		   PreparedStatement psmt = null;
+		   ResultSet rs = null;
+		   
+		   try {
+			   conn = DatabaseUtil.getConnection();
+			   psmt = conn.prepareStatement(sqlQuery);
+			   psmt.setString(1, bookNo);
+			   result = psmt.executeUpdate();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   } finally {
+			   try {
+				   if (conn != null)
+					   conn.close();
+			   } catch (Exception e) {
+				   e.printStackTrace();
+			   }
+			   try {
+				   if (psmt != null)
+					   conn.close();
+			   } catch (Exception e) {
+				   e.printStackTrace();
+			   }
+			   try {
+				   if (rs != null)
+					   conn.close();
+			   } catch (Exception e) {
+				   e.printStackTrace();
+			   }
+		   }
+		   return result;
+	   }
 
 	public List<BookLendDTO> selectAdminBookLendDetailToday() {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate, bl.ExtensionStatus,"
-		      		+ " bl.extensionAvailabilityCnt, br.returnNo, br.reservationNo, br.returnDate,"
+		      		+ " br.returnNo, br.reservationNo, br.returnDate,"
 		      		+ " ui.userName, ui.userTel, ui.userID, ui.userEmail, ui.userAddress, um.userRegistrationDate,"
 		      		+ " um.overDueStatus, um.overDueCnt, um.currentLendingCnt, um.currentReservationCnt,"
 		      		+ " um.totalLendingCnt, bm.bookLendingAvailability, bm.bookReservationAvailability,"
@@ -94,7 +134,6 @@ public class BookLendDAO {
 					bl.bookNo = rs.getString("bookNo");
 					bl.lendDate = rs.getTimestamp("lendDate");
 					bl.extensionStatus = rs.getString("extensionStatus");
-					bl.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 					
 					bl.returnNo = rs.getString("returnNo");
 					bl.returnDate = rs.getTimestamp("returnDate");
@@ -158,7 +197,7 @@ public class BookLendDAO {
 
 	public List<BookLendDTO> selectAdminBookLendDetail() {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate, bl.ExtensionStatus,"
-		      		+ " bl.extensionAvailabilityCnt, br.returnNo, br.reservationNo, br.returnDate,"
+		      		+ " br.returnNo, br.reservationNo, br.returnDate,"
 		      		+ " ui.userName, ui.userTel, ui.userID, ui.userEmail, ui.userAddress, um.userRegistrationDate,"
 		      		+ " um.overDueStatus, um.overDueCnt, um.currentLendingCnt, um.currentReservationCnt,"
 		      		+ " um.totalLendingCnt, bm.bookLendingAvailability, bm.bookReservationAvailability,"
@@ -191,7 +230,6 @@ public class BookLendDAO {
 					bl.bookNo = rs.getString("bookNo");
 					bl.lendDate = rs.getTimestamp("lendDate");
 					bl.extensionStatus = rs.getString("extensionStatus");
-					bl.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 					bl.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					bl.returnStatus = rs.getString("returnStatus");
 					
@@ -257,7 +295,7 @@ public class BookLendDAO {
 	
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDate(Timestamp lendDate) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate, bl.ExtensionStatus,"
-		      		+ " bl.extensionAvailabilityCnt, br.returnNo, br.reservationNo, br.returnDate,"
+		      		+ " br.returnNo, br.reservationNo, br.returnDate,"
 		      		+ " ui.userName, ui.userTel, ui.userID, ui.userEmail, ui.userAddress, um.userRegistrationDate,"
 		      		+ " um.overDueStatus, um.overDueCnt, um.currentLendingCnt, um.currentReservationCnt,"
 		      		+ " um.totalLendingCnt, bm.bookLendingAvailability, bm.bookReservationAvailability,"
@@ -291,7 +329,6 @@ public class BookLendDAO {
 					bl.bookNo = rs.getString("bookNo");
 					bl.lendDate = rs.getTimestamp("lendDate");
 					bl.extensionStatus = rs.getString("extensionStatus");
-					bl.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 					
 					bl.returnNo = rs.getString("returnNo");
 					bl.returnDate = rs.getTimestamp("returnDate");
@@ -355,7 +392,7 @@ public class BookLendDAO {
 
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDateAndLendNo(Timestamp lendDate, String lendNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate, bl.ExtensionStatus,"
-		      		+ " bl.extensionAvailabilityCnt, br.returnNo, br.reservationNo, br.returnDate,"
+		      		+ " br.returnNo, br.reservationNo, br.returnDate,"
 		      		+ " ui.userName, ui.userTel, ui.userID, ui.userEmail, ui.userAddress, um.userRegistrationDate,"
 		      		+ " um.overDueStatus, um.overDueCnt, um.currentLendingCnt, um.currentReservationCnt,"
 		      		+ " um.totalLendingCnt, bm.bookLendingAvailability, bm.bookReservationAvailability,"
@@ -390,7 +427,6 @@ public class BookLendDAO {
 					bl.bookNo = rs.getString("bookNo");
 					bl.lendDate = rs.getTimestamp("lendDate");
 					bl.extensionStatus = rs.getString("extensionStatus");
-					bl.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 					
 					bl.returnNo = rs.getString("returnNo");
 					bl.returnDate = rs.getTimestamp("returnDate");
@@ -454,7 +490,7 @@ public class BookLendDAO {
 
 	public List<BookLendDTO> selectBookAdminLendDetailByLendDateAndUserNo(Timestamp lendDate, String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate, bl.ExtensionStatus,"
-		      		+ " bl.extensionAvailabilityCnt, br.returnNo, br.reservationNo, br.returnDate,"
+		      		+ " br.returnNo, br.reservationNo, br.returnDate,"
 		      		+ " ui.userName, ui.userTel, ui.userID, ui.userEmail, ui.userAddress, um.userRegistrationDate,"
 		      		+ " um.overDueStatus, um.overDueCnt, um.currentLendingCnt, um.currentReservationCnt,"
 		      		+ " um.totalLendingCnt, bm.bookLendingAvailability, bm.bookReservationAvailability,"
@@ -489,7 +525,6 @@ public class BookLendDAO {
 					bl.bookNo = rs.getString("bookNo");
 					bl.lendDate = rs.getTimestamp("lendDate");
 					bl.extensionStatus = rs.getString("extensionStatus");
-					bl.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 					
 					bl.returnNo = rs.getString("returnNo");
 					bl.returnDate = rs.getTimestamp("returnDate");
@@ -553,7 +588,7 @@ public class BookLendDAO {
 
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDateAndTitle(Timestamp lendDate, String title) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate, bl.ExtensionStatus,"
-		      		+ " bl.extensionAvailabilityCnt, br.returnNo, br.reservationNo, br.returnDate,"
+		      		+ " br.returnNo, br.reservationNo, br.returnDate,"
 		      		+ " ui.userName, ui.userTel, ui.userID, ui.userEmail, ui.userAddress, um.userRegistrationDate,"
 		      		+ " um.overDueStatus, um.overDueCnt, um.currentLendingCnt, um.currentReservationCnt,"
 		      		+ " um.totalLendingCnt, bm.bookLendingAvailability, bm.bookReservationAvailability,"
@@ -588,7 +623,6 @@ public class BookLendDAO {
 					bl.bookNo = rs.getString("bookNo");
 					bl.lendDate = rs.getTimestamp("lendDate");
 					bl.extensionStatus = rs.getString("extensionStatus");
-					bl.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 					
 					bl.returnNo = rs.getString("returnNo");
 					bl.returnDate = rs.getTimestamp("returnDate");
@@ -675,7 +709,6 @@ public class BookLendDAO {
 				bld.userNo = rs.getString("userNo");
 				bld.bookNo = rs.getString("bookNo");
 				bld.extensionStatus = rs.getString("extensionStatus");
-				bld.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 
 				BookLendList.add(bld);
 			}
@@ -731,7 +764,6 @@ public class BookLendDAO {
 				bld.userNo = rs.getString("userNo");
 				bld.bookNo = rs.getString("bookNo");
 				bld.extensionStatus = rs.getString("extensionStatus");
-				bld.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 
 				BookLendList.add(bld);
 			}
@@ -789,7 +821,6 @@ public class BookLendDAO {
 				bld.userNo = rs.getString("userNo");
 				bld.bookNo = rs.getString("bookNo");
 				bld.extensionStatus = rs.getString("extensionStatus");
-				bld.extensionAvailabilityCnt = rs.getInt("extensionAvailabilityCnt");
 
 				BookLendList.add(bld);
 			}
@@ -819,15 +850,16 @@ public class BookLendDAO {
 		return BookLendList;
 	}
 
-	public String selectUserLendingStatus(String userNo, String isbn) {
+	public BookLendDTO selectUserLendingData(String userNo, String isbn) {
 		String sqlQuery = "SELECT * FROM BOOK_LEND WHERE USERNO = ? AND SUBSTR(BOOKNO, 1, 10) = ?";
 
-		String lendNo = null;
+		BookLendDTO bookLendDTO = null;
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
+		
 		try {
 			conn = DatabaseUtil.getConnection();
 			psmt = conn.prepareStatement(sqlQuery);
@@ -835,9 +867,63 @@ public class BookLendDAO {
 			psmt.setString(2, isbn);
 
 			rs = psmt.executeQuery();
+			
+			bookLendDTO = new BookLendDTO();
 
 			if (rs.next()) {
-				lendNo = rs.getString("lendNo");
+				
+				bookLendDTO.setLendNo(rs.getString("lendNo"));
+				bookLendDTO.setUserNo(rs.getString("userNo"));
+				bookLendDTO.setBookNo(rs.getString("bookNo"));
+				bookLendDTO.setLendDate(rs.getTimestamp("lendDate"));
+				bookLendDTO.setExtensionStatus(rs.getString("extensionStatus"));
+				bookLendDTO.setExpectedReturnDate(rs.getTimestamp("expectedReturnDate"));
+				bookLendDTO.setReturnStatus(rs.getString("returnStatus"));
+			}
+		} catch (Exception  e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return bookLendDTO;
+	}
+	
+	public String selectBookNo(String userNo, String isbn) {
+		String sqlQuery = "SELECT * FROM BOOK_LEND WHERE USERNO = ? AND SUBSTR(BOOKNO, 1, 10) = ?";
+		
+		String bookNo = null;
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userNo);
+			psmt.setString(2, isbn);
+			
+			rs = psmt.executeQuery();
+			
+			if (rs.next()) {
+				bookNo = rs.getString("bookNo");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -861,7 +947,7 @@ public class BookLendDAO {
 				e.printStackTrace();
 			}
 		}
-		return lendNo;
+		return bookNo;
 	}
 
 }

@@ -9,7 +9,6 @@ public class BookLendDTO {
 	public String bookNo;
 	public Timestamp lendDate;
 	public String extensionStatus;
-	public int extensionAvailabilityCnt;
 
 	public Timestamp expectedReturnDate;
 	public String returnStatus;
@@ -55,20 +54,17 @@ public class BookLendDTO {
 	public BookLendDTO() {
 	}
 	
-	public BookLendDTO(String lendNo, String userNo, String bookNo, Timestamp lendDate, String extensionStatus,
-			int extensionAvailabilityCnt) {
+	public BookLendDTO(String lendNo, String userNo, String bookNo, Timestamp lendDate, String extensionStatus) {
 		super();
 		this.lendNo = lendNo;
 		this.userNo = userNo;
 		this.bookNo = bookNo;
 		this.lendDate = lendDate;
 		this.extensionStatus = extensionStatus;
-		this.extensionAvailabilityCnt = extensionAvailabilityCnt;
 	}
 
 	
-	public BookLendDTO(String lendNo, String userNo, String bookNo, Timestamp lendDate, String extensionStatus,
-			int extensionAvailabilityCnt, Timestamp expectedReturnDate, String returnStatus, String returnNo,
+	public BookLendDTO(String lendNo, String userNo, String bookNo, Timestamp lendDate, String extensionStatus, Timestamp expectedReturnDate, String returnStatus, String returnNo,
 			Timestamp returnDate, String bookLendingAvailability, String bookReservationAvailability,
 			int bookLendingCnt, String bookIsbn, int rank, String title, String author, String pubDate,
 			String description, String isbn, String cover, String categoryName, String publisher, int bookCnt,
@@ -82,7 +78,6 @@ public class BookLendDTO {
 		this.bookNo = bookNo;
 		this.lendDate = lendDate;
 		this.extensionStatus = extensionStatus;
-		this.extensionAvailabilityCnt = extensionAvailabilityCnt;
 		this.expectedReturnDate = expectedReturnDate;
 		this.returnStatus = returnStatus;
 		this.returnNo = returnNo;
@@ -162,14 +157,6 @@ public class BookLendDTO {
 		this.extensionStatus = extensionStatus;
 	}
 
-	public int getExtensionAvailabilityCnt() {
-		return extensionAvailabilityCnt;
-	}
-
-	public void setExtensionAvailabilityCnt(int extensionAvailabilityCnt) {
-		this.extensionAvailabilityCnt = extensionAvailabilityCnt;
-	}
-	
 	public String getReturnNo() {
 		return returnNo;
 	}

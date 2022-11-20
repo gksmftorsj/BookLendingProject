@@ -347,7 +347,7 @@ public class BookManagementDAO {
 	            
 	            String bookNo = null;
 	            String bookLendingAvailability = "true";
-	            String bookReservationAvailability = "false";
+	            String bookReservationAvailability = "true";
 	            int bookLendingCnt = 0;
 	            String isbn = (String) itemObj.get("isbn");
 	            
@@ -421,7 +421,6 @@ public class BookManagementDAO {
 		         return result;
 		   }
 	   
-//   리스트로 값 받아줘서 하나씩 들어가도록 하고 값 찾아줘야 하나?
    public List<String> selectBookReservationFalse(String isbn) {
 	      String sqlQuery = "SELECT * "
 	            + "FROM BOOK_MANAGEMENT "

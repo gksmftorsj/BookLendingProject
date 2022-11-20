@@ -24,6 +24,9 @@
 			<button type="submit" class="btn btn-secondary mt-3 me-2">비밀번호 찾기</button>
 		</form>
 	</div>
+	<footer class="my-3 text-center text-small">
+		<p class="mb-1">&copy; 2022 지니북스</p>
+	</footer>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"

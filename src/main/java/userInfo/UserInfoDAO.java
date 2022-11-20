@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import bookLend.BookLendDTO;
 import bookManagement.BookManagementDTO;
 import userManagement.UserManagementDTO;
 import util.DatabaseUtil;
@@ -291,6 +292,265 @@ public class UserInfoDAO {
 				psmt = conn.prepareStatement(sqlQuery);
 				psmt.setString(1, randomPassword);
 				psmt.setString(2, userID);
+				result = psmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (conn != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (psmt != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (rs != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}
+		
+		public UserInfoDTO selectUserInfoByUserID(String userID) {
+			String sqlQuery = "SELECT * FROM USER_INFO WHERE userId = ?";
+
+			UserInfoDTO userInfoDTO = null;
+
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+
+			
+			try {
+				conn = DatabaseUtil.getConnection();
+				psmt = conn.prepareStatement(sqlQuery);
+				psmt.setString(1, userID);
+
+				rs = psmt.executeQuery();
+				
+				userInfoDTO = new UserInfoDTO();
+
+				if (rs.next()) {
+					
+					userInfoDTO.setUserName(rs.getString("userName"));
+					userInfoDTO.setUserPassword(rs.getString("userPassword"));
+					userInfoDTO.setUserEmail(rs.getString("userEmail"));
+					userInfoDTO.setUserAddress(rs.getString("userAddress"));
+					userInfoDTO.setUserTel(rs.getString("userTel"));
+				}
+			} catch (Exception  e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (conn != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (psmt != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (rs != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return userInfoDTO;
+		}
+		
+		public int updateUserName(String userName, String userID) {
+			String sqlQuery = "UPDATE USER_INFO "
+					+ "SET userName = ? "
+					+ "WHERE userID = ?";
+
+			int result = 0;
+
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+
+			try {
+				conn = DatabaseUtil.getConnection();
+				psmt = conn.prepareStatement(sqlQuery);
+				psmt.setString(1, userName);
+				psmt.setString(2, userID);
+				result = psmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (conn != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (psmt != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (rs != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}
+		public int updateUserEmail(String userEmail, String userID) {
+			String sqlQuery = "UPDATE USER_INFO "
+					+ "SET userEmail = ? "
+					+ "WHERE userID = ?";
+
+			int result = 0;
+
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+
+			try {
+				conn = DatabaseUtil.getConnection();
+				psmt = conn.prepareStatement(sqlQuery);
+				psmt.setString(1, userEmail);
+				psmt.setString(2, userID);
+				result = psmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (conn != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (psmt != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (rs != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}
+		public int updateUserAddress(String userAddress, String userID) {
+			String sqlQuery = "UPDATE USER_INFO "
+					+ "SET userAddress = ? "
+					+ "WHERE userID = ?";
+
+			int result = 0;
+
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+
+			try {
+				conn = DatabaseUtil.getConnection();
+				psmt = conn.prepareStatement(sqlQuery);
+				psmt.setString(1, userAddress);
+				psmt.setString(2, userID);
+				result = psmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (conn != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (psmt != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (rs != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}
+		public int updateUserTel(String userTel, String userID) {
+			String sqlQuery = "UPDATE USER_INFO "
+					+ "SET userTel = ? "
+					+ "WHERE userID = ?";
+			
+			int result = 0;
+			
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+			
+			try {
+				conn = DatabaseUtil.getConnection();
+				psmt = conn.prepareStatement(sqlQuery);
+				psmt.setString(1, userTel);
+				psmt.setString(2, userID);
+				result = psmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (conn != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (psmt != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					if (rs != null)
+						conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}
+		public int updateUserPassword(String userCurrentPassword, String userModifyPassword, String userID) {
+			String sqlQuery = "UPDATE USER_INFO "
+					+ "SET userPassword = ? "
+					+ "WHERE userPassword = ? AND userID = ?";
+			
+			int result = 0;
+			
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+			
+			try {
+				conn = DatabaseUtil.getConnection();
+				psmt = conn.prepareStatement(sqlQuery);
+				psmt.setString(1, userModifyPassword);
+				psmt.setString(2, userCurrentPassword);
+				psmt.setString(3, userID);
 				result = psmt.executeUpdate();
 			} catch (Exception e) {
 				e.printStackTrace();
