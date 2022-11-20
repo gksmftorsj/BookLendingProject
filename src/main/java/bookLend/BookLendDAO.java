@@ -31,6 +31,7 @@ public class BookLendDAO {
 			psmt.setString(1, bld.userNo);
 			psmt.setString(2, bld.bookNo);
 			psmt.setString(3, bld.extensionStatus);
+			psmt.setInt(4, bld.extensionAvailabilityCnt);
 			result = psmt.executeUpdate();
 			return result;
 		} catch (Exception e) {
