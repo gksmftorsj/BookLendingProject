@@ -512,7 +512,7 @@ public class BookManagementDAO {
 	   } 
 	   return result;
    }
-   
+
    public int updateReservationAvailabilityTrue(String bookNo) {
 	   String sqlQuery = "UPDATE BOOK_MANAGEMENT "
 			   + "SET bookReservationAvailability = 'true' "
