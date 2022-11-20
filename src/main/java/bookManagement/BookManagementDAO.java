@@ -87,9 +87,10 @@ public class BookManagementDAO {
 	         psmt = conn.prepareStatement(sqlQuery);
 	         psmt.setString(1, isbn);
 	         rs = psmt.executeQuery();
-
+	         System.out.println("여기들어옴");
 	         if (rs.next()) {
 	            bookNo = rs.getString("bookNo");
+	            System.out.println(bookNo);
 	         }
 	      } catch (Exception e) {
 	         e.printStackTrace();

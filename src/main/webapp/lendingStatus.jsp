@@ -167,7 +167,7 @@ display: inline;
 							</p></td>
 							<td><p><%=bookLend.getTitle() %></p></td>
 							<td><p><%=bookLend.getReturnDate() %></p></td>
-							<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
+							<td><p><%if (bookLend.getExtensionStatus() == "false") {
 								%>만료
 								<%} else {%>
 								<a href="#">가능</a>

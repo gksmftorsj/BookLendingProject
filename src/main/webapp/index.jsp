@@ -183,7 +183,7 @@ a {
 						} else {
 					%>		
 					
-						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+						<button type="button" class="btn btn-info lendBtn lendTitle" style="width: 100px;">예약가능</button> 
 							
 					<%
 						}
@@ -229,7 +229,7 @@ a {
 								if(userReservationStatus == null){
 					%>	
 					
-						<button type="button" class="btn btn-warning lendTitle"
+						<button type="button" class="btn btn-info lendTitle"
 							style="width: 100px;" data-bs-toggle="modal"
 							data-bs-target="#exampleModal1"
 							onclick="{ localStorage.setItem('isbn', '<%=sr.isbn%>'); 
@@ -264,7 +264,7 @@ a {
 						
 						
 						<form action="./reservationCancelAction.jsp?isbn=<%=sr.isbn%>" method="post">
-							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
+							<button type="submit" class="btn btn-warning lendTitle" style="width: 100px;">예약취소</button>						
 						</form>
 						
 						<%
@@ -274,12 +274,7 @@ a {
 						
 						} else {
 						%>
-<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-						  대여중
-						</button>
-						
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						<button type="button" class="btn btn-success lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
 						onclick="{ localStorage.setItem('isbn', '<%=sr.isbn%>');
 								localStorage.setItem('title', '<%=sr.title%>');
 								localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
@@ -346,7 +341,7 @@ a {
 						} else {
 					%>		
 					
-						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+						<button type="button" class="btn btn-info lendBtn lendTitle" style="width: 100px;">예약가능</button> 
 							
 					<%
 						}
@@ -393,7 +388,7 @@ a {
 								if(userReservationStatus == null){
 					%>	
 					
-						<button type="button" class="btn btn-warning lendTitle"
+						<button type="button" class="btn btn-info lendTitle"
 							style="width: 100px;" data-bs-toggle="modal"
 							data-bs-target="#exampleModal1"
 							onclick="{ localStorage.setItem('isbn', '<%=sl.isbn%>'); 
@@ -428,7 +423,7 @@ a {
 						
 						
 						<form action="./reservationCancelAction.jsp?isbn=<%=sl.isbn%>" method="post">
-							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
+							<button type="submit" class="btn btn-warning lendTitle" style="width: 100px;">예약취소</button>						
 						</form>
 						
 						<%
@@ -438,12 +433,7 @@ a {
 						
 						} else {
 						%>
-<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-						  대여중
-						</button>
-						
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						<button type="button" class="btn btn-success lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
 						onclick="{ localStorage.setItem('isbn', '<%=sl.isbn%>');
 								localStorage.setItem('title', '<%=sl.title%>');
 								localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
@@ -510,7 +500,7 @@ a {
 						} else {
 					%>		
 					
-						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+						<button type="button" class="btn btn-info lendBtn lendTitle" style="width: 100px;">예약가능</button> 
 							
 					<%
 						}
@@ -556,7 +546,7 @@ a {
 								if(userReservationStatus == null){
 					%>	
 					
-						<button type="button" class="btn btn-warning lendTitle"
+						<button type="button" class="btn btn-info lendTitle"
 							style="width: 100px;" data-bs-toggle="modal"
 							data-bs-target="#exampleModal1"
 							onclick="{ localStorage.setItem('isbn', '<%=sn.isbn%>'); 
@@ -591,7 +581,7 @@ a {
 						
 						
 						<form action="./reservationCancelAction.jsp?isbn=<%=sn.isbn%>" method="post">
-							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
+							<button type="submit" class="btn btn-warning lendTitle" style="width: 100px;">예약취소</button>						
 						</form>
 						
 						<%
@@ -601,12 +591,7 @@ a {
 						
 						} else {
 						%>
-<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-						  대여중
-						</button>
-						
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						<button type="button" class="btn btn-success lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
 						onclick="{ localStorage.setItem('isbn', '<%=sn.isbn%>');
 								localStorage.setItem('title', '<%=sn.title%>');
 								localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
@@ -674,7 +659,7 @@ a {
 						} else {
 					%>		
 					
-						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+						<button type="button" class="btn btn-info lendBtn lendTitle" style="width: 100px;">예약가능</button> 
 							
 					<%
 						}
@@ -720,7 +705,7 @@ a {
 								if(userReservationStatus == null){
 					%>	
 					
-						<button type="button" class="btn btn-warning lendTitle"
+						<button type="button" class="btn btn-info lendTitle"
 							style="width: 100px;" data-bs-toggle="modal"
 							data-bs-target="#exampleModal1"
 							onclick="{ localStorage.setItem('isbn', '<%=cl.isbn%>'); 
@@ -755,7 +740,7 @@ a {
 						
 						
 						<form action="./reservationCancelAction.jsp?isbn=<%=cl.isbn%>" method="post">
-							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
+							<button type="submit" class="btn btn-warning lendTitle" style="width: 100px;">예약취소</button>						
 						</form>
 						
 						<%
@@ -765,12 +750,7 @@ a {
 						
 						} else {
 						%>
-<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-						  대여중
-						</button>
-						
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						<button type="button" class="btn btn-success lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
 						onclick="{ localStorage.setItem('isbn', '<%=cl.isbn%>');
 								localStorage.setItem('title', '<%=cl.title%>');
 								localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
@@ -839,7 +819,7 @@ a {
 						} else {
 					%>		
 					
-						<button type="button" class="btn btn-warning lendBtn lendTitle" style="width: 100px;">예약가능</button> 
+						<button type="button" class="btn btn-info lendBtn lendTitle" style="width: 100px;">예약가능</button> 
 							
 					<%
 						}
@@ -885,7 +865,7 @@ a {
 								if(userReservationStatus == null){
 					%>	
 					
-						<button type="button" class="btn btn-warning lendTitle"
+						<button type="button" class="btn btn-info lendTitle"
 							style="width: 100px;" data-bs-toggle="modal"
 							data-bs-target="#exampleModal1"
 							onclick="{ localStorage.setItem('isbn', '<%=bi.isbn%>'); 
@@ -920,7 +900,7 @@ a {
 						
 						
 						<form action="./reservationCancelAction.jsp?isbn=<%=bi.isbn%>" method="post">
-							<button type="submit" class="btn btn-success lendTitle" style="width: 100px;">예약취소</button>						
+							<button type="submit" class="btn btn-warning lendTitle" style="width: 100px;">예약취소</button>						
 						</form>
 						
 						<%
@@ -930,9 +910,7 @@ a {
 						
 						} else {
 						%>
-<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
-						<!-- Button trigger modal -->
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						<button type="button" class="btn btn-success lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
 						onclick="{ localStorage.setItem('isbn', '<%=bi.isbn%>');
 							localStorage.setItem('title', '<%=bi.title%>');
 							localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
@@ -1111,7 +1089,7 @@ a {
 		
 		const slideImg = document.querySelector(".carousel-item");
 		slideImg.classList.add("active");
-	
+		
 		const selectForm = document.querySelector(".form-select");
 		
 		if("<%=category%>" != "null"){
@@ -1122,7 +1100,7 @@ a {
 	        e.preventDefault();
 			location.href = "./index.jsp?category=" + e.target.value ;
 	      })
-	      
+	    
 		const userID = "<%=userID%>";
 		
 		if(userID === "null"){
@@ -1138,23 +1116,30 @@ a {
 	    const lendBody = document.querySelector(".lend-body");
 	    const reservateBody = document.querySelector(".reservate-body");
 	    const extensionBody = document.querySelector(".extension-body");
-	    const extensionBtn = document.querySelector(".extensionBtn");
+		const extensionBtn = document.querySelector(".extensionBtn");
 	    for (let i = 0; i <<%=bookInfoList.size()%>; i++) {
 	        lendTitle[i].addEventListener("click", () => {
 	          const title = localStorage.getItem("title");
 	          const lendDate = localStorage.getItem("lendDate");
+	          lendBody.innerHTML = title;
 	          const extensionStatus = localStorage.getItem("extensionStatus");
 	          const expectedReturnDate = localStorage.getItem("expectedReturnDate");
 	          let extensionCnt = 0;
-	          if(extensionStatus === "true"){
-	        	  extensionBtn.setAttribute("style", "display: inline");
-	        	  extensionCnt = 1;
-	          } else{
-	        	  extensionBtn.setAttribute("style", "display: none");
+	          if(extensionStatus !== null){
+		          if(extensionStatus === "true"){
+		        	  extensionBtn.setAttribute("style", "display: inline");
+		        	  extensionCnt = 1;
+					  extensionBody.innerHTML = title + "<br>반납예정일은 " + expectedReturnDate + "까지입니다." + "<br>현재 연장 가능 횟수는 " + extensionCnt +"회입니다.";
+		          } else {
+		        	  extensionBtn.setAttribute("style", "display: none");
+					  extensionBody.innerHTML = title + "<br>반납예정일은 " + expectedReturnDate + "까지입니다." + "<br>현재 연장 가능 횟수는 " + extensionCnt +"회입니다.";
+		          }
 	          }
-	          lendBody.innerHTML = title;
 	          reservateBody.innerHTML = title;
-			  extensionBody.innerHTML = title + "<br>반납예정일은 " + expectedReturnDate + "까지입니다." + "<br>현재 연장 가능 횟수는 " + extensionCnt +"회입니다.";
+	          localStorage.removeItem("title");
+	          localStorage.removeItem("lendDate");
+	          localStorage.removeItem("extensionStatus");
+	          localStorage.removeItem("expectedReturnDate");
 	        })
 	      }
 		
