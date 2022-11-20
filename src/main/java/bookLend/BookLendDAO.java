@@ -99,6 +99,75 @@ public class BookLendDAO {
 		   return result;
 	   }
 
+	
+	public List<BookLendDTO> selectAdminNotReturnBookLendDetailByUserNo(String userNo) {
+	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
+		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
+		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
+		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
+		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
+		      		+ " WHERE bl.bookNo = bm.bookNo AND bl.userNo = ui.userNo AND bm.bookIsbn = bi.bookIsbn"
+		      		+ " AND bl.returnStatus = 'false' AND bl.userNo LIKE '%'||?||'%' ORDER BY lendNo DESC";
+
+					Connection conn = null;
+					PreparedStatement psmt = null;
+					ResultSet rs = null;
+					
+					List<BookLendDTO> BookLendList = null;
+
+					try {
+						conn = DatabaseUtil.getConnection();
+						psmt = conn.prepareStatement(sqlQuery);
+						psmt.setString(1, userNo);
+						rs = psmt.executeQuery();
+						
+						BookLendList = new ArrayList<BookLendDTO>();
+
+						while (rs.next()) {
+							BookLendDTO bl = new BookLendDTO();
+
+							bl.lendNo = rs.getString("lendNo");
+							bl.userNo = rs.getString("userNo");
+							bl.bookNo = rs.getString("bookNo");
+							bl.lendDate = rs.getTimestamp("lendDate");
+							bl.extensionStatus = rs.getString("extensionStatus");
+							bl.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
+							bl.returnStatus = rs.getString("returnStatus");
+							bl.setUserName(rs.getString("userName"));
+							bl.bookIsbn = rs.getString("bookIsbn");					
+							bl.title = rs.getString("bookTitle");
+
+							BookLendList.add(bl);
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						try {
+							if (conn != null)
+								conn.close();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						try {
+							if (psmt != null)
+								conn.close();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						try {
+							if (rs != null)
+								conn.close();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					return BookLendList;
+	}
+
+	
+	
+	
 	public List<BookLendDTO> selectAdminBookLendDetailThisMonth() {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"

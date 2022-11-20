@@ -70,11 +70,11 @@ display: inline;
 							<div class="account_select01">
 								<select id="select_searchYearSel" name="year" class="Searchselect_01"
 									title="연도 선택">
-									<option value="0" selected="">전체보기</option>
+									<option value=null selected="">전체보기</option>
 									<option value="2022">2022</option>
 								</select><span style="color: #636363; font-weight: bold;"> 년</span> <select
 									id="select_searchMonthSel" name="month" class="Searchselect_01" title="월 선택">
-									<option value="0" selected="">전체보기</option>
+									<option value=null selected="">전체보기</option>
 									<option value="1">1</option>
 									<option value="2">2</option>
 									<option value="3">3</option>
@@ -106,11 +106,11 @@ display: inline;
 							<div class="account_select03" style="width: 100%">
 								<form action="reservationStatus.jsp" method="post">
 									<div class="input-group">
-										<select name="reservationOption" required
+										<select name="reservationOption"
 											class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
 											id="inputGroupSelect01">
 											<ul class="dropdown-menu">
-												<li><option class="dropdown-item" selected>예약내역조회</option></li>
+												<li><option class="dropdown-item" value=null selected>예약내역조회</option></li>
 												<li><option class="dropdown-item" value="reservationNo">예약번호</option></li>
 												<li><option class="dropdown-item" value="title">도서명</option></li>
 												<li><option class="dropdown-divider" disabled>-------</option></li>
@@ -121,7 +121,7 @@ display: inline;
 										<input type="text" class="form-control"
 											aria-label="Text input with 2 dropdown buttons"
 											placeholder="검색어를 입력하세요"
-											name="searching" value="" required>
+											name="searching" value="">
 										<button class="btn btn-outline-secondary" type="submit">검색</button>
 										</label>
 									</div>
@@ -152,7 +152,7 @@ display: inline;
 	BookReservationDAO bookReservationDao = new BookReservationDAO();
 	List<BookReservationDTO> bookReservationList = null;
 
-	if( request.getParameter("searching") != null ){
+	if( (request.getParameter("searching") != null) && (request.getParameter("searching") != "" ) ){
 		String search = request.getParameter("searching");		
 		String option = request.getParameter("reservationOption");
 
@@ -166,10 +166,10 @@ display: inline;
 	%>					<tr>
 							<td><p><%=bookReservation.getReservationDate() %></p></td>
 							<td><p>
-									<a href="#"><%=bookReservation.getReservationNo() %></a>
+									<a href="reservationStatus.jsp?rsNo=<%=bookReservation.getReservationNo() %>"><%=bookReservation.getReservationNo() %></a>
 							</p></td>
 							<td><p>
-								<a href="#"><%=bookReservation.getUserName() %></a>
+								<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 							</p></td>
 							<td><p><%=bookReservation.getTitle() %></p></td>
 							<td><p><%=bookReservation.getExpectedLendingDate() %>
@@ -184,9 +184,11 @@ display: inline;
 					for(BookReservationDTO bookReservation : bookReservationList){
 	%>					<tr>
 							<td><p><%=bookReservation.getReservationDate() %></p></td>
-							<td><p><%=bookReservation.getReservationNo() %></p></td>
 							<td><p>
-								<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>""><%=bookReservation.getUserName() %></a>
+									<a href="reservationStatus.jsp?rsNo=<%=bookReservation.getReservationNo() %>"><%=bookReservation.getReservationNo() %></a>
+							</p></td>
+							<td><p>
+								<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 							</p></td>
 							<td><p><%=bookReservation.getTitle() %></p></td>
 							<td><p><%=bookReservation.getExpectedLendingDate() %>
@@ -202,10 +204,10 @@ display: inline;
 	%>					<tr>
 							<td><p><%=bookReservation.getReservationDate() %></p></td>
 							<td><p>
-									<a href="#"><%=bookReservation.getReservationNo() %></a>
+									<a href="reservationStatus.jsp?rsNo=<%=bookReservation.getReservationNo() %>"><%=bookReservation.getReservationNo() %></a>
 							</p></td>
 							<td><p>
-								<a href="#"><%=bookReservation.getUserName() %></a>
+								<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 							</p></td>
 							<td><p><%=bookReservation.getTitle() %></p></td>
 							<td><p><%=bookReservation.getExpectedLendingDate() %>
@@ -223,10 +225,10 @@ display: inline;
 		%>					<tr>
 								<td><p><%=bookReservation.getReservationDate() %></p></td>
 								<td><p>
-										<a href="#"><%=bookReservation.getReservationNo() %></a>
+										<a href="reservationStatus.jsp?rsNo=<%=bookReservation.getReservationNo() %>"><%=bookReservation.getReservationNo() %></a>
 								</p></td>
 								<td><p>
-									<a href="#"><%=bookReservation.getUserName() %></a>
+									<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 								</p></td>
 								<td><p><%=bookReservation.getTitle() %></p></td>
 								<td><p><%=bookReservation.getExpectedLendingDate() %>
@@ -242,10 +244,10 @@ display: inline;
 		%>					<tr>
 								<td><p><%=bookReservation.getReservationDate() %></p></td>
 								<td><p>
-										<a href="#"><%=bookReservation.getReservationNo() %></a>
+										<a href="reservationStatus.jsp?rsNo=<%=bookReservation.getReservationNo() %>"><%=bookReservation.getReservationNo() %></a>
 								</p></td>
 								<td><p>
-									<a href="#"><%=bookReservation.getUserName() %></a>
+									<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 								</p></td>
 								<td><p><%=bookReservation.getTitle() %></p></td>
 								<td><p><%=bookReservation.getExpectedLendingDate() %>
@@ -261,10 +263,10 @@ display: inline;
 		%>					<tr>
 								<td><p><%=bookReservation.getReservationDate() %></p></td>
 								<td><p>
-										<a href="#"><%=bookReservation.getReservationNo() %></a>
+										<a href="reservationStatus.jsp?rsNo=<%=bookReservation.getReservationNo() %>"><%=bookReservation.getReservationNo() %></a>
 								</p></td>
 								<td><p>
-									<a href="#"><%=bookReservation.getUserName() %></a>
+									<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 								</p></td>
 								<td><p><%=bookReservation.getTitle() %></p></td>
 								<td><p><%=bookReservation.getExpectedLendingDate() %>
@@ -277,25 +279,72 @@ display: inline;
 			}
 
 		} else {
-			bookReservationList = bookReservationDao.selectAdminBookReservationDetailThisMonth();
-			if(bookReservationList != null && bookReservationList.size()>0) {
-				for(BookReservationDTO bookReservation : bookReservationList){
-%>					<tr>
-						<td><p><%=bookReservation.getReservationDate() %></p></td>
-						<td><p>
-								<a href="#"><%=bookReservation.getReservationNo() %></a>
-						</p></td>
-						<td><p>
-							<a href="#"><%=bookReservation.getUserName() %></a>
-						</p></td>
-						<td><p><%=bookReservation.getTitle() %></p></td>
-						<td><p><%=bookReservation.getExpectedLendingDate() %>
-						</p></td>
-					</tr>
-<%
-									}
-							}
+			//검색어 입력x & 날짜선택x & 예약번호 click			
+				if( request.getParameter("rsNo") != null ){
+					String rsNo = request.getParameter("rsNo");
+					bookReservationList = bookReservationDao.selectAdminBookReservationDetailByRsNo(rsNo);
+					if(bookReservationList != null && bookReservationList.size()>0) {
+						for(BookReservationDTO bookReservation : bookReservationList){
+		%>					<tr>
+								<td><p><%=bookReservation.getReservationDate() %></p></td>
+								<td><p>
+										<a href="reservationStatus.jsp?rsNo=<%=bookReservation.getReservationNo() %>"><%=bookReservation.getReservationNo() %></a>
+								</p></td>
+								<td><p>
+									<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
+								</p></td>
+								<td><p><%=bookReservation.getTitle() %></p></td>
+								<td><p><%=bookReservation.getExpectedLendingDate() %>
+								</p></td>
+							</tr>
+		<%
+						}
+					}
 				}
+			//검색어 입력x & 날짜선택x & 타페이지에서 userNo받아옴
+				else if( request.getParameter("userNo") != null ){
+					String userNo = request.getParameter("userNo");
+					bookReservationList = bookReservationDao.selectAdminNotLendBookReservationDetailByUserNo(userNo);
+					if(bookReservationList != null && bookReservationList.size()>0) {
+						for(BookReservationDTO bookReservation : bookReservationList){
+		%>					<tr>
+								<td><p><%=bookReservation.getReservationDate() %></p></td>
+								<td><p>
+										<a href="reservationStatus.jsp?rsNo=<%=bookReservation.getReservationNo() %>"><%=bookReservation.getReservationNo() %></a>
+								</p></td>
+								<td><p>
+									<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
+								</p></td>
+								<td><p><%=bookReservation.getTitle() %></p></td>
+								<td><p><%=bookReservation.getExpectedLendingDate() %>
+								</p></td>
+							</tr>
+		<%
+						}
+					}
+				} else {
+			//검색어 입력 x & 날짜선택x
+					bookReservationList = bookReservationDao.selectAdminBookReservationDetailThisMonth();
+					if(bookReservationList != null && bookReservationList.size()>0) {
+						for(BookReservationDTO bookReservation : bookReservationList){
+		%>					<tr>
+								<td><p><%=bookReservation.getReservationDate() %></p></td>
+								<td><p>
+										<a href="reservationStatus.jsp?rsNo=<%=bookReservation.getReservationNo() %>"><%=bookReservation.getReservationNo() %></a>
+								</p></td>
+								<td><p>
+									<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
+								</p></td>
+								<td><p><%=bookReservation.getTitle() %></p></td>
+								<td><p><%=bookReservation.getExpectedLendingDate() %>
+								</p></td>
+							</tr>
+		<%
+											}
+									}
+				}
+		}
+	
 
 %>
 						</tbody>

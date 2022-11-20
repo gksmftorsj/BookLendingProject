@@ -1135,28 +1135,35 @@ a {
 		}
 		
 		const lendTitle = document.querySelectorAll(".lendTitle");
-	    const lendBody = document.querySelector(".lend-body");
-	    const reservateBody = document.querySelector(".reservate-body");
-	    const extensionBody = document.querySelector(".extension-body");
-	    const extensionBtn = document.querySelector(".extensionBtn");
-	    for (let i = 0; i <<%=bookInfoList.size()%>; i++) {
-	        lendTitle[i].addEventListener("click", () => {
-	          const title = localStorage.getItem("title");
-	          const lendDate = localStorage.getItem("lendDate");
-	          const extensionStatus = localStorage.getItem("extensionStatus");
-	          const expectedReturnDate = localStorage.getItem("expectedReturnDate");
-	          let extensionCnt = 0;
-	          if(extensionStatus === "true"){
-	        	  extensionBtn.setAttribute("style", "display: inline");
-	        	  extensionCnt = 1;
-	          } else{
-	        	  extensionBtn.setAttribute("style", "display: none");
-	          }
-	          lendBody.innerHTML = title;
-	          reservateBody.innerHTML = title;
-			  extensionBody.innerHTML = title + "<br>반납예정일은 " + expectedReturnDate + "까지입니다." + "<br>현재 연장 가능 횟수는 " + extensionCnt +"회입니다.";
-	        })
-	      }
+	       const lendBody = document.querySelector(".lend-body");
+	       const reservateBody = document.querySelector(".reservate-body");
+	       const extensionBody = document.querySelector(".extension-body");
+	      const extensionBtn = document.querySelector(".extensionBtn");
+	       for (let i = 0; i <<%=bookInfoList.size()%>; i++) {
+	           lendTitle[i].addEventListener("click", () => {
+	             const title = localStorage.getItem("title");
+	             const lendDate = localStorage.getItem("lendDate");
+	             lendBody.innerHTML = title;
+	             const extensionStatus = localStorage.getItem("extensionStatus");
+	             const expectedReturnDate = localStorage.getItem("expectedReturnDate");
+	             let extensionCnt = 0;
+	             if(extensionStatus !== null){
+	                if(extensionStatus === "true"){
+	                   extensionBtn.setAttribute("style", "display: inline");
+	                   extensionCnt = 1;
+	                 extensionBody.innerHTML = title + "<br>반납예정일은 " + expectedReturnDate + "까지입니다." + "<br>현재 연장 가능 횟수는 " + extensionCnt +"회입니다.";
+	                } else {
+	                   extensionBtn.setAttribute("style", "display: none");
+	                 extensionBody.innerHTML = title + "<br>반납예정일은 " + expectedReturnDate + "까지입니다." + "<br>현재 연장 가능 횟수는 " + extensionCnt +"회입니다.";
+	                }
+	             }
+	             reservateBody.innerHTML = title;
+	             localStorage.removeItem("title");
+	             localStorage.removeItem("lendDate");
+	             localStorage.removeItem("extensionStatus");
+	             localStorage.removeItem("expectedReturnDate");
+	           })
+	         }
 		
 		const lendForm = document.getElementById("lendForm");
 		function checkLendBtn() {

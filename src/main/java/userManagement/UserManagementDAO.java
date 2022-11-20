@@ -84,6 +84,7 @@ public class UserManagementDAO {
     	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
     	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
     	   umd.overDueCnt = rs.getInt("overDueCnt");
+    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
     	   userManagementList.add(umd);
          }
@@ -126,6 +127,7 @@ public class UserManagementDAO {
     	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
     	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
     	   umd.overDueCnt = rs.getInt("overDueCnt");
+    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
     	   userManagementList.add(umd);
          }
@@ -168,6 +170,7 @@ public class UserManagementDAO {
     	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
     	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
     	   umd.overDueCnt = rs.getInt("overDueCnt");
+    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
     	   userManagementList.add(umd);
          }
@@ -210,6 +213,7 @@ public class UserManagementDAO {
     	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
     	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
     	   umd.overDueCnt = rs.getInt("overDueCnt");
+    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
     	   userManagementList.add(umd);
          }
@@ -252,6 +256,7 @@ public class UserManagementDAO {
     	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
     	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
     	   umd.overDueCnt = rs.getInt("overDueCnt");
+    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
     	   userManagementList.add(umd);
          }
@@ -294,6 +299,7 @@ public class UserManagementDAO {
     	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
     	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
     	   umd.overDueCnt = rs.getInt("overDueCnt");
+    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
     	   userManagementList.add(umd);
          }
@@ -336,6 +342,7 @@ public class UserManagementDAO {
     	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
     	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
     	   umd.overDueCnt = rs.getInt("overDueCnt");
+    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
     	   userManagementList.add(umd);
          }
