@@ -1,3 +1,4 @@
+<%@page import="bookLend.BookLendDTO"%>
 <%@page import="bookReservation.BookReservationDAO"%>
 <%@page import="bookLend.BookLendDAO"%>
 <%@page import="userInfo.UserInfoDAO"%>
@@ -158,7 +159,7 @@ a {
 				<%
 				for (BookInfoDTO sr : sortRankList) {
 					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(sr.isbn);
-					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, sr.isbn);
+					BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(userNo, sr.isbn);
 					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, sr.isbn);
 				%>
 
@@ -188,7 +189,7 @@ a {
 						}
 					} else {
 						
-						if(userLendingStatus == null){
+						if(bookLendDTO.getLendNo() == null){
 							
 							if(bookLendingCnt < 5){
 					%>
@@ -209,7 +210,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body d-flex justify-content-center">
+										<div class="modal-body lend-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -244,7 +245,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body1 d-flex justify-content-center">
+										<div class="modal-body reservate-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -273,7 +274,38 @@ a {
 						
 						} else {
 						%>
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+						  대여중
+						</button>
+						
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						onclick="{ localStorage.setItem('isbn', '<%=sr.isbn%>');
+								localStorage.setItem('title', '<%=sr.title%>');
+								localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
+								localStorage.setItem('extensionStatus', '<%=bookLendDTO.getExtensionStatus()%>');
+								localStorage.setItem('expectedReturnDate', '<%=bookLendDTO.getExpectedReturnDate()%>');}">
+						  대여중
+						</button>
+						<form id="extensionForm" method="post" name="extensionForm"> 
+							<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h1 class="modal-title fs-5" id="staticBackdropLabel">지니북스</h1>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+							      <div class="modal-body extension-body">
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-primary extensionBtn"
+							        onclick="checkExtensionBtn()">연장하기</button>
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+						</form>
 						<%
 						}
 					}
@@ -290,7 +322,7 @@ a {
 				<%
 				for (BookInfoDTO sl : sortLatestList) {
 					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(sl.isbn);
-					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, sl.isbn);
+					BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(userNo, sl.isbn);
 					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, sl.isbn);
 				%>
 
@@ -320,7 +352,7 @@ a {
 						}
 					} else {
 						
-						if(userLendingStatus == null){
+						if(bookLendDTO.getLendNo() == null){
 							
 							if(bookLendingCnt < 5){
 					%>
@@ -329,7 +361,8 @@ a {
 							data-bs-target="#exampleModal"
 							onclick="{
 							localStorage.setItem('isbn', '<%=sl.isbn%>');
-							localStorage.setItem('title', '<%=sl.title%>');}">대여가능</button>
+							localStorage.setItem('title', '<%=sl.title%>');
+							}">대여가능</button>
 						
 						<form id="lendForm" method="post" name="lendForm">
 							<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -341,7 +374,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body d-flex justify-content-center">
+										<div class="modal-body lend-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -376,7 +409,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body1 d-flex justify-content-center">
+										<div class="modal-body reservate-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -405,7 +438,38 @@ a {
 						
 						} else {
 						%>
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+						  대여중
+						</button>
+						
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						onclick="{ localStorage.setItem('isbn', '<%=sl.isbn%>');
+								localStorage.setItem('title', '<%=sl.title%>');
+								localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
+								localStorage.setItem('extensionStatus', '<%=bookLendDTO.getExtensionStatus()%>');
+								localStorage.setItem('expectedReturnDate', '<%=bookLendDTO.getExpectedReturnDate()%>');}">
+						  대여중
+						</button>
+						<form id="extensionForm" method="post" name="extensionForm"> 
+							<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h1 class="modal-title fs-5" id="staticBackdropLabel">지니북스</h1>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+							      <div class="modal-body extension-body">
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-primary extensionBtn"
+							        onclick="checkExtensionBtn()">연장하기</button>
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+						</form>
 						<%
 						}
 					}
@@ -422,7 +486,7 @@ a {
 				<%
 				for (BookInfoDTO sn : sortNameList) {
 					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(sn.isbn);
-					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, sn.isbn);
+					BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(userNo, sn.isbn);
 					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, sn.isbn);
 				%>
 
@@ -452,7 +516,7 @@ a {
 						}
 					} else {
 						
-						if(userLendingStatus == null){
+						if(bookLendDTO.getLendNo() == null){
 							
 							if(bookLendingCnt < 5){
 					%>
@@ -473,7 +537,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body d-flex justify-content-center">
+										<div class="modal-body lend-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -508,7 +572,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body1 d-flex justify-content-center">
+										<div class="modal-body reservate-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -537,7 +601,38 @@ a {
 						
 						} else {
 						%>
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+						  대여중
+						</button>
+						
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						onclick="{ localStorage.setItem('isbn', '<%=sn.isbn%>');
+								localStorage.setItem('title', '<%=sn.title%>');
+								localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
+								localStorage.setItem('extensionStatus', '<%=bookLendDTO.getExtensionStatus()%>');
+								localStorage.setItem('expectedReturnDate', '<%=bookLendDTO.getExpectedReturnDate()%>');}">
+						  대여중
+						</button>
+						<form id="extensionForm" method="post" name="extensionForm"> 
+							<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h1 class="modal-title fs-5" id="staticBackdropLabel">지니북스</h1>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+							      <div class="modal-body extension-body">
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-primary extensionBtn"
+							        onclick="checkExtensionBtn()">연장하기</button>
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+						</form>
 						<%
 						}
 					}
@@ -555,7 +650,7 @@ a {
 				<%
 				for (BookInfoDTO cl : categoryList) {
 					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(cl.isbn);
-					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, cl.isbn);
+					BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(userNo, cl.isbn);
 					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, cl.isbn);
 				%>
 				
@@ -585,7 +680,7 @@ a {
 						}
 					} else {
 						
-						if(userLendingStatus == null){
+						if(bookLendDTO.getLendNo() == null){
 							
 							if(bookLendingCnt < 5){
 					%>
@@ -606,7 +701,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body d-flex justify-content-center">
+										<div class="modal-body lend-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -641,7 +736,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body1 d-flex justify-content-center">
+										<div class="modal-body reservate-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -670,7 +765,38 @@ a {
 						
 						} else {
 						%>
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+						  대여중
+						</button>
+						
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						onclick="{ localStorage.setItem('isbn', '<%=cl.isbn%>');
+								localStorage.setItem('title', '<%=cl.title%>');
+								localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
+								localStorage.setItem('extensionStatus', '<%=bookLendDTO.getExtensionStatus()%>');
+								localStorage.setItem('expectedReturnDate', '<%=bookLendDTO.getExpectedReturnDate()%>');}">
+						  대여중
+						</button>
+						<form id="extensionForm" method="post" name="extensionForm"> 
+							<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h1 class="modal-title fs-5" id="staticBackdropLabel">지니북스</h1>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+							      <div class="modal-body extension-body">
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-primary extensionBtn"
+							        onclick="checkExtensionBtn()">연장하기</button>
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+						</form>
 						<%
 						}
 					}
@@ -689,7 +815,7 @@ a {
 				<%
 				for (BookInfoDTO bi : bookInfoList) {
 					int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(bi.isbn);
-					String userLendingStatus = bookLendDAO.selectUserLendingStatus(userNo, bi.isbn);
+					BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(userNo, bi.isbn);
 					String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, bi.isbn);
 				%>
 
@@ -719,7 +845,7 @@ a {
 						}
 					} else {
 						
-						if(userLendingStatus == null){
+						if(bookLendDTO.getLendNo() == null){
 							
 							if(bookLendingCnt < 5){
 					%>
@@ -740,7 +866,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body d-flex justify-content-center">
+										<div class="modal-body lend-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -775,7 +901,7 @@ a {
 											<button type="button" class="btn-close"
 												data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<div class="modal-body1 d-flex justify-content-center">
+										<div class="modal-body reservate-body d-flex justify-content-center">
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-primary"
@@ -804,7 +930,35 @@ a {
 						
 						} else {
 						%>
-						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button>
+<!-- 						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;">대여중</button> -->
+						<!-- Button trigger modal -->
+						<button type="button" class="btn btn-danger lendTitle" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+						onclick="{ localStorage.setItem('isbn', '<%=bi.isbn%>');
+							localStorage.setItem('title', '<%=bi.title%>');
+							localStorage.setItem('lendDate', '<%=bookLendDTO.getLendDate()%>');
+							localStorage.setItem('extensionStatus', '<%=bookLendDTO.getExtensionStatus()%>');
+							localStorage.setItem('expectedReturnDate', '<%=bookLendDTO.getExpectedReturnDate()%>');}">
+						  대여중
+						</button>
+						<form id="extensionForm" method="post" name="extensionForm"> 
+							<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h1 class="modal-title fs-5" id="staticBackdropLabel">지니북스</h1>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+							      <div class="modal-body extension-body">
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-primary extensionBtn"
+							        onclick="checkExtensionBtn()">연장하기</button>
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+						</form>
 						<%
 						}
 					}
@@ -895,7 +1049,7 @@ a {
 				</a></li>
 			</ul>
 		</nav>
-		<%		
+		<%
 			} else if(category != null){
 				%>
 				<nav aria-label="Page navigation example"
@@ -919,7 +1073,7 @@ a {
 						</a></li>
 					</ul>
 				</nav>
-				<%		
+				<%	
 					} else {
 		%>
 		<nav aria-label="Page navigation example"
@@ -981,13 +1135,26 @@ a {
 		}
 		
 		const lendTitle = document.querySelectorAll(".lendTitle");
-	    const modalBody = document.querySelector(".modal-body");
-	    const modalBody1 = document.querySelector(".modal-body1");
+	    const lendBody = document.querySelector(".lend-body");
+	    const reservateBody = document.querySelector(".reservate-body");
+	    const extensionBody = document.querySelector(".extension-body");
+	    const extensionBtn = document.querySelector(".extensionBtn");
 	    for (let i = 0; i <<%=bookInfoList.size()%>; i++) {
 	        lendTitle[i].addEventListener("click", () => {
 	          const title = localStorage.getItem("title");
-	          modalBody.innerText = title;
-	          modalBody1.innerText = title;
+	          const lendDate = localStorage.getItem("lendDate");
+	          const extensionStatus = localStorage.getItem("extensionStatus");
+	          const expectedReturnDate = localStorage.getItem("expectedReturnDate");
+	          let extensionCnt = 0;
+	          if(extensionStatus === "true"){
+	        	  extensionBtn.setAttribute("style", "display: inline");
+	        	  extensionCnt = 1;
+	          } else{
+	        	  extensionBtn.setAttribute("style", "display: none");
+	          }
+	          lendBody.innerHTML = title;
+	          reservateBody.innerHTML = title;
+			  extensionBody.innerHTML = title + "<br>반납예정일은 " + expectedReturnDate + "까지입니다." + "<br>현재 연장 가능 횟수는 " + extensionCnt +"회입니다.";
 	        })
 	      }
 		
@@ -1011,6 +1178,18 @@ a {
 			const isbn = localStorage.getItem("isbn");
 			lendForm.setAttribute("action", "./reservationAction.jsp?isbn=" + isbn);
         	lendForm.submit();
+        	}
+        }
+		
+		const extensionForm = document.getElementById("extensionForm");
+		function checkExtensionBtn() {
+			
+        if (!confirm("연장메세지")) {
+        	alert("연장이 취소되었습니다..");
+        } else {
+			const isbn = localStorage.getItem("isbn");
+			extensionForm.setAttribute("action", "./extensionAction.jsp?isbn=" + isbn);
+			extensionForm.submit();
         	}
         }
 		

@@ -40,7 +40,6 @@
 		bookLendDTO.setUserNo(userNo);
 		bookLendDTO.setBookNo(bookNo);
 		bookLendDTO.setExtensionStatus(extensionStatus);
-		bookLendDTO.setExtensionAvailabilityCnt(extensionAvailabilityCnt);
 		int bliResult = 0;
 		int bmuResult = 0;
 		int umuResult = 0;

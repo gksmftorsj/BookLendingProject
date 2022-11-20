@@ -25,15 +25,13 @@ public class BookLendDTO {
 	public BookLendDTO() {
 	}
 	
-	public BookLendDTO(String lendNo, String userNo, String bookNo, Timestamp lendDate, String extensionStatus,
-			int extensionAvailabilityCnt) {
+	public BookLendDTO(String lendNo, String userNo, String bookNo, Timestamp lendDate, String extensionStatus) {
 		super();
 		this.lendNo = lendNo;
 		this.userNo = userNo;
 		this.bookNo = bookNo;
 		this.lendDate = lendDate;
 		this.extensionStatus = extensionStatus;
-		this.extensionAvailabilityCnt = extensionAvailabilityCnt;
 	}
 
 	
@@ -46,7 +44,6 @@ public class BookLendDTO {
 		this.bookNo = bookNo;
 		this.lendDate = lendDate;
 		this.extensionStatus = extensionStatus;
-		this.extensionAvailabilityCnt = extensionAvailabilityCnt;
 		this.expectedReturnDate = expectedReturnDate;
 		this.returnStatus = returnStatus;
 		this.bookIsbn = bookIsbn;
