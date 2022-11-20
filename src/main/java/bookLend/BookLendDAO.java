@@ -254,7 +254,7 @@ public class BookLendDAO {
 					return BookLendList;
 	}
 
-	public List<BookLendDTO> selectBookAdminLendDetailByUserNo(String userNo) {
+	public List<BookLendDTO> selectAdminBookLendDetailByUserNo(String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.extensionavailabilitycnt, bl.expectedReturnDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
@@ -519,7 +519,7 @@ public class BookLendDAO {
 					return BookLendList;
 	}
 
-	public List<BookLendDTO> selectBookAdminLendDetailByLendDateAndUserNo(String lendDate, String userNo) {
+	public List<BookLendDTO> selectAdminBookLendDetailByLendDateAndUserNo(String lendDate, String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.extensionavailabilitycnt, bl.expectedReturnDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
@@ -653,6 +653,55 @@ public class BookLendDAO {
 					return BookLendList;
 		}
 
+	public String selectExpectedReturnDateByBookNo(String bookNo) {
+		String sqlQuery = "SELECT TO_CHAR(expectedReturnDate, 'yy/mm/dd') expectedReturnDate FROM book_lend WHERE bookNo = ?";
+
+		String expectedReturnDate = null;
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, bookNo);
+
+			rs = psmt.executeQuery();
+
+			if (rs.next()) {
+				expectedReturnDate = rs.getString("expectedReturnDate");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return expectedReturnDate;
+	}
+	
+	
+	
+	
+	
+	
 	public String selectUserLendingStatus(String userNo, String isbn) {
 		String sqlQuery = "SELECT * FROM BOOK_LEND WHERE USERNO = ? AND SUBSTR(BOOKNO, 1, 10) = ?";
 

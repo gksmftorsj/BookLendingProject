@@ -129,6 +129,25 @@ p{
 	<%
 	UserManagementDAO userManagementDao = new UserManagementDAO();
 	List<UserManagementDTO> userAdminList = null;
+
+	if( request.getParameter("userNo") != null ){
+		userAdminList = userManagementDao.selectAdminUserManagement();
+		if(userAdminList != null && userAdminList.size()>0) {
+				for(UserManagementDTO userInfo : userAdminList){
+	%>
+							<tr>
+ 								<td><p><a href="userManagerDetail.jsp?userNo=<%=userInfo.getUserNo() %>"><%=userInfo.getUserNo() %></a></p></td>
+								<td><p><%=userInfo.getUserName() %></p></td>
+								<td><p><%=userInfo.getUserID() %></p></td>
+ 								<td><p><%=userInfo.getCurrentLendingCnt() %></p></td>
+								<td><p><%=userInfo.getCurrentReservationCnt() %></p></td>
+								<td><p><%=userInfo.getTotalLendingCnt() %></p></td>
+								<td><p><%=userInfo.getOverDueCnt() %></p></td>
+							</tr>
+	<%
+				}
+		}
+	}
 							
 	if( request.getParameter("searching") == null) {
 		userAdminList = userManagementDao.selectAdminUserManagement();

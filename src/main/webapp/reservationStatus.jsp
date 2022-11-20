@@ -3,8 +3,8 @@
 <%@ page import="java.util.*"%>
 <%@ page import="java.time.LocalDateTime"%>
 <%@ page import="java.sql.Timestamp"%>
-<%@ page import="bookLend.BookLendDAO" %>
-<%@ page import="bookLend.BookLendDTO" %>
+<%@ page import="bookReservation.BookReservationDAO" %>
+<%@ page import="bookReservation.BookReservationDTO" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 
 <!DOCTYPE html>
@@ -139,255 +139,160 @@ display: inline;
 					<table class="reservationTable container">
 						<thead>
 							<tr>
-								<th scope="col"><p>예약일자</p></th>
+								<th scope="col"><p>예약일</p></th>
 								<th scope="col"><p>예약번호</p></th>
 								<th scope="col"><p>회원명</p></th>
 								<th scope="col"><p>도서명</p></th>
-								<th scope="col"><p>예약취소</p></th>
+								<th scope="col"><p>대여가능일</p></th>
 								<th scope="col"><p>비고</p></th>
 							</tr>
 						</thead>
 						<tbody>
 	<%
-	BookLendDAO bookLendDao = new BookLendDAO();
-	List<BookLendDTO> bookLendList = null;
+	BookReservationDAO bookReservationDao = new BookReservationDAO();
+	List<BookReservationDTO> bookReservationList = null;
 
 	if( request.getParameter("searching") != null ){
 		String search = request.getParameter("searching");		
 		String option = request.getParameter("reservationOption");
 
 		if ( request.getParameter("year") != null && request.getParameter("month") != null ) {
-			String lendDate = request.getParameter("year") + request.getParameter("month");	
+			String rsDate = request.getParameter("year") + request.getParameter("month");	
 			
-			if ( option.equals("lendNo") ) {
-				bookLendList = bookLendDao.selectAdminBookLendDetailByLendDateAndLendNo(lendDate, search);
-				if(bookLendList != null && bookLendList.size()>0) {
-					for(BookLendDTO bookLend : bookLendList){
+			if ( option.equals("reservationNo") ) {
+				bookReservationList = bookReservationDao.selectAdminBookReservationDetailByRsDateAndRsNo(rsDate, search);
+				if(bookReservationList != null && bookReservationList.size()>0) {
+					for(BookReservationDTO bookReservation : bookReservationList){
 	%>					<tr>
-							<td><p><%=bookLend.getLendDate() %></p></td>
+							<td><p><%=bookReservation.getReservationDate() %></p></td>
 							<td><p>
-									<a href="#"><%=bookLend.getLendNo() %></a>
+									<a href="#"><%=bookReservation.getReservationNo() %></a>
 							</p></td>
 							<td><p>
-								<a href="#"><%=bookLend.getUserName() %></a>
+								<a href="#"><%=bookReservation.getUserName() %></a>
 							</p></td>
-							<td><p><%=bookLend.getTitle() %></p></td>
-							<td><p><%if (bookLend.getReturnStatus().equals("false")) {
-								%><a href="#">반납가능</a><%
-								} else {%>반납완료<%}%>
-							</p></td>
-							<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
-								%>만료
-								<%} else {%>
-								<a href="#">연장가능</a>
-								<%}%>
-							</p></td>
-							<td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-								%>연체중<%
-								} else {%>								
-								<%}%>
+							<td><p><%=bookReservation.getTitle() %></p></td>
+							<td><p><%=bookReservation.getExpectedLendingDate() %>
 							</p></td>
 						</tr>
 	<%
 					}
 				}
 			} else if ( option.equals("title") ) {
-				bookLendList = bookLendDao.selectAdminBookLendDetailByLendDateAndTitle(lendDate, search);
-				if(bookLendList != null && bookLendList.size()>0) {
-					for(BookLendDTO bookLend : bookLendList){
-						%>					<tr>
-						<td><p><%=bookLend.getLendDate() %></p></td>
-						<td><p>
-								<a href="#"><%=bookLend.getLendNo() %></a>
-						</p></td>
-						<td><p>
-							<a href="#"><%=bookLend.getUserName() %></a>
-						</p></td>
-						<td><p><%=bookLend.getTitle() %></p></td>
-						<td><p><%if (bookLend.getReturnStatus().equals("false")) {
-							%><a href="#">반납가능</a><%
-							} else {%>반납완료<%}%>
-						</p></td>
-						<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
-							%>만료
-							<%} else {%>
-							<a href="#">연장가능</a>
-							<%}%>
-						</p></td>
-						<td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-							%>연체중<%
-							} else {%>								
-							<%}%>
-						</p></td>
-					</tr>
-<%
+				bookReservationList = bookReservationDao.selectAdminBookReservationDetailByRsDateAndTitle(rsDate, search);
+				if(bookReservationList != null && bookReservationList.size()>0) {
+					for(BookReservationDTO bookReservation : bookReservationList){
+	%>					<tr>
+							<td><p><%=bookReservation.getReservationDate() %></p></td>
+							<td><p><%=bookReservation.getReservationNo() %></p></td>
+							<td><p>
+								<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>""><%=bookReservation.getUserName() %></a>
+							</p></td>
+							<td><p><%=bookReservation.getTitle() %></p></td>
+							<td><p><%=bookReservation.getExpectedLendingDate() %>
+							</p></td>
+						</tr>
+	<%
 					}
 				}
 			} else if ( option.equals("userNo") ) {
-				bookLendList = bookLendDao.selectBookAdminLendDetailByLendDateAndUserNo(lendDate, search);
-				if(bookLendList != null && bookLendList.size()>0) {
-					for(BookLendDTO bookLend : bookLendList){
-						%>					<tr>
-						<td><p><%=bookLend.getLendDate() %></p></td>
-						<td><p>
-								<a href="#"><%=bookLend.getLendNo() %></a>
-						</p></td>
-						<td><p>
-							<a href="#"><%=bookLend.getUserName() %></a>
-						</p></td>
-						<td><p><%=bookLend.getTitle() %></p></td>
-						<td><p><%if (bookLend.getReturnStatus().equals("false")) {
-							%><a href="#">반납가능</a><%
-							} else {%>반납완료<%}%>
-						</p></td>
-						<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
-							%>만료
-							<%} else {%>
-							<a href="#">연장가능</a>
-							<%}%>
-						</p></td>
-						<td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-							%>연체중<%
-							} else {%>								
-							<%}%>
-						</p></td>
-					</tr>
-<%
+				bookReservationList = bookReservationDao.selectAdminBookReservationDetailByRsDateAndUserNo(rsDate, search);
+				if(bookReservationList != null && bookReservationList.size()>0) {
+					for(BookReservationDTO bookReservation : bookReservationList){
+	%>					<tr>
+							<td><p><%=bookReservation.getReservationDate() %></p></td>
+							<td><p>
+									<a href="#"><%=bookReservation.getReservationNo() %></a>
+							</p></td>
+							<td><p>
+								<a href="#"><%=bookReservation.getUserName() %></a>
+							</p></td>
+							<td><p><%=bookReservation.getTitle() %></p></td>
+							<td><p><%=bookReservation.getExpectedLendingDate() %>
+							</p></td>
+						</tr>
+	<%
 					}
 				}
 			}
 		} else {
-				
-				if ( option.equals("lendNo") ) {
-					bookLendList = bookLendDao.selectAdminBookLendDetailByLendNo(search);
-					if(bookLendList != null && bookLendList.size()>0) {
-						for(BookLendDTO bookLend : bookLendList){
+				if ( option.equals("reservationNo") ) {
+					bookReservationList = bookReservationDao.selectAdminBookReservationDetailByRsNo(search);
+					if(bookReservationList != null && bookReservationList.size()>0) {
+						for(BookReservationDTO bookReservation : bookReservationList){
 		%>					<tr>
-								<td><p><%=bookLend.getLendDate() %></p></td>
+								<td><p><%=bookReservation.getReservationDate() %></p></td>
 								<td><p>
-										<a href="#"><%=bookLend.getLendNo() %></a>
+										<a href="#"><%=bookReservation.getReservationNo() %></a>
 								</p></td>
 								<td><p>
-									<a href="#"><%=bookLend.getUserName() %></a>
+									<a href="#"><%=bookReservation.getUserName() %></a>
 								</p></td>
-								<td><p><%=bookLend.getTitle() %></p></td>
-								<td><p><%if (bookLend.getReturnStatus().equals("false")) {
-									%><a href="#">반납가능</a><%
-									} else {%>반납완료<%}%>
-								</p></td>
-								<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
-									%>만료
-									<%} else {%>
-									<a href="#">연장가능</a>
-									<%}%>
-								</p></td>
-								<td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-									%>연체중<%
-									} else {%>								
-									<%}%>
+								<td><p><%=bookReservation.getTitle() %></p></td>
+								<td><p><%=bookReservation.getExpectedLendingDate() %>
 								</p></td>
 							</tr>
 		<%
 						}
 					}
 				} else if ( option.equals("title") ) {
-					bookLendList = bookLendDao.selectAdminBookLendDetailByTitle(search);
-					if(bookLendList != null && bookLendList.size()>0) {
-						for(BookLendDTO bookLend : bookLendList){
-							%>					<tr>
-							<td><p><%=bookLend.getLendDate() %></p></td>
-							<td><p>
-									<a href="#"><%=bookLend.getLendNo() %></a>
-							</p></td>
-							<td><p>
-								<a href="#"><%=bookLend.getUserName() %></a>
-							</p></td>
-							<td><p><%=bookLend.getTitle() %></p></td>
-							<td><p><%if (bookLend.getReturnStatus().equals("false")) {
-								%><a href="#">반납가능</a><%
-								} else {%>반납완료<%}%>
-							</p></td>
-							<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
-								%>만료
-								<%} else {%>
-								<a href="#">연장가능</a>
-								<%}%>
-							</p></td>
-							<td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-								%>연체중<%
-								} else {%>								
-								<%}%>
-							</p></td>
-						</tr>
-	<%
+					bookReservationList = bookReservationDao.selectAdminBookReservationDetailByTitle(search);
+					if(bookReservationList != null && bookReservationList.size()>0) {
+						for(BookReservationDTO bookReservation : bookReservationList){
+		%>					<tr>
+								<td><p><%=bookReservation.getReservationDate() %></p></td>
+								<td><p>
+										<a href="#"><%=bookReservation.getReservationNo() %></a>
+								</p></td>
+								<td><p>
+									<a href="#"><%=bookReservation.getUserName() %></a>
+								</p></td>
+								<td><p><%=bookReservation.getTitle() %></p></td>
+								<td><p><%=bookReservation.getExpectedLendingDate() %>
+								</p></td>
+							</tr>
+		<%
 						}
 					}
 				} else if ( option.equals("userNo") ) {
-					bookLendList = bookLendDao.selectBookAdminLendDetailByUserNo(search);
-					if(bookLendList != null && bookLendList.size()>0) {
-						for(BookLendDTO bookLend : bookLendList){
-							%>					<tr>
-							<td><p><%=bookLend.getLendDate() %></p></td>
-							<td><p>
-									<a href="#"><%=bookLend.getLendNo() %></a>
-							</p></td>
-							<td><p>
-								<a href="#"><%=bookLend.getUserName() %></a>
-							</p></td>
-							<td><p><%=bookLend.getTitle() %></p></td>
-							<td><p><%if (bookLend.getReturnStatus().equals("false")) {
-								%><a href="#">반납가능</a><%
-								} else {%>반납완료<%}%>
-							</p></td>
-							<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
-								%>만료
-								<%} else {%>
-								<a href="#">연장가능</a>
-								<%}%>
-							</p></td>
-							<td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-								%>연체중<%
-								} else {%>								
-								<%}%>
-							</p></td>
-						</tr>
-	<%
+					bookReservationList = bookReservationDao.selectAdminBookReservationDetailByUserNo(search);
+					if(bookReservationList != null && bookReservationList.size()>0) {
+						for(BookReservationDTO bookReservation : bookReservationList){
+		%>					<tr>
+								<td><p><%=bookReservation.getReservationDate() %></p></td>
+								<td><p>
+										<a href="#"><%=bookReservation.getReservationNo() %></a>
+								</p></td>
+								<td><p>
+									<a href="#"><%=bookReservation.getUserName() %></a>
+								</p></td>
+								<td><p><%=bookReservation.getTitle() %></p></td>
+								<td><p><%=bookReservation.getExpectedLendingDate() %>
+								</p></td>
+							</tr>
+		<%
 						}
 					}
 				}
 			}
 
 		} else {
-			bookLendList = bookLendDao.selectAdminBookLendDetailThisMonth();
-			if(bookLendList != null && bookLendList.size()>0) {
-				for(BookLendDTO bookLend : bookLendList){
-			%>
-					<tr>
-						<td><p><%=bookLend.getLendDate() %></p></td>
+			bookReservationList = bookReservationDao.selectAdminBookReservationDetailThisMonth();
+			if(bookReservationList != null && bookReservationList.size()>0) {
+				for(BookReservationDTO bookReservation : bookReservationList){
+%>					<tr>
+						<td><p><%=bookReservation.getReservationDate() %></p></td>
 						<td><p>
-								<a href="#"><%=bookLend.getLendNo() %></a>
+								<a href="#"><%=bookReservation.getReservationNo() %></a>
 						</p></td>
 						<td><p>
-								<a href="#"><%=bookLend.getUserName() %></a>
+							<a href="#"><%=bookReservation.getUserName() %></a>
 						</p></td>
-						<td><p><%=bookLend.getTitle() %></p></td>
-						<td><p><%if (bookLend.getReturnStatus().equals("false")) {
-								%><a href="#">반납가능</a><%
-								} else {%>반납완료<%}%>
-						</p></td>
-						<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
-								%>만료
-								<%} else {%>
-								<a href="#">연장가능</a>
-								<%}%>
-						</p></td>
-						<td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-								%>연체중<%
-								} else {%>								
-								<%}%>
+						<td><p><%=bookReservation.getTitle() %></p></td>
+						<td><p><%=bookReservation.getExpectedLendingDate() %>
 						</p></td>
 					</tr>
-	<%
+<%
 									}
 							}
 				}

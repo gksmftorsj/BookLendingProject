@@ -148,7 +148,7 @@ display: inline;
 					<table class="lendingTable container">
 						<thead>
 							<tr>
-								<th scope="col"><p>대여일자</p></th>
+								<th scope="col"><p>대여일</p></th>
 								<th scope="col"><p>대여번호</p></th>
 								<th scope="col"><p>회원명</p></th>
 								<th scope="col"><p>도서명</p></th>
@@ -175,21 +175,19 @@ display: inline;
 					for(BookLendDTO bookLend : bookLendList){
 	%>					<tr>
 							<td><p><%=bookLend.getLendDate() %></p></td>
+							<td><p><%=bookLend.getLendNo() %></p></td>
 							<td><p>
-									<a href="#"><%=bookLend.getLendNo() %></a>
-							</p></td>
-							<td><p>
-								<a href="#"><%=bookLend.getUserName() %></a>
+								<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
 							</p></td>
 							<td><p><%=bookLend.getTitle() %></p></td>
 							<td><p><%if (bookLend.getReturnStatus().equals("false")) {
-								%><a href="#">반납가능</a><%
+								%><button type="button" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button><%
 								} else {%>반납완료<%}%>
 							</p></td>
 							<td><p><%if (bookLend.getExtensionAvailabilityCnt() == 0) {
 								%>만료
 								<%} else {%>
-								<a href="#">연장가능</a>
+								<button type="button" class="btn btn-success extensionBtn extensionTitle" style="width: 100px;">연장가능</button>
 								<%}%>
 							</p></td>
 							<td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
@@ -234,7 +232,7 @@ display: inline;
 					}
 				}
 			} else if ( option.equals("userNo") ) {
-				bookLendList = bookLendDao.selectBookAdminLendDetailByLendDateAndUserNo(lendDate, search);
+				bookLendList = bookLendDao.selectAdminBookLendDetailByLendDateAndUserNo(lendDate, search);
 				if(bookLendList != null && bookLendList.size()>0) {
 					for(BookLendDTO bookLend : bookLendList){
 						%>					<tr>
@@ -333,7 +331,7 @@ display: inline;
 						}
 					}
 				} else if ( option.equals("userNo") ) {
-					bookLendList = bookLendDao.selectBookAdminLendDetailByUserNo(search);
+					bookLendList = bookLendDao.selectAdminBookLendDetailByUserNo(search);
 					if(bookLendList != null && bookLendList.size()>0) {
 						for(BookLendDTO bookLend : bookLendList){
 							%>					<tr>
