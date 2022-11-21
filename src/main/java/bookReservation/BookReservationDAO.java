@@ -12,7 +12,7 @@ import util.DatabaseUtil;
 
 public class BookReservationDAO {
 
-	public int insertBookReservation(String userNo, String isbn) {
+	public int insertBookReservation(String userNo, String bookIsbn) {
 		String sqlQuery = "INSERT INTO BOOK_RESERVATION "
 						+ "VALUES(?, to_char(sysdate, 'yyyymmdd')||'RSN'||LPAD(RSN_SEQ.NEXTVAL, 4, 0), ?, sysdate, 'false')";
 
@@ -27,7 +27,7 @@ public class BookReservationDAO {
 			psmt = conn.prepareStatement(sqlQuery);
 
 			psmt.setString(1, userNo);
-			psmt.setString(2, isbn);
+			psmt.setString(2, bookIsbn);
 			result = psmt.executeUpdate();
 			
 			return result;
@@ -57,8 +57,50 @@ public class BookReservationDAO {
 		return result;
 	}
 	
+	public int updateLendStatus(String userNo, String bookIsbn) {
+		   String sqlQuery = "UPDATE BOOK_RESERVATION "
+		   				   + "SET LENDSTATUS = 'true' "
+		   				   + "WHERE userNo = ?, bookIsbn = ?";
+		   
+		   int result = 0;
+		   
+		   Connection conn = null;
+		   PreparedStatement psmt = null;
+		   ResultSet rs = null;
+		   
+		   try {
+			   conn = DatabaseUtil.getConnection();
+			   psmt = conn.prepareStatement(sqlQuery);
+			   psmt.setString(1, userNo);
+			   psmt.setString(2, bookIsbn);
+			   result = psmt.executeUpdate();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   } finally {
+			   try {
+				   if (conn != null)
+					   conn.close();
+			   } catch (Exception e) {
+				   e.printStackTrace();
+			   }
+			   try {
+				   if (psmt != null)
+					   conn.close();
+			   } catch (Exception e) {
+				   e.printStackTrace();
+			   }
+			   try {
+				   if (rs != null)
+					   conn.close();
+			   } catch (Exception e) {
+				   e.printStackTrace();
+			   }
+		   } 
+		   return result;
+	   }
+	
 	public String selectUserReservationStatus(String userNo, String isbn) {
-		String sqlQuery = "SELECT * FROM BOOK_RESERVATION WHERE USERNO = ? AND BOOKISBN = ?";
+		String sqlQuery = "SELECT * FROM BOOK_RESERVATION WHERE USERNO = ? AND bookIsbn = ?";
 		
 		String reservationNo = null;
 		
@@ -102,8 +144,52 @@ public class BookReservationDAO {
 		return reservationNo;
 	}
 	
-	public int deleteReservation(String userNo, String isbn) {
-		String sqlQuery = "DELETE FROM BOOK_RESERVATION WHERE USERNO = ? AND BOOKISBN = ?";
+	public String selectUserNo(String bookIsbn) {
+		String sqlQuery = "SELECT * FROM BOOK_RESERVATION WHERE bookIsbn = ?";
+		
+		String userNo = null;
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, bookIsbn);
+			
+			rs = psmt.executeQuery();
+			
+			if (rs.next()) {
+				userNo = rs.getString("userNo");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return userNo;
+	}
+	
+	public int deleteReservation(String userNo, String bookIsbn) {
+		String sqlQuery = "DELETE FROM BOOK_RESERVATION WHERE USERNO = ? AND bookIsbn = ?";
 		
 		int result = 0;
 		
@@ -115,7 +201,7 @@ public class BookReservationDAO {
 			conn = DatabaseUtil.getConnection();
 			psmt = conn.prepareStatement(sqlQuery);
 			psmt.setString(1, userNo);
-			psmt.setString(2, isbn);
+			psmt.setString(2, bookIsbn);
 			
 			result = psmt.executeUpdate();
 			
@@ -143,6 +229,8 @@ public class BookReservationDAO {
 		}
 		return result;
 	}
+	
+	
 
 	public List<BookReservationDTO> selectAdminNotLendBookReservationDetailByUserNo(String userNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
@@ -647,6 +735,7 @@ public class BookReservationDAO {
 				psmt = conn.prepareStatement(sqlQuery);
 				psmt.setString(1, rsDate);
 				psmt.setString(2, rsNo);
+				rs = psmt.executeQuery();
 				
 				rs = psmt.executeQuery();
 				
@@ -717,6 +806,7 @@ public class BookReservationDAO {
 				psmt = conn.prepareStatement(sqlQuery);
 				psmt.setString(1, rsDate);
 				psmt.setString(2, userNo);
+				rs = psmt.executeQuery();
 				
 				rs = psmt.executeQuery();
 				
@@ -787,6 +877,7 @@ public class BookReservationDAO {
 				psmt = conn.prepareStatement(sqlQuery);
 				psmt.setString(1, rsDate);
 				psmt.setString(2, title);
+				rs = psmt.executeQuery();
 				
 				rs = psmt.executeQuery();
 				

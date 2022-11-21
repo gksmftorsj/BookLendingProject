@@ -45,8 +45,9 @@
 	String from = "gksmftorsj@gamil.com";
 	String to = userInfoDAO.getUserEmail(userID);
 	String subject = "지니북스 회원가입을 위한 이메일 인증 메일입니다.";
-	String content = "다음 링크에 접속하여 이메일 인증을 진행하세요." + 
-	"<a href=" + host + "emailCheckAction.jsp?code=" + new SHA256().getSHA256(to) + ">이메일 인증하기</a>";
+	String content = "다음 링크에 접속하여 이메일 인증을 진행하세요.<br><br>" +
+	"<button style='background-color: #2196f3; width: 12rem; height: 40px;'><a href=" + host + "emailCheckAction.jsp?code=" + new SHA256().getSHA256(to) 
+	+ " style='color: white; text-decoration: none; font-size: 25px; font-weight: bold;'>이메일인증하기</a></button>";
 	
 	Properties p = new Properties();
 	p.put("mail.smtp.user", from);

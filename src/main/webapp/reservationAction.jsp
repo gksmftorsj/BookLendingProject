@@ -37,9 +37,14 @@
 
 		umsResult = userManagementDAO.selectCurrentReservationCnt(userNo);
 		if (umsResult < 5) {
-			briResult = bookReservationDAO.insertBookReservation(userNo, bookNo);
+			briResult = bookReservationDAO.insertBookReservation(userNo, bookIsbn);
 			bmuResult = bookManagementDAO.updateReservationAvailabilityFlase(bookIsbn);
 			umuResult = userManagementDAO.updateCurrentReservationCntPlus(userNo);
+			out.print("briResult: " + briResult);
+			out.print("bmuResult: " + bmuResult);
+			out.print("umuResult: " + umuResult);
+			out.print("bookIsbn: " + bookIsbn);
+			
 			if (briResult > 0 && bmuResult > 0 && umuResult > 0) {
 				
 				script.println("<script>");

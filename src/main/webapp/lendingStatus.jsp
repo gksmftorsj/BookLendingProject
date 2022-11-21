@@ -68,7 +68,6 @@ display: inline;
 
 	<div class="container">
 		<h2>관리자 페이지</h2>
-		<form name="lendingInfoForm" class="lendingInfoForm" method="post">
 			<div class="col-auto">
 				<label for="name">전체대여현황</label>
 				<fieldset>
@@ -478,7 +477,6 @@ display: inline;
 				</div>
 			</div>
 			</fieldset>
-		</form>
 	</div>
 </body>
 </html>

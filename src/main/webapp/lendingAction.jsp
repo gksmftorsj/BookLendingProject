@@ -34,12 +34,9 @@
 		String userNo = userInfoDAO.selectUserNo(userID);
 		String bookNo = bookManagementDTO.getBookNo();
 
-		String extensionStatus = "true";
-		int extensionAvailabilityCnt = 1;
 		BookLendDTO bookLendDTO = new BookLendDTO();
 		bookLendDTO.setUserNo(userNo);
 		bookLendDTO.setBookNo(bookNo);
-		bookLendDTO.setExtensionStatus(extensionStatus);
 		int bliResult = 0;
 		int bmuResult = 0;
 		int umuResult = 0;
@@ -56,7 +53,7 @@
 			if (bliResult > 0 && bmuResult > 0 && umuResult > 0 && biuResult >0) {
 				script.println("<script>");
 				script.println("alert('대여 완료되었습니다.');");
-				script.println("location.href = './index.jsp';");
+				script.println("location.href = document.referrer;");
 				script.println("</script>");
 				script.close();
 				return;

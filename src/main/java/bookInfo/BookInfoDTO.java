@@ -25,6 +25,11 @@ public class BookInfoDTO {
 	public BookInfoDTO() {
 
 	}
+	
+	@Override
+	public String toString() {
+		return "" + cover + "";
+	}
 
 	public BookInfoDTO(String title, String author, String pubDate, String description, String isbn,
 			String cover, String categoryName, String publisher, int bookCnt, int bookTotalLendingCnt) {

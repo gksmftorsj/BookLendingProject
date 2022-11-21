@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Admin - BookManagerDetail</title>
 <style>
 body {
 	margin: 0px;

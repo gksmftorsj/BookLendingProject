@@ -34,7 +34,12 @@
 		int bmuResult = 0;
 		int umuResult = 0;
 		for(int i=0; i<falseReservationList.size(); i++){
-		brdResult = bookReservationDAO.deleteReservation(userNo, falseReservationList.get(i));
+		brdResult = bookReservationDAO.deleteReservation(userNo, bookIsbn);
+		out.print("userNo: " + userNo);
+		out.print("bookIsbn: " + bookIsbn);
+		out.print("bookNo: " + falseReservationList.get(i));
+		out.print("brdResult: " + brdResult);
+		
 		if(brdResult > 0){
 			bmuResult = bookManagementDAO.updateReservationAvailabilityTrue(falseReservationList.get(i));
 			umuResult = userManagementDAO.updateCurrentReservationCntMinus(userNo);
@@ -44,19 +49,21 @@
 				script.println("location.href = './index.jsp';");
 				script.println("</script>");
 				script.close();
-			} else if(bmuResult == 0 || umuResult == 0){
-				script.println("<script>");
-				script.println("alert('예약 취소에 실패하였습니다 다시 시도해주세요.');");
-				script.println("location.href = 'history.back()';");
-				script.println("</script>");
-				script.close();
 			}
-		} else {
-			script.println("<script>");
-			script.println("alert('현재 예약중이지 않습니다.');");
-			script.println("history.back();");
-			script.println("</script>");
-			script.close();
 		}
+// 			} else if(bmuResult == 0 || umuResult == 0){
+// 				script.println("<script>");
+// 				script.println("alert('예약 취소에 실패하였습니다 다시 시도해주세요.');");
+// 				script.println("location.href = 'history.back()';");
+// 				script.println("</script>");
+// 				script.close();
+// 			}
+// 		} else {
+// 			script.println("<script>");
+// 			script.println("alert('현재 예약중이지 않습니다.');");
+// 			script.println("history.back();");
+// 			script.println("</script>");
+// 			script.close();
+// 		}
 		}
 %>

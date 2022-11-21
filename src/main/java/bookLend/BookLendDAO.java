@@ -16,7 +16,7 @@ public class BookLendDAO {
 	public int insertBookLend(BookLendDTO bld) {
 		String sqlQuery = "INSERT INTO BOOK_LEND "
 				+ "VALUES(to_char(sysdate, 'yyyymmdd')||'LDN'||LPAD(LDN_SEQ.NEXTVAL, 4, 0),"
-				+ " ?, ?, sysdate, ?, sysdate+10, 'false')";
+				+ " ?, ?, sysdate, 'true', sysdate+10, 'false')";
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -30,7 +30,6 @@ public class BookLendDAO {
 
 			psmt.setString(1, bld.userNo);
 			psmt.setString(2, bld.bookNo);
-			psmt.setString(3, bld.extensionStatus);
 			result = psmt.executeUpdate();
 			return result;
 		} catch (Exception e) {
@@ -61,6 +60,47 @@ public class BookLendDAO {
 	public int updateExtension(String bookNo) {
 		   String sqlQuery = "UPDATE BOOK_LEND "
 				   + "SET extensionStatus = 'false', expectedReturnDate = expectedReturnDate + 5 "
+				   + "WHERE bookNo = ?";
+		   
+		   int result = 0;
+		   
+		   Connection conn = null;
+		   PreparedStatement psmt = null;
+		   ResultSet rs = null;
+		   
+		   try {
+			   conn = DatabaseUtil.getConnection();
+			   psmt = conn.prepareStatement(sqlQuery);
+			   psmt.setString(1, bookNo);
+			   result = psmt.executeUpdate();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   } finally {
+			   try {
+				   if (conn != null)
+					   conn.close();
+			   } catch (Exception e) {
+				   e.printStackTrace();
+			   }
+			   try {
+				   if (psmt != null)
+					   conn.close();
+			   } catch (Exception e) {
+				   e.printStackTrace();
+			   }
+			   try {
+				   if (rs != null)
+					   conn.close();
+			   } catch (Exception e) {
+				   e.printStackTrace();
+			   }
+		   }
+		   return result;
+	   }
+	
+	public int updateReturnStatus(String bookNo) {
+		   String sqlQuery = "UPDATE BOOK_LEND "
+				   + "SET returnStatus = 'true' "
 				   + "WHERE bookNo = ?";
 		   
 		   int result = 0;
@@ -300,7 +340,7 @@ public class BookLendDAO {
 					}
 					return BookLendList;
 	}
-	
+
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDateAndLendNo(String lendDate, String lendNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
