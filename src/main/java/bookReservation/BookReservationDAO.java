@@ -60,7 +60,7 @@ public class BookReservationDAO {
 	public int updateLendStatus(String userNo, String bookIsbn) {
 		   String sqlQuery = "UPDATE BOOK_RESERVATION "
 		   				   + "SET LENDSTATUS = 'true' "
-		   				   + "WHERE userNo = ?, bookIsbn = ?";
+		   				   + "WHERE userNo = ? AND bookIsbn = ?";
 		   
 		   int result = 0;
 		   
@@ -145,7 +145,7 @@ public class BookReservationDAO {
 	}
 	
 	public String selectUserNo(String bookIsbn) {
-		String sqlQuery = "SELECT * FROM BOOK_RESERVATION WHERE bookIsbn = ?";
+		String sqlQuery = "SELECT userNo FROM BOOK_RESERVATION WHERE lendStatus = 'false' AND bookIsbn = ? AND ROWNUM = 1 ORDER BY RESERVATIONDATE";
 		
 		String userNo = null;
 		

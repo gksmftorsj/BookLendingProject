@@ -12,14 +12,6 @@
    crossorigin="anonymous">
 </head>
 <style>
-/* .logo { */
-/*    transform: rotate(30deg); */
-/*    position: relative; */
-/*    top: -6px; */
-/*    left: -9px; */
-/*    width: 30px; */
-/*    height: 30px; */
-/* } */
 @font-face {
     font-family: '양진체';
     src: url('https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff') format('woff');
@@ -53,11 +45,6 @@
             <a class="nav-link" href="./userManager.jsp">회원관리</a>
           </li>
         </ul>
-        <button type="submit" class="btn btn-secondary me-3"><a style="text-decoration: none; color: white;" href="./userLogin.jsp">로그인</a></button>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="회원명 혹은 도서명을 입력해주세요" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit" style="width:75px;">검색</button>
-        </form>
       </div>
     </div>
   </nav>
