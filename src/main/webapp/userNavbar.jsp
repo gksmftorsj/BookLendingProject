@@ -63,11 +63,10 @@
 						class="nav-link dropdown-toggle" href="#" role="button"
 						data-bs-toggle="dropdown" aria-expanded="false"> 마이페이지 </a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="./modifyUserInfo.jsp">회원정보수정</a></li>
-							<li><a class="dropdown-item" href="#">Another action</a></li>
+							<li><a class="dropdown-item" href="./myLendingStatus.jsp">나의대여현황</a></li>
+							<li><a class="dropdown-item" href="./myReservationStatus.jsp">나의예약현황</a></li>
 							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">Something else
-									here</a></li>
+							<li><a class="dropdown-item" href="./modifyUserInfo.jsp">회원정보수정</a></li>
 						</ul></li>
 				</ul>
 				<%

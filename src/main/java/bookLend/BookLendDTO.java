@@ -19,8 +19,10 @@ public class BookLendDTO {
 
 	private String userName;
 	
-	
-	
+	public String ldDate;
+	public String rtDate;
+
+
 	public BookLendDTO() {
 	}
 	
@@ -36,7 +38,7 @@ public class BookLendDTO {
 	
 	public BookLendDTO(String lendNo, String userNo, String bookNo, Timestamp lendDate, String extensionStatus,
 			Timestamp expectedReturnDate, String returnStatus, String bookIsbn,
-			String title, String userName) {
+			String title, String userName, String ldDate, String rtDate) {
 		super();
 		this.lendNo = lendNo;
 		this.userNo = userNo;
@@ -48,6 +50,9 @@ public class BookLendDTO {
 		this.bookIsbn = bookIsbn;
 		this.title = title;
 		this.userName = userName;
+		this.ldDate = ldDate;
+		this.rtDate = rtDate;
+		
 	}
 
 	
@@ -130,6 +135,25 @@ public class BookLendDTO {
 
 	public void setReturnStatus(String returnStatus) {
 		this.returnStatus = returnStatus;
+	}	
+	
+	
+	public String getLdDate() {
+		return ldDate;
 	}
+
+	public void setLdDate(String ldDate) {
+		this.ldDate = ldDate;
+	}
+	
+
+	public String getRtDate() {
+		return rtDate;
+	}
+
+	public void setRtDate(String rtDate) {
+		this.rtDate = rtDate;
+	}
+
 	
 }

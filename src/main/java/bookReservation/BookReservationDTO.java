@@ -6,26 +6,34 @@ public class BookReservationDTO {
 
 	public String userNo;
 	public String reservationNo;
-	public String bookNo;
+	public String bookIsbn;
 	public Timestamp reservationDate;
 	public String userName;
 	public String title;
 	public String expectedLendingDate;
+	public String lendingStatus;
+	
+	public Timestamp expectedReturnDate;
+	public String rsDate;
+
 
 	public BookReservationDTO() {
 
 	}
 	
-	public BookReservationDTO(String userNo, String reservationNo, String bookNo, Timestamp reservationDate,
-			String userName, String title, String expectedLendingDate) {
+	public BookReservationDTO(String userNo, String reservationNo, String bookIsbn, Timestamp reservationDate,
+			String userName, String title, String expectedLendingDate, String rsDate, Timestamp expectedReturnDate, String lendingStatus) {
 		super();
 		this.userNo = userNo;
 		this.reservationNo = reservationNo;
-		this.bookNo = bookNo;
+		this.bookIsbn = bookIsbn;
 		this.reservationDate = reservationDate;
 		this.userName = userName;
 		this.title = title;
 		this.expectedLendingDate = expectedLendingDate;
+		this.lendingStatus = lendingStatus;
+		this.rsDate = rsDate;
+		this.expectedReturnDate = expectedReturnDate;
 	}
 	
 
@@ -45,12 +53,12 @@ public class BookReservationDTO {
 		this.reservationNo = reservationNo;
 	}
 
-	public String getBookNo() {
-		return bookNo;
+	public String getBookIsbn() {
+		return bookIsbn;
 	}
 
-	public void setBookNo(String bookNo) {
-		this.bookNo = bookNo;
+	public void setBookIsbn(String bookIsbn) {
+		this.bookIsbn = bookIsbn;
 	}
 
 	public Timestamp getReservationDate() {
@@ -85,4 +93,29 @@ public class BookReservationDTO {
 		this.expectedLendingDate = expectedLendingDate;
 	}
 
+	public String getRsDate() {
+		return rsDate;
+	}
+
+	public void setRsDate(String rsDate) {
+		this.rsDate = rsDate;
+	}
+
+	public Timestamp getExpectedReturnDate() {
+		return expectedReturnDate;
+	}
+
+	public void setExpectedReturnDate(Timestamp expectedReturnDate) {
+		this.expectedReturnDate = expectedReturnDate;
+	}
+
+	public String getLendingStatus() {
+		return lendingStatus;
+	}
+
+	public void setLendingStatus(String lendingStatus) {
+		this.lendingStatus = lendingStatus;
+	}
+
+	
 }

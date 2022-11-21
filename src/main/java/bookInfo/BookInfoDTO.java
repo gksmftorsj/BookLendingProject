@@ -26,10 +26,9 @@ public class BookInfoDTO {
 
 	}
 
-	public BookInfoDTO(int rank, String title, String author, String pubDate, String description, String isbn,
+	public BookInfoDTO(String title, String author, String pubDate, String description, String isbn,
 			String cover, String categoryName, String publisher, int bookCnt, int bookTotalLendingCnt) {
 		super();
-		this.rank = rank;
 		this.title = title;
 		this.author = author;
 		this.pubDate = pubDate;

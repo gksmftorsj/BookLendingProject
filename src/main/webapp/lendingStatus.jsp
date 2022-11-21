@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Admin - LendingStatus</title>
 <style>
 body {
 	margin: 0px;
@@ -47,7 +47,7 @@ width: 40%;
 display: inline;
 }
 
-.myTable{
+.adminTable{
 	width: 100%;
 	padding: 15px 30px;
 	margin-bottom: 15px;
@@ -63,9 +63,6 @@ display: inline;
  	String date = ("2009-03-20"+" 00:00:00.0"); // 형식을 지켜야 함
 	LocalDateTime now = LocalDateTime.now();
 	Timestamp today = Timestamp.valueOf(now);
-	String selectedDate = request.getParameter("year") + request.getParameter("month");
-	String searchingValue = request.getParameter("searching");
-	String searchingOption = request.getParameter("lendingOption");
 	%>
 
 
@@ -81,20 +78,20 @@ display: inline;
 							<div class="account_select01">
 								<select id="select_searchYearSel" name="year" class="Searchselect_01"
 									title="연도 선택">
-									<option value=null selected>전체보기</option>
+									<option value="" selected>전체보기</option>
 									<option value="2022">2022</option>
 								</select><span style="color: #636363; font-weight: bold;"> 년</span> <select
 									id="select_searchMonthSel" name="month" class="Searchselect_01" title="월 선택">
-									<option value=null selected>전체보기</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="8">8</option>
-									<option value="9">9</option>
+									<option value="" selected>전체보기</option>
+									<option value="01">1</option>
+									<option value="02">2</option>
+									<option value="03">3</option>
+									<option value="04">4</option>
+									<option value="05">5</option>
+									<option value="06">6</option>
+									<option value="07">7</option>
+									<option value="08">8</option>
+									<option value="09">9</option>
 									<option value="10">10</option>
 									<option value="11">11</option>
 									<option value="12">12</option>
@@ -145,7 +142,7 @@ display: inline;
 			<fieldset>
 			<div class="col-auto">
 				<label for="name">대여내역</label>
-				<div class="myTable">
+				<div class="adminTable">
 					<table class="lendingTable container">
 						<thead>
 							<tr>
@@ -164,7 +161,7 @@ display: inline;
 	List<BookLendDTO> bookLendList = null;
 						
 
-	if ( request.getParameter("year") != null && request.getParameter("month") != null ) {
+	if ( request.getParameter("year") != null && request.getParameter("month") != null && request.getParameter("year") != "" && request.getParameter("month") != "" ) {
 			String lendDate = request.getParameter("year") + request.getParameter("month");
 			if ( (request.getParameter("searching") == null) || (request.getParameter("searching") == "")) {
 			//날짜선택o & 검색어 입력x
@@ -174,7 +171,7 @@ display: inline;
 					<tr>
 						<td><p><%=bookLend.getLendDate() %></p></td>
 						<td><p>
-								<a href="#"><%=bookLend.getLendNo() %></a>
+								<%=bookLend.getLendNo() %>
 						</p></td>
 						<td><p>
 								<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
@@ -241,7 +238,7 @@ display: inline;
 									%>					<tr>
 									<td><p><%=bookLend.getLendDate() %></p></td>
 									<td><p>
-											<a href="#"><%=bookLend.getLendNo() %></a>
+											<%=bookLend.getLendNo() %>
 									</p></td>
 									<td><p>
 										<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
@@ -273,7 +270,7 @@ display: inline;
 									%>					<tr>
 									<td><p><%=bookLend.getLendDate() %></p></td>
 									<td><p>
-											<a href="#"><%=bookLend.getLendNo() %></a>
+											<%=bookLend.getLendNo() %>
 									</p></td>
 									<td><p>
 										<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
@@ -313,7 +310,7 @@ display: inline;
 		%>					<tr>
 								<td><p><%=bookLend.getLendDate() %></p></td>
 								<td><p>
-										<a href="#"><%=bookLend.getLendNo() %></a>
+										<%=bookLend.getLendNo() %>
 								</p></td>
 								<td><p>
 									<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
@@ -345,7 +342,7 @@ display: inline;
 							%>					<tr>
 							<td><p><%=bookLend.getLendDate() %></p></td>
 							<td><p>
-									<a href="#"><%=bookLend.getLendNo() %></a>
+									<%=bookLend.getLendNo() %>
 							</p></td>
 							<td><p>
 								<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
@@ -377,7 +374,7 @@ display: inline;
 							%>					<tr>
 							<td><p><%=bookLend.getLendDate() %></p></td>
 							<td><p>
-									<a href="#"><%=bookLend.getLendNo() %></a>
+									<%=bookLend.getLendNo() %>
 							</p></td>
 							<td><p>
 								<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
@@ -413,7 +410,7 @@ display: inline;
 						<tr>
 							<td><p><%=bookLend.getLendDate() %></p></td>
 							<td><p>
-									<a href="#"><%=bookLend.getLendNo() %></a>
+									<%=bookLend.getLendNo() %>
 							</p></td>
 							<td><p>
 									<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
@@ -447,7 +444,7 @@ display: inline;
 							<tr>
 								<td><p><%=bookLend.getLendDate() %></p></td>
 								<td><p>
-										<a href="#"><%=bookLend.getLendNo() %></a>
+										<%=bookLend.getLendNo() %>
 								</p></td>
 								<td><p>
 										<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
