@@ -11,7 +11,7 @@ public class BookReservationDTO {
 	public String userName;
 	public String title;
 	public String expectedLendingDate;
-	public String lendingStatus;
+	public String lendStatus;
 	
 	public Timestamp expectedReturnDate;
 	public String rsDate;
@@ -22,7 +22,7 @@ public class BookReservationDTO {
 	}
 	
 	public BookReservationDTO(String userNo, String reservationNo, String bookIsbn, Timestamp reservationDate,
-			String userName, String title, String expectedLendingDate, String rsDate, Timestamp expectedReturnDate, String lendingStatus) {
+			String userName, String title, String expectedLendingDate, String rsDate, Timestamp expectedReturnDate, String lendStatus) {
 		super();
 		this.userNo = userNo;
 		this.reservationNo = reservationNo;
@@ -31,7 +31,7 @@ public class BookReservationDTO {
 		this.userName = userName;
 		this.title = title;
 		this.expectedLendingDate = expectedLendingDate;
-		this.lendingStatus = lendingStatus;
+		this.lendStatus = lendStatus;
 		this.rsDate = rsDate;
 		this.expectedReturnDate = expectedReturnDate;
 	}
@@ -109,12 +109,12 @@ public class BookReservationDTO {
 		this.expectedReturnDate = expectedReturnDate;
 	}
 
-	public String getLendingStatus() {
-		return lendingStatus;
+	public String getLendStatus() {
+		return lendStatus;
 	}
 
-	public void setLendingStatus(String lendingStatus) {
-		this.lendingStatus = lendingStatus;
+	public void setLendStatus(String lendStatus) {
+		this.lendStatus = lendStatus;
 	}
 
 	

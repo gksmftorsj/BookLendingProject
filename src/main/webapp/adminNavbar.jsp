@@ -12,6 +12,14 @@
    crossorigin="anonymous">
 </head>
 <style>
+/* .logo { */
+/*    transform: rotate(30deg); */
+/*    position: relative; */
+/*    top: -6px; */
+/*    left: -9px; */
+/*    width: 30px; */
+/*    height: 30px; */
+/* } */
 @font-face {
     font-family: '양진체';
     src: url('https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff') format('woff');
@@ -25,7 +33,9 @@
 <body>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="./index.jsp">지니북스</a>
+      <a class="navbar-brand" href="./index.jsp">지니북스
+         <img class="logo" src="./img/logo3.jpg" style="width:30px; height:30px;">
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -45,6 +55,11 @@
             <a class="nav-link" href="./userManager.jsp">회원관리</a>
           </li>
         </ul>
+        <button type="submit" class="btn btn-secondary me-3"><a style="text-decoration: none; color: white;" href="./userLogin.jsp">로그인</a></button>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="회원명 혹은 도서명을 입력해주세요" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit" style="width:75px;">검색</button>
+        </form>
       </div>
     </div>
   </nav>

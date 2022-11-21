@@ -229,20 +229,18 @@ public class BookReservationDAO {
 		}
 		return result;
 	}
-	
-	
 
 	public List<BookReservationDTO> selectAdminNotLendBookReservationDetailByUserNo(String userNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-	      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-	      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-	      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-	      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-	      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
-	      		+ " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-	      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-	      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " AND rs.userNo LIKE '%'||?||'%' AND rs.lendStatus = 'false' ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " AND rs.userNo LIKE '%'||?||'%' AND rs.lendStatus = 'false' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -270,7 +268,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 					
@@ -303,15 +301,15 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetail() {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-		      	+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-		      	+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-		      	+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-		      	+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-		      	+ " FROM book_reservation rs, book_info bi, user_info ui,"
-		      	+ " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-		      	+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-		      	+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -339,7 +337,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -371,15 +369,15 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailThisMonth() {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE TO_CHAR(sysdate, 'yyyymm') ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE TO_CHAR(sysdate, 'yyyymm') ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -406,7 +404,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -438,14 +436,14 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByRsNo(String rsNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
 	      		+ " AND rs.reservationNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
@@ -475,7 +473,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -507,15 +505,15 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByUserNo(String userNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -544,7 +542,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -576,14 +574,14 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByTitle(String title) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
 	      		+ " AND bi.bookTitle LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
@@ -613,7 +611,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -645,15 +643,15 @@ public class BookReservationDAO {
 	
 	public List<BookReservationDTO> selectAdminBookReservationDetailByRsDate(String rsDate) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -682,7 +680,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -714,15 +712,15 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByRsDateAndRsNo(String rsDate, String rsNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? AND rs.reservationNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? AND rs.reservationNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -753,7 +751,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -785,15 +783,15 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByRsDateAndUserNo(String rsDate, String userNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -824,7 +822,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -856,14 +854,14 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByRsDateAndTitle(String rsDate, String title) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
 	      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? AND bi.bookTitle LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
@@ -895,7 +893,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -924,18 +922,17 @@ public class BookReservationDAO {
 			}
 			return BookReservationList;
 	}	
-	
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailThisMonthByUserNo(String userNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+	      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+	      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+	      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+	      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+	      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+	      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+	      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+	      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
 	      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE TO_CHAR(sysdate, 'yyyymm')"
 	      		+ " AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
@@ -966,7 +963,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -998,15 +995,15 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByRsNoAndUserNo(String rsNo, String userNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " AND rs.reservationNo LIKE '%'||?||'%' AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " AND rs.reservationNo LIKE '%'||?||'%' AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -1036,7 +1033,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -1068,15 +1065,15 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByTitleAndUserNo(String title, String userNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " AND bi.bookTitle LIKE '%'||?||'%' AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " AND bi.bookTitle LIKE '%'||?||'%' AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -1106,7 +1103,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -1138,16 +1135,16 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByRsDateAndRsNoAndUserNo(String rsDate, String rsNo, String userNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
-	      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? AND rs.reservationNo LIKE '%'||?||'%'"
-	      		+ " AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? AND rs.reservationNo LIKE '%'||?||'%'"
+		      		+ " AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
 			Connection conn = null;
 			PreparedStatement psmt = null;
@@ -1178,7 +1175,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -1210,14 +1207,14 @@ public class BookReservationDAO {
 
 	public List<BookReservationDTO> selectAdminBookReservationDetailByRsDateAndTitleAndUserNo(String rsDate, String title, String userNo) {
 	      String sqlQuery = "SELECT rs.reservationDate, rs.reservationNo, rs.userNo, bl.expectedReturnDate,"
-			    + " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
-			    + " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
-			    + " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
-			    + " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendingStatus, ui.userName"
-			    + " FROM book_reservation rs, book_info bi, user_info ui,"
-			    + " (SELECT * FROM book_lend WHERE ROWNUM = 1 ORDER BY EXPECTEDRETURNDATE) bl"
-			    + " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
-			    + " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
+		      		+ " rs.bookIsbn, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') expectedLendingDate,"
+		      		+ " CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
+		      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle,"
+		      		+ " TO_CHAR(rs.reservationDate, 'yy/mm/dd') rsDate, rs.lendStatus, ui.userName"
+		      		+ " FROM book_reservation rs, book_info bi, user_info ui,"
+		      		+ " (SELECT MIN(expectedreturndate) expectedreturndate, SUBSTR(bookNo, 1, 10) bookNo FROM book_lend GROUP BY SUBSTR(bookNo, 1, 10)) bl"
+		      		+ " WHERE rs.bookIsbn = SUBSTR(bl.bookNo, 1, 10)"
+		      		+ " AND rs.bookIsbn = bi.bookIsbn AND rs.userNo = ui.userNo"
 	      		+ " AND TO_CHAR(rs.reservationDate, 'yyyymm') LIKE ? AND bi.bookTitle LIKE '%'||?||'%'"
 	      		+ " AND rs.userNo LIKE '%'||?||'%' ORDER BY reservationNo DESC";
 
@@ -1250,7 +1247,7 @@ public class BookReservationDAO {
 					brs.expectedLendingDate = rs.getString("expectedLendingDate");
 					brs.expectedReturnDate = rs.getTimestamp("expectedReturnDate");
 					brs.rsDate = rs.getString("rsDate");
-					brs.lendingStatus = rs.getString("lendingStatus");
+					brs.lendStatus = rs.getString("lendStatus");
 					
 					BookReservationList.add(brs);
 				}
@@ -1279,7 +1276,6 @@ public class BookReservationDAO {
 			}
 			return BookReservationList;
 	}	
-	
 	
 
 }

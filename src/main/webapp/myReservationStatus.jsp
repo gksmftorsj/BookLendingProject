@@ -151,7 +151,7 @@ display: inline;
 
 			<fieldset>
 			<div class="col-auto">
-				<label for="name">대여내역</label>
+				<label for="name">예약내역</label>
 				<div class="myTable">
 					<table class="reservationTable container">
 						<thead>
@@ -160,7 +160,7 @@ display: inline;
 								<th scope="col"><p>예약번호</p></th>
 								<th scope="col"><p>회원명</p></th>
 								<th scope="col"><p>도서명</p></th>
-								<th scope="col"><p>대여가능일</p></th>
+								<th scope="col"><p>예상대여일</p></th>
 								<th scope="col"><p>비고</p></th>
 							</tr>
 						</thead>
@@ -186,9 +186,9 @@ display: inline;
 									<td><p><%=bookReservation.getUserName() %></p></td>
 									<td><p><%=bookReservation.getTitle() %></p></td>
 									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
-									<td><p><%if(bookReservation.getLendingStatus().equals("false")){
+									<td><p><%if(bookReservation.getLendStatus().equals("false")){
 												if (today.after(bookReservation.getExpectedReturnDate())) {%>
-													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여연기</button><%
+													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
 												} else{%><button type="button" class="btn btn-info reservationBtn reservationTitle" style="width: 100px;">예약중</button><%}
 											} else {%>대여완료<%}%>
 									</p></td>
@@ -206,9 +206,9 @@ display: inline;
 									<td><p><%=bookReservation.getUserName() %></p></td>
 									<td><p><%=bookReservation.getTitle() %></p></td>
 									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
-									<td><p><%if(bookReservation.getLendingStatus().equals("false")){
+									<td><p><%if(bookReservation.getLendStatus().equals("false")){
 												if (today.after(bookReservation.getExpectedReturnDate())) {%>
-													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여연기</button><%
+													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
 												} else{%><button type="button" class="btn btn-info reservationBtn reservationTitle" style="width: 100px;">예약중</button><%}
 											} else {%>대여완료<%}%>
 									</p></td>
@@ -218,7 +218,7 @@ display: inline;
 					}
 				}
 			} else { //2. 날짜 선택x & 검색어 입력x
-				bookReservationList = bookReservationDao.selectAdminBookReservationDetailByUserNo(userNo);
+				bookReservationList = bookReservationDao.selectAdminBookReservationDetailThisMonthByUserNo(userNo);
 				if(bookReservationList != null && bookReservationList.size()>0) {
 					for(BookReservationDTO bookReservation : bookReservationList){
 		%>					<tr>
@@ -227,9 +227,9 @@ display: inline;
 								<td><p><%=bookReservation.getUserName() %></p></td>
 								<td><p><%=bookReservation.getTitle() %></p></td>
 								<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
-								<td><p><%if(bookReservation.getLendingStatus().equals("false")){
+								<td><p><%if(bookReservation.getLendStatus().equals("false")){
 											if (today.after(bookReservation.getExpectedReturnDate())) {%>
-												<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여연기</button><%
+												<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
 											} else{%><button type="button" class="btn btn-info reservationBtn reservationTitle" style="width: 100px;">예약중</button><%}
 										} else {%>대여완료<%}%>
 								</p></td>
@@ -251,9 +251,9 @@ display: inline;
 								<td><p><%=bookReservation.getUserName() %></p></td>
 								<td><p><%=bookReservation.getTitle() %></p></td>
 								<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
-								<td><p><%if(bookReservation.getLendingStatus().equals("false")){
+								<td><p><%if(bookReservation.getLendStatus().equals("false")){
 											if (today.after(bookReservation.getExpectedReturnDate())) {%>
-												<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여연기</button><%
+												<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
 											} else{%><button type="button" class="btn btn-info reservationBtn reservationTitle" style="width: 100px;">예약중</button><%}
 										} else {%>대여완료<%}%>
 								</p></td>
@@ -274,9 +274,9 @@ display: inline;
 									<td><p><%=bookReservation.getUserName() %></p></td>
 									<td><p><%=bookReservation.getTitle() %></p></td>
 									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
-									<td><p><%if(bookReservation.getLendingStatus().equals("false")){
+									<td><p><%if(bookReservation.getLendStatus().equals("false")){
 												if (today.after(bookReservation.getExpectedReturnDate())) {%>
-													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여연기</button><%
+													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
 												} else{%><button type="button" class="btn btn-info reservationBtn reservationTitle" style="width: 100px;">예약중</button><%}
 											} else {%>대여완료<%}%>
 									</p></td>
@@ -294,9 +294,9 @@ display: inline;
 									<td><p><%=bookReservation.getUserName() %></p></td>
 									<td><p><%=bookReservation.getTitle() %></p></td>
 									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
-									<td><p><%if(bookReservation.getLendingStatus().equals("false")){
+									<td><p><%if(bookReservation.getLendStatus().equals("false")){
 												if (today.after(bookReservation.getExpectedReturnDate())) {%>
-													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여연기</button><%
+													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
 												} else{%><button type="button" class="btn btn-info reservationBtn reservationTitle" style="width: 100px;">예약중</button><%}
 											} else {%>대여완료<%}%>
 									</p></td>
