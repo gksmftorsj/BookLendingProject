@@ -49,7 +49,7 @@ request.setCharacterEncoding("UTF-8");
    } else if (reviewStar == null) {
       script.println("<script>");
       script.println("alert('별점을 등록해주세요.');");
-      script.println("location.href = document.referrer");
+      script.println("history.back()");
       script.println("</script>");
    } else {
       // 로그인이 되었을 시

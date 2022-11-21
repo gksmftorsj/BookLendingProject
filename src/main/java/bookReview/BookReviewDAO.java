@@ -17,7 +17,7 @@ public class BookReviewDAO {
       public int insertReview (String userName, String userNo, BookReviewDTO brd) {
             String sqlQuery = "INSERT INTO BOOK_REVIEW "
                           + "VALUES(?||'RWN'||RWN_SEQ.NEXTVAl, ?, ?, ?, "
-                          + "TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI') , ?, ?)";
+                          + "TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') , ?, ?)";
                   
             Connection conn = null;
             PreparedStatement psmt = null;
@@ -51,13 +51,12 @@ public class BookReviewDAO {
       
 // 한 줄 리뷰 (화면에 띄우기)      
       public List<BookReviewDTO> selectReviewList (String bookIsbn) {
-            String sqlQuery = 
-//                  "SELECT reviewNo, userName, userNo, bookIsbn"
-//                  + ", reviewDate, reviewContent"
-//                  + ", reviewStar FROM BOOK_REVIEW WHERE bookIsbn = ? ORDER BY reviewDate DESC";
-                  "SELECT * FROM BOOK_REVIEW "
-                  + "WHERE bookisbn =  ?"
-                  + " ORDER BY reviewNo DESC";
+            String sqlQuery ="SELECT * "
+	            			   + "FROM(SELECT bookIsbn, reviewContent, userName, userNo, reviewDate, reviewNo, reviewStar, "
+	            			   + "(SUBSTR(reviewDate, 1, 4)||SUBSTR(reviewDate, 6, 2)||SUBSTR(reviewDate, 9, 2)||SUBSTR(reviewDate, 12, 2)||SUBSTR(reviewDate, 15, 2)||SUBSTR(reviewDate, 18, 2)) rd "
+	            			   + "FROM BOOK_REVIEW "
+	            			   + "WHERE bookIsbn = ?) "
+            			   + "ORDER BY rd DESC";
 
             Connection conn = null;
             PreparedStatement psmt = null;
@@ -86,10 +85,6 @@ public class BookReviewDAO {
                  brd.reviewNo = rs.getString("reviewNo");
                  brd.reviewStar = rs.getInt("reviewStar");
                  
-//                 java.sql.String today = (String) new java.util.Date(); 
-//                 java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd"); 
-//                 System.out.println(sdf.format(today));
-//                 
                  selectReviewList.add(brd);
                }
               

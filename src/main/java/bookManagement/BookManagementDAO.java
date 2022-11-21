@@ -67,14 +67,13 @@ public class BookManagementDAO {
          }
       }
    }
-
+   
    public String selectBookReservationTrue(String isbn) {
 	      String sqlQuery = "SELECT * "
-	            + "FROM BOOK_MANAGEMENT "
+	            + "FROM (SELECT * FROM BOOK_MANAGEMENT ORDER BY BOOKNO) "
 	            + "WHERE BOOKISBN = ? AND "
 	            + "BOOKRESERVATIONAVAILABILITY = 'true' AND "
-	            + "ROWNUM = 1 "
-	            + "ORDER BY BOOKNO";
+	            + "ROWNUM = 1 ";
 
 	      String bookNo = null;
 
@@ -104,11 +103,10 @@ public class BookManagementDAO {
 
 	public BookManagementDTO selectBookManagementDetail(String isbn) {
         String sqlQuery = "SELECT * "
-        				+ "FROM BOOK_MANAGEMENT "
+        				+ "FROM (SELECT * FROM BOOK_MANAGEMENT ORDER BY BOOKNO) "
         				+ "WHERE BOOKISBN = ? AND "
         				+ "BOOKLENDINGAVAILABILITY = 'true' AND "
-        				+ "ROWNUM = 1 "
-        				+ "ORDER BY BOOKNO";
+        				+ "ROWNUM = 1";
         
         BookManagementDTO bookManagementDTO = null;
         
@@ -396,7 +394,7 @@ public class BookManagementDAO {
 		
 		public int updateBookManagementDetail(String bookIsbn) {
 		      String sqlQuery = "UPDATE BOOK_MANAGEMENT "
-		            + "SET booklendingavailability = 'false', bookReservationAvailability= 'false', bookLendingCnt = bookLendingCnt + 1 "
+		            + "SET booklendingavailability = 'false', bookLendingCnt = bookLendingCnt + 1 "
 		            + "WHERE bookIsbn = ? AND "
 		            + "bookNo = (SELECT BOOKNO FROM(SELECT * FROM BOOK_MANAGEMENT WHERE bookIsbn = ? AND ROWNUM = 1 AND booklendingavailability = 'true' ORDER BY BOOKNO) BOOK_MANAGEMENT)";
 		      
@@ -421,13 +419,38 @@ public class BookManagementDAO {
 		         }
 		         return result;
 		   }
+		
+		public int updateBookManagementReturnToLending(String bookNo) {
+		      String sqlQuery = "UPDATE BOOK_MANAGEMENT "
+		            + "SET booklendingavailability = 'false', bookReservationAvailability= 'true', bookLendingCnt = bookLendingCnt + 1 "
+		            + "WHERE bookNo = ?";
+		      
+		      int result = 0;
+		      
+		      Connection conn = null;
+		        PreparedStatement psmt = null;
+		        ResultSet rs = null;
+		      
+		        try {
+		            conn = DatabaseUtil.getConnection();
+		            psmt = conn.prepareStatement(sqlQuery);
+		            psmt.setString(1, bookNo);
+		            result = psmt.executeUpdate();
+		         } catch (Exception e) {
+		            e.printStackTrace();
+		         } finally {
+		            try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		            try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		            try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		         }
+		         return result;
+		   }
 	   
    public List<String> selectBookReservationFalse(String isbn) {
 	      String sqlQuery = "SELECT * "
-	            + "FROM BOOK_MANAGEMENT "
+	            + "FROM (SELECT * FROM BOOK_MANAGEMENT ORDER BY BOOKNO) "
 	            + "WHERE BOOKISBN = ? AND "
-	            + "BOOKRESERVATIONAVAILABILITY = 'false' "
-	            + "ORDER BY BOOKNO";
+	            + "BOOKRESERVATIONAVAILABILITY = 'false'";
 	      
 	      List<String> falseReservationList = null;
 
@@ -518,6 +541,47 @@ public class BookManagementDAO {
 	   String sqlQuery = "UPDATE BOOK_MANAGEMENT "
 			   + "SET bookReservationAvailability = 'true' "
 			   + "WHERE bookNo = ?";	
+	   
+	   int result = 0;
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   psmt.setString(1, bookNo);
+		   result = psmt.executeUpdate();
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {
+			   if (conn != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+		   try {
+			   if (psmt != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+		   try {
+			   if (rs != null)
+				   conn.close();
+		   } catch (Exception e) {
+			   e.printStackTrace();
+		   }
+	   }
+	   return result;
+   }
+   
+   public int updateLendingAvailabilityTrue(String bookNo) {
+	   String sqlQuery = "UPDATE BOOK_MANAGEMENT "
+			   + "SET bookLendingAvailability = 'true' "
+			   + "WHERE bookNo = ?";
 	   
 	   int result = 0;
 	   

@@ -6,7 +6,7 @@ public class BookReservationDTO {
 
 	public String userNo;
 	public String reservationNo;
-	public String bookNo;
+	public String bookIsbn;
 	public Timestamp reservationDate;
 	public String userName;
 	public String title;
@@ -16,12 +16,12 @@ public class BookReservationDTO {
 
 	}
 	
-	public BookReservationDTO(String userNo, String reservationNo, String bookNo, Timestamp reservationDate,
+	public BookReservationDTO(String userNo, String reservationNo, String bookIsbn, Timestamp reservationDate,
 			String userName, String title, String expectedLendingDate) {
 		super();
 		this.userNo = userNo;
 		this.reservationNo = reservationNo;
-		this.bookNo = bookNo;
+		this.bookIsbn = bookIsbn;
 		this.reservationDate = reservationDate;
 		this.userName = userName;
 		this.title = title;
@@ -45,12 +45,12 @@ public class BookReservationDTO {
 		this.reservationNo = reservationNo;
 	}
 
-	public String getBookNo() {
-		return bookNo;
+	public String getBookIsbn() {
+		return bookIsbn;
 	}
 
-	public void setBookNo(String bookNo) {
-		this.bookNo = bookNo;
+	public void setBookIsbn(String bookIsbn) {
+		this.bookIsbn = bookIsbn;
 	}
 
 	public Timestamp getReservationDate() {

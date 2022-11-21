@@ -24,7 +24,7 @@ import util.DatabaseUtil;
 public class BookInfoDAO {
 
    public void insertBookInfo(BookInfoDTO bi) {
-      String sqlQuery = "INSERT INTO BOOK_INFO VALUES(?, ?, ?, ?, ?, ?, ?, SUBSTR(?, 6, INSTR(?, '>', 1, 2)-6), ?, ?, ?)";
+      String sqlQuery = "INSERT INTO BOOK_INFO VALUES(BRK_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, SUBSTR(?, 6, INSTR(?, '>', 1, 2)-6), ?, ?, ?)";
 
       Connection conn = null;
       PreparedStatement psmt = null;
@@ -34,18 +34,17 @@ public class BookInfoDAO {
          conn = DatabaseUtil.getConnection();
          psmt = conn.prepareStatement(sqlQuery);
          
-         psmt.setInt(1, bi.rank);
-         psmt.setString(2, bi.title);
-         psmt.setString(3, bi.author);
-         psmt.setString(4, bi.pubDate);
-         psmt.setString(5, bi.description);
-         psmt.setString(6, bi.isbn);
-         psmt.setString(7, bi.cover);
+         psmt.setString(1, bi.title);
+         psmt.setString(2, bi.author);
+         psmt.setString(3, bi.pubDate);
+         psmt.setString(4, bi.description);
+         psmt.setString(5, bi.isbn);
+         psmt.setString(6, bi.cover);
+         psmt.setString(7, bi.categoryName);
          psmt.setString(8, bi.categoryName);
-         psmt.setString(9, bi.categoryName);
-         psmt.setString(10, bi.publisher);
-         psmt.setInt(11, bi.bookCnt);
-         psmt.setInt(12, bi.bookTotalLendingCnt);
+         psmt.setString(9, bi.publisher);
+         psmt.setInt(10, bi.bookCnt);
+         psmt.setInt(11, bi.bookTotalLendingCnt);
          int resultCnt = psmt.executeUpdate();
          if(resultCnt>0) {
             System.out.println("insert 성공");
@@ -269,6 +268,55 @@ public class BookInfoDAO {
 		   psmt = conn.prepareStatement(sqlQuery);
 		   
 		   psmt.setString(1, "%"+categoryName+"%");
+		   psmt.setInt(2, startIndex);
+		   psmt.setInt(3, endIndex);
+		   
+		   
+		   rs = psmt.executeQuery();
+		   
+		   BookInfoList = new ArrayList<BookInfoDTO>();
+		   
+		   while (rs.next()) {
+			   BookInfoDTO bi = new BookInfoDTO();
+			   bi.rank = rs.getInt("bookRank");
+			   bi.title = rs.getString("bookTitle");
+			   bi.author = rs.getString("bookAuthor");
+			   bi.cover = rs.getString("bookCover");
+			   bi.categoryName = rs.getString("bookCategoryName");
+			   bi.isbn = rs.getString("bookIsbn");
+			   bi.publisher = rs.getString("bookPublisher");
+			   bi.bookCnt = rs.getInt("bookCnt");
+			   
+			   BookInfoList.add(bi);
+		   }
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	   }
+	   return BookInfoList;
+   }
+   
+   public List<BookInfoDTO> selectBookInfoBySearch(int startIndex, int endIndex, String search) {
+	   String sqlQuery = "SELECT * "
+			   + "FROM("
+			   + "		SELECT ROWNUM AS RN, BI.* "
+			   + "     FROM (SELECT * FROM BOOK_INFO WHERE BOOKTITLE LIKE ?) BI) "
+			   + "WHERE RN BETWEEN ? AND ?";
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   List<BookInfoDTO> BookInfoList = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   
+		   psmt.setString(1, "%"+search+"%");
 		   psmt.setInt(2, startIndex);
 		   psmt.setInt(3, endIndex);
 		   
@@ -681,6 +729,35 @@ public BookInfoDTO selectBookDetail(String title) {
 	   }
 	   return total;
    }
+   
+   public int selectBookSearchTotal(String search) {
+	   String sqlQuery = "SELECT count(*) total FROM BOOK_INFO WHERE bookTitle LIKE ?";
+	   
+	   int total = 0;
+	   
+	   Connection conn = null;
+	   PreparedStatement psmt = null;
+	   ResultSet rs = null;
+	   
+	   try {
+		   conn = DatabaseUtil.getConnection();
+		   psmt = conn.prepareStatement(sqlQuery);
+		   psmt.setString(1, "%" + search + "%");
+		   rs = psmt.executeQuery();
+		   
+		   if(rs.next()) {
+			   total = rs.getInt("total");
+			   
+		   }
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   } finally {
+		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	   }
+	   return total;
+   }
 
    
    public int updateBookTotalLendingCnt(String bookIsbn) {
@@ -733,7 +810,6 @@ public BookInfoDTO selectBookDetail(String title) {
          for(int i=0; i<itemArr.size(); i++) {
             JSONObject itemObj = (JSONObject)itemArr.get(i);
             
-            int rank = 1;
             String title = (String) itemObj.get("title");
             String author = (String) itemObj.get("author");
             String pubDate = (String) itemObj.get("pubDate");
@@ -745,7 +821,7 @@ public BookInfoDTO selectBookDetail(String title) {
             int bookCnt = 5;
             int bookTotalLendingCnt = 0;
             
-            BookInfoDTO bookInfoDTO = new BookInfoDTO(rank, title, author, pubDate, description, isbn, cover, categoryName, publisher, bookCnt, bookTotalLendingCnt);
+            BookInfoDTO bookInfoDTO = new BookInfoDTO(title, author, pubDate, description, isbn, cover, categoryName, publisher, bookCnt, bookTotalLendingCnt);
             BookInfoDAO bookInfoDAO = new BookInfoDAO();
             bookInfoDAO.insertBookInfo(bookInfoDTO);
             

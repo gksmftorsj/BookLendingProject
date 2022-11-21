@@ -1,9 +1,13 @@
+<%@page import="bookReservation.BookReservationDAO"%>
 <%@page import="bookReview.*"%>
 
 <%@page import="bookInfo.BookInfoDTO"%>
 <%@page import="bookInfo.BookInfoDAO"%>
 <%@page import="userInfo.UserInfoDAO"%>
 <%@page import="userInfo.UserInfoDTO"%>
+<%@page import="bookLend.BookLendDTO"%>
+<%@page import="bookLend.BookLendDAO"%>
+<%@page import="bookManagement.BookManagementDAO"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
@@ -95,6 +99,13 @@ request.setCharacterEncoding("UTF-8");
 //    String reviewDateMH = bookInfoDAO.selectReviewDate(BookReviewDTO brd);
    
    //String reviewDate = bookReviewDAO.reviewGetDate();
+   BookLendDAO bookLendDAO = new BookLendDAO();
+   BookManagementDAO bookManagementDAO = new BookManagementDAO();
+   BookReservationDAO bookReservationDAO = new BookReservationDAO();
+   BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(userNo, bookIsbn);
+   int bookLendingCnt = bookManagementDAO.selectBookLendingCnt(bookIsbn);
+   String userReservationStatus = bookReservationDAO.selectUserReservationStatus(userNo, bookIsbn);
+   int extensionCnt = 0;
    %>
 
    <%@ include file="userNavbar.jsp"%>
@@ -136,14 +147,137 @@ request.setCharacterEncoding("UTF-8");
                   ( <%=reviewStarAVG%> )
                </p>
                <p>리뷰 ( <%=reviewCnt%> )</p>
-               <p>대여 가능한 권 수 ( <%=bookInfoDTO.getBookCnt()%> )
-                  <button type="button" class="btn btn-outline-secondary">대여하기</button>
-                  <button type="button" class="btn btn-outline-secondary">예약하기</button>
-               </p>
-<!--                <p>찜 갯수 -->
-<!--                   <button type="button" class="btn btn-outline-secondary" style>찜하기  -->
-<!--                      <img src="https://cdn-icons-png.flaticon.com/512/138/138533.png" style="width: 10px; height: 10px;"></img></button> -->
-<!--                </p> -->
+	               <p>대여 가능한 권 수 ( <%=bookInfoDTO.getBookCnt()%> )
+	               <%
+	               if(userID == null){
+	            	   if(bookLendingCnt < 5){
+	               %>
+	               	  <button type="button" class="btn btn-primary lendBtn" style="width: 100px;">대여가능</button>
+	               <%
+	            	   } else {
+	               %>
+					  <button type="button" class="btn btn-info lendBtn" style="width: 100px;">예약가능</button>
+	               <%
+	                   }
+	               } else { 
+		               if(bookLendDTO.getLendNo() == null){
+							
+							if(bookLendingCnt < 5){
+	               %>
+	                  <button type="button" class="btn btn-primary lendBtn"
+							style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal">대여가능</button>
+						
+						<form id="lendForm" method="post" name="lendForm">
+							<div class="modal fade" id="exampleModal" tabindex="-1"
+								aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body lend-body d-flex justify-content-center">
+										<%=bookInfoDTO.getTitle()%>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkLendBtn()">대여하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+	               <%
+						} else {
+							if(userReservationStatus == null){
+				   %>
+   					  <button type="button" class="btn btn-info lendBtn" style="width: 100px;" data-bs-toggle="modal"
+							data-bs-target="#exampleModal1">예약가능</button>
+							
+					  <form id="reservateForm" method="post" name="reservateForm"> 
+ 							<div class="modal fade" id="exampleModal1" tabindex="-1" 
+								aria-labelledby="exampleModalLabel1" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel1">지니북스</h1>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body reservate-body d-flex justify-content-center">
+										<%=bookInfoDTO.getTitle()%>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												onclick="checkReservateBtn()">예약하기</button>
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>  
+				   <% 
+						} else {
+				   %>		
+				   	<form action="./reservationCancelAction.jsp?isbn=<%=bookIsbn%>" method="post">
+							<button type="submit" class="btn btn-warning lendTitle" style="width: 100px;">예약취소</button>						
+						</form>
+				   <%
+							}
+						}
+	               } else{
+	            	   if(bookLendDTO.getReturnStatus().equals("true")){
+					%>
+						<button type="button" class="btn btn-dark lendBtn" style="width: 100px;">반납완료</button>		
+					<%
+						} else {
+					%>
+						<button type="button" class="btn btn-success lendBtn" style="width: 100px;" style="width: 100px;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">대여중</button>
+	               		<form id="extensionForm" method="post" name="extensionForm"> 
+							<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h1 class="modal-title fs-5" id="staticBackdropLabel">지니북스</h1>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+					<%
+						if(bookLendDTO.getExtensionStatus().equals("true")){
+							extensionCnt = 1;
+					%>
+							      <div class="modal-body extension-body">
+							      <%=bookInfoDTO.getTitle()%><br>반납예정일은 <%=bookLendDTO.expectedReturnDate%>까지입니다. <br>현재 연장 가능 횟수는 <%=extensionCnt%>회입니다.
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-primary extensionBtn"
+							        onclick="checkExtensionBtn()">연장하기</button>
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							      </div>
+					<% 
+						} else{
+					%>
+								  <div class="modal-body extension-body">
+							      <%=bookInfoDTO.getTitle()%><br>반납예정일은 <%=bookLendDTO.expectedReturnDate%>까지입니다. <br>현재 연장 가능 횟수는 <%=extensionCnt%>회입니다.
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+							      </div>						
+					<%
+						}
+					%>	
+							    </div>
+							  </div>
+							</div>
+						</form>
+	               	<%
+						}}}
+	               	%>
+	               </p>
             </div>
          </div>
 <!-- 리뷰 Section -->
@@ -266,5 +400,48 @@ request.setCharacterEncoding("UTF-8");
    <footer class="my-3 text-center text-small">
       <p class="mb-1">&copy; 2022 지니북스</p>
    </footer>
+   <script>
+   
+   const userID = "<%=userID%>";
+	
+	if(userID === "null"){
+		const lendBtn = document.querySelector(".lendBtn");
+		    lendBtn.addEventListener("click", ()=>{
+		    	alert("로그인 후 이용가능합니다.");
+		    })						
+	}
+   
+   const lendForm = document.getElementById("lendForm");
+   function checkLendBtn() {
+       if (!confirm("대여기간은 총 10일입니다. 추가연장은 총 1회 가능하며 추가연장 기간은 총 5일입니다. 대여하시겠습니까?")) {
+       	alert("대여가 취소되었습니다.");
+       } else {
+			lendForm.setAttribute("action", "./lendingAction.jsp?isbn=<%=bookIsbn%>");
+       	lendForm.submit();
+       }
+   }
+   
+   const reservateForm = document.getElementById("reservateForm");
+   function checkReservateBtn() {
+       if (!confirm("예약메세지")) {
+       	alert("예약이 취소되었습니다..");
+       } else {
+			const isbn = localStorage.getItem("isbn");
+			reservateForm.setAttribute("action", "./reservationAction.jsp?isbn=<%=bookIsbn%>");
+			reservateForm.submit();
+       	}
+       }
+   
+   const extensionForm = document.getElementById("extensionForm");
+   function checkExtensionBtn() {
+   if (!confirm("연장메세지")) {
+   	alert("연장이 취소되었습니다..");
+   } else {
+		const isbn = localStorage.getItem("isbn");
+		extensionForm.setAttribute("action", "./extensionAction.jsp?isbn=<%=bookIsbn%>");
+		extensionForm.submit();
+   	}
+   }
+   </script>
 </body>
 </html>
