@@ -60,7 +60,7 @@
                      <li><a class="dropdown-item" href="#">나의대여현황</a></li>
                      <li><a class="dropdown-item" href="#">나의예약현황</a></li>
                      <li><hr class="dropdown-divider"></li>
-                     <li><a class="dropdown-item" href="#">회원정보수정</a></li>
+                     <li><a class="dropdown-item" href="./modifyUserInfo.jsp">회원정보수정</a></li>
                   </ul></li>
             </ul>
             <%

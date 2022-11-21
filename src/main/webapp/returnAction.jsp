@@ -38,8 +38,9 @@
 		}
 		
 		// 빌리는 사람 유저넘버
-		String lendUserNo = bookReservationDAO.selectUserNo(bookNo);
+		String lendUserNo = bookReservationDAO.selectUserNo(bookIsbn);
 		out.print(lendUserNo);
+		
 		out.print(bookNo);
 		int clc = 0; // 대여에서 반납하는 사람(USER_MANAGEMENT에서 currentLendingCnt -1)
 		int crc = 0; // 예약에서 대여하는 사람(USER_MANAGEMENT에서 currentLendingCnt +1, currentReservationCnt -1, totalLendingCnt +1)
@@ -74,65 +75,84 @@
 			
 			if(clc > 0 && urs > 0 && ibr > 0 && ulat > 0){
 				script.println("<script>");
-				script.println("alert('예약대기중인 사람이 없을 때 반납 완료되었습니다.');");
+				script.println("alert('"+bookNo+lendUserNo+"예약대기중인 사람이 없을 때 반납 완료되었습니다.');");
 				script.println("location.href = document.referrer");
 				script.println("</script>");
 				script.close();
 			} else{
 				script.println("<script>");
-				script.println("alert('예약대기중인 사람이 없을 때 반납에 실패했습니다. 다시 시도해주세요.');");
+				script.println("alert('"+bookNo+lendUserNo+"예약대기중인 사람이 없을 때 반납에 실패했습니다. 다시 시도해주세요.');");
 				script.println("location.href = document.referrer");
 				script.println("</script>");
 				script.close();
 			}
 		} else { // 예약 대기중인 사람 있을 때
-			// 대여에서 반납하는 사람(USER_MANAGEMENT에서 currentLendingCnt -1)
-			clc = userManagementDAO.updateCurrentLendingCntMinus(returnUserNo);
-
-			// 대여에서 반납하는 사람(BOOK_LEND에서 returnStatus -> true로 변경)
-			urs = bookLendDAO.updateReturnStatus(bookNo);
-			
-			// BookLendDTO 초기화 시켜주고 lend테이블에서 반납하는 사람의 lendingData 가져오기 -->
-			BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(returnUserNo, bookIsbn);
-			BookReturnDTO bookReturnDTO = new BookReturnDTO();
-			bookReturnDTO.setUserNo(bookLendDTO.getUserNo());
-			bookReturnDTO.setBookNo(bookLendDTO.getBookNo());
-			bookReturnDTO.setLendNo(bookLendDTO.getLendNo());
-			bookReturnDTO.setLendDate(bookLendDTO.getLendDate());
-			bookReturnDTO.setExpectedReturnDate(bookLendDTO.getExpectedReturnDate());
-			// ---> 대여에서 반납하는 사람(BOOK_RETURN에 반납하는 도서 데이터 insert)
-			ibr = bookReturnDAO.insertBookReturn(bookReturnDTO);
-			
-//--------------------------------------------------------------------------------------------------------------------------
-
-			// 예약에서 대여하는 사람(USER_MANAGEMENT에서 currentLendingCnt +1, currentReservationCnt -1, totalLendingCnt +1)
-			crc = userManagementDAO.updateCurrentReservationCntMinus(lendUserNo);
-			uum = userManagementDAO.updateUserManagement(lendUserNo);
-
-			// 예약에서 대여하는 사람(BOOK_MANAGEMENT에서 bookLendingAvailability -> 'false', bookReservationAvailability -> true, bookLendingCnt +1)
-			ubmrtn = bookManagementDAO.updateBookManagementReturnToLending(bookNo);
-
- 			// 예약에서 대여하는 사람(대여하면 bookReservation에서 lendStatus true로 변경)
-			uls = bookReservationDAO.updateLendStatus(lendUserNo, bookNo);
-			
- 			// 예약에서 대여하는 사람(BOOK_LEND에 insert)
-			bookLendDTO = new BookLendDTO();
-			bookLendDTO.setUserNo(lendUserNo);
-			bookLendDTO.setBookNo(bookNo);
-			ibl = bookLendDAO.insertBookLend(bookLendDTO);
-			
-			if(clc > 0 && urs > 0 && ibr > 0 && crc > 0 && uum > 0 && ubmrtn > 0 && uls > 0 && ibl > 0){
+			int currentLendingCnt = userManagementDAO.selectCurrentLendingCnt(lendUserNo);
+			if(currentLendingCnt == 5){
 				script.println("<script>");
-				script.println("alert('반납 완료되었습니다.');");
-				script.println("location.href = document.referrer");
+				script.println("alert('현재 대여중인 책이 5권 입니다. 반납후 대여가능합니다.');");
+				script.println("history.back()");
 				script.println("</script>");
 				script.close();
-			} else{
-				script.println("<script>");
-				script.println("alert('반납에 실패했습니다. 다시 시도해주세요.');");
-				script.println("location.href = document.referrer");
-				script.println("</script>");
-				script.close();
+				return;
+			}else{
+				// 대여에서 반납하는 사람(USER_MANAGEMENT에서 currentLendingCnt -1)
+				clc = userManagementDAO.updateCurrentLendingCntMinus(returnUserNo);
+	
+				// 대여에서 반납하는 사람(BOOK_LEND에서 returnStatus -> true로 변경)
+				urs = bookLendDAO.updateReturnStatus(bookNo);
+				
+				// BookLendDTO 초기화 시켜주고 lend테이블에서 반납하는 사람의 lendingData 가져오기 -->
+				BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(returnUserNo, bookIsbn);
+				BookReturnDTO bookReturnDTO = new BookReturnDTO();
+				bookReturnDTO.setUserNo(bookLendDTO.getUserNo());
+				bookReturnDTO.setBookNo(bookLendDTO.getBookNo());
+				bookReturnDTO.setLendNo(bookLendDTO.getLendNo());
+				bookReturnDTO.setLendDate(bookLendDTO.getLendDate());
+				bookReturnDTO.setExpectedReturnDate(bookLendDTO.getExpectedReturnDate());
+				// ---> 대여에서 반납하는 사람(BOOK_RETURN에 반납하는 도서 데이터 insert)
+				ibr = bookReturnDAO.insertBookReturn(bookReturnDTO);
+				
+	//--------------------------------------------------------------------------------------------------------------------------
+	
+				// 예약에서 대여하는 사람(USER_MANAGEMENT에서 currentLendingCnt +1, currentReservationCnt -1, totalLendingCnt +1)
+				crc = userManagementDAO.updateCurrentReservationCntMinus(lendUserNo);
+				uum = userManagementDAO.updateUserManagement(lendUserNo);
+	
+				// 예약에서 대여하는 사람(BOOK_MANAGEMENT에서 bookLendingAvailability -> 'false', bookReservationAvailability -> true, bookLendingCnt +1)
+				ubmrtn = bookManagementDAO.updateBookManagementReturnToLending(bookNo);
+	
+	 			// 예약에서 대여하는 사람(대여하면 bookReservation에서 lendStatus true로 변경)
+				uls = bookReservationDAO.updateLendStatus(lendUserNo, bookIsbn);
+				
+	 			// 예약에서 대여하는 사람(BOOK_LEND에 insert)
+				bookLendDTO = new BookLendDTO();
+				bookLendDTO.setUserNo(lendUserNo);
+				bookLendDTO.setBookNo(bookNo);
+				ibl = bookLendDAO.insertBookLend(bookLendDTO);
+				
+				if(clc > 0 && urs > 0 && ibr > 0 && crc > 0 && uum > 0 && ubmrtn > 0 && uls > 0 && ibl > 0){
+					script.println("<script>");
+					script.println("alert('"+lendUserNo+"반납 완료되었습니다.');");
+					script.println("location.href = document.referrer");
+					script.println("</script>");
+					script.close();
+				} else{
+					script.println("<script>");
+					script.println("alert('clc: "+clc+"');");
+					script.println("alert('urs: "+urs+"');");
+					script.println("alert('ibr: "+ibr+"');");
+					script.println("alert('crc: "+crc+"');");
+					script.println("alert('uum: "+uum+"');");
+					script.println("alert('ubmrtn: "+ubmrtn+"');");
+					script.println("alert('uls: "+uls+"');");
+					script.println("alert('ibl: "+ibl+"');");
+					script.println("alert('"+lendUserNo+"반납에 실패했습니다. 다시 시도해주세요.');");
+					script.println("location.href = document.referrer");
+					script.println("</script>");
+					script.close();
+				}
+				
 			}
 		} 
 			
