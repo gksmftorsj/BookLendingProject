@@ -14,6 +14,11 @@
 			userID = (String) session.getAttribute("userID");
 		}
 		
+		String adminExtensionUserID = null;
+		if (request.getParameter("userID") != null) {
+			adminExtensionUserID = request.getParameter("userID");
+		}
+		
 		String bookIsbn = null;
 		if (request.getParameter("isbn") != null) {
 			bookIsbn = request.getParameter("isbn");
@@ -21,12 +26,19 @@
 		
 		BookLendDAO bookLendDAO = new BookLendDAO();
 		UserInfoDAO userInfoDAO = new UserInfoDAO();
+		String userNo = null;
 		
-		String userNo = userInfoDAO.selectUserNo(userID);
+		if(adminExtensionUserID == null){
+			userNo = userInfoDAO.selectUserNo(userID);
+		}else{
+			userNo = userInfoDAO.selectUserNo(adminExtensionUserID);
+		}
+		
 		BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(userNo, bookIsbn);
 		int result = 0;
 		result = bookLendDAO.updateExtension(bookLendDTO.getBookNo());
-		
+		out.print(userID);
+		out.print(bookIsbn);
 		if(result > 0){
 			script.println("<script>");
 			script.println("alert('연장 완료되었습니다.');");

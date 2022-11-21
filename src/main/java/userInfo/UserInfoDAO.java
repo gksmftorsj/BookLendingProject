@@ -109,6 +109,34 @@ public class UserInfoDAO {
         return getUserName;
      }
 	
+	public String selectUserID(String userNo) {
+		String sqlQuery = "SELECT userId FROM USER_INFO WHERE userNo = ?";
+		
+		String getUserID = null;
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userNo);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				getUserID = rs.getString("userId");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+			try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+			try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		}
+		return getUserID;
+	}
+	
 		public int login(String userID, String userPassword) {
 			String SQL = "SELECT userPassword FROM USER_INFO WHERE userID = ?";
 			Connection conn = null;
