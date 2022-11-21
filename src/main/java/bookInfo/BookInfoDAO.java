@@ -300,55 +300,6 @@ public class BookInfoDAO {
    }
    
    public List<BookInfoDTO> selectBookInfoBySearch(int startIndex, int endIndex, String search) {
-      String sqlQuery = "SELECT * "
-            + "FROM("
-            + "      SELECT ROWNUM AS RN, BI.* "
-            + "     FROM (SELECT * FROM BOOK_INFO WHERE BOOKTITLE LIKE ?) BI) "
-            + "WHERE RN BETWEEN ? AND ?";
-      
-      Connection conn = null;
-      PreparedStatement psmt = null;
-      ResultSet rs = null;
-      
-      List<BookInfoDTO> BookInfoList = null;
-      
-      try {
-         conn = DatabaseUtil.getConnection();
-         psmt = conn.prepareStatement(sqlQuery);
-         
-         psmt.setString(1, "%"+search+"%");
-         psmt.setInt(2, startIndex);
-         psmt.setInt(3, endIndex);
-         
-         
-         rs = psmt.executeQuery();
-         
-         BookInfoList = new ArrayList<BookInfoDTO>();
-         
-         while (rs.next()) {
-            BookInfoDTO bi = new BookInfoDTO();
-            bi.rank = rs.getInt("bookRank");
-            bi.title = rs.getString("bookTitle");
-            bi.author = rs.getString("bookAuthor");
-            bi.cover = rs.getString("bookCover");
-            bi.categoryName = rs.getString("bookCategoryName");
-            bi.isbn = rs.getString("bookIsbn");
-            bi.publisher = rs.getString("bookPublisher");
-            bi.bookCnt = rs.getInt("bookCnt");
-            
-            BookInfoList.add(bi);
-         }
-      } catch (Exception e) {
-         e.printStackTrace();
-      } finally {
-         try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-         try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-         try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-      }
-      return BookInfoList;
-   }
-   
-   public List<BookInfoDTO> selectBookInfoBySearch(int startIndex, int endIndex, String search) {
 	   String sqlQuery = "SELECT * "
 			   + "FROM("
 			   + "		SELECT ROWNUM AS RN, BI.* "
@@ -807,36 +758,6 @@ public BookInfoDTO selectBookDetail(String title) {
       }
       return total;
    }
-   
-   public int selectBookSearchTotal(String search) {
-	   String sqlQuery = "SELECT count(*) total FROM BOOK_INFO WHERE bookTitle LIKE ?";
-	   
-	   int total = 0;
-	   
-	   Connection conn = null;
-	   PreparedStatement psmt = null;
-	   ResultSet rs = null;
-	   
-	   try {
-		   conn = DatabaseUtil.getConnection();
-		   psmt = conn.prepareStatement(sqlQuery);
-		   psmt.setString(1, "%" + search + "%");
-		   rs = psmt.executeQuery();
-		   
-		   if(rs.next()) {
-			   total = rs.getInt("total");
-			   
-		   }
-	   } catch (Exception e) {
-		   e.printStackTrace();
-	   } finally {
-		   try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-		   try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-		   try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-	   }
-	   return total;
-   }
-
    
    public int updateBookTotalLendingCnt(String bookIsbn) {
       String sqlQuery = "UPDATE BOOK_INFO "
