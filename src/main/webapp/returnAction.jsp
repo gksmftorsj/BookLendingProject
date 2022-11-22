@@ -75,13 +75,13 @@
 			
 			if(clc > 0 && urs > 0 && ibr > 0 && ulat > 0){
 				script.println("<script>");
-				script.println("alert('"+bookNo+lendUserNo+"예약대기중인 사람이 없을 때 반납 완료되었습니다.');");
+				script.println("alert('반납 완료되었습니다.');");
 				script.println("location.href = document.referrer");
 				script.println("</script>");
 				script.close();
 			} else{
 				script.println("<script>");
-				script.println("alert('"+bookNo+lendUserNo+"예약대기중인 사람이 없을 때 반납에 실패했습니다. 다시 시도해주세요.');");
+				script.println("alert('반납에 실패했습니다. 다시 시도해주세요.');");
 				script.println("location.href = document.referrer");
 				script.println("</script>");
 				script.close();
@@ -133,7 +133,7 @@
 				
 				if(clc > 0 && urs > 0 && ibr > 0 && crc > 0 && uum > 0 && ubmrtn > 0 && uls > 0 && ibl > 0){
 					script.println("<script>");
-					script.println("alert('"+lendUserNo+"반납 완료되었습니다.');");
+					script.println("alert('반납 완료되었습니다.');");
 					script.println("location.href = document.referrer");
 					script.println("</script>");
 					script.close();
@@ -147,7 +147,7 @@
 					script.println("alert('ubmrtn: "+ubmrtn+"');");
 					script.println("alert('uls: "+uls+"');");
 					script.println("alert('ibl: "+ibl+"');");
-					script.println("alert('"+lendUserNo+"반납에 실패했습니다. 다시 시도해주세요.');");
+					script.println("alert('반납에 실패했습니다. 다시 시도해주세요.');");
 					script.println("location.href = document.referrer");
 					script.println("</script>");
 					script.close();

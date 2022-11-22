@@ -7,6 +7,9 @@
 <%@ page import="util.SHA256"%>
 <%
 	request.setCharacterEncoding("UTF-8");
+
+	UserInfoDAO userInfoDAO = new UserInfoDAO();
+	
 	String userName = null;
 	String userID = null;
 	String userPassword = null;
@@ -44,13 +47,24 @@
 		script.println("</script>");
 		script.close();
 		return;
+	} 	
+	
+	String valUserTel = userInfoDAO.selectUserTel(userTel);
+	if(valUserTel != null){
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('이미 등록된 전화번호입니다.');");
+		script.println("history.back();");
+		script.println("</script>");
+		script.close();
+		return;
 	}
-	UserInfoDAO userInfoDAO = new UserInfoDAO();
+	
 	int userInfoRs = userInfoDAO.insertUserInfo(new UserInfoDTO(userName, userID, userPassword, userEmail, SHA256.getSHA256(userEmail), "false", userAddress, userTel));
 	if(userInfoRs == -1){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
-		script.println("alert('이미 존재하는 아이디입니다.');");
+		script.println("alert('이미 등록된 아이디입니다.');");
 		script.println("history.back();");
 		script.println("</script>");
 		script.close();

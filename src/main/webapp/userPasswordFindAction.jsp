@@ -25,6 +25,15 @@
 	
 	UserInfoDAO userInfoDAO = new UserInfoDAO();
 	String userEmail = userInfoDAO.getUserEmail(userID);
+	if(userEmail == null){
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('등록되지 않은 아이디입니다. 입력한 정보를 다시 확인해주세요.');");
+		script.println("history.back();");
+		script.println("</script>");
+		script.close();
+		return;
+	}
 	String randomPassword = userInfoDAO.getRamdomPassword(10);
 	int result = userInfoDAO.updateRandomPassword(randomPassword, userID);
 	
@@ -32,9 +41,10 @@
 		String host = "http://localhost:8080/BookLendingProject/";
 		String from = "gksmftorsj@gamil.com";
 		String to = userEmail;
-		String subject = "지니북스 비밀번호찾기.";
-		String content = "비밀번호찾기 결과입니다: " + randomPassword +
-		"<a href=" + host + "userLogin.jsp> 로그인하러가기 </a>";
+		String subject = "지니북스 비밀번호찾기";
+		String content = "임시 비밀번호: " + randomPassword + "<br><br>" +
+		"<button style='background-color: #2196f3; width: 12rem; height: 40px;'><a href=" + host + "userLogin.jsp"
+		+ " style='color: white; text-decoration: none; font-size: 25px; font-weight: bold;'>로그인하러가기</a></button>";
 		
 		Properties p = new Properties();
 		p.put("mail.smtp.user", from);
@@ -83,7 +93,7 @@
 	<%@ include file="userNavbar.jsp"%>
 	<div class="container mt-3" style="max-width: 560px;">
 		<div class="alert alert-success mt-4" role="alert">
-			요청하신 비밀번호가 전송되었습니다. 회원가입시 입력했던 이메일에 들어가셔서 확인해주세요.
+			임시 비밀번호가 전송되었습니다. 회원가입시 입력했던 이메일에 들어가셔서 확인해주세요.
 		</div>
 	</div>
 

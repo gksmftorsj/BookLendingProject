@@ -33,39 +33,42 @@
           <div class="row">
             <div class="col-md-4 mb-3">
               <label for="userName">이름</label>
-              <input type="text" class="form-control" id="userName" name="userName" required>
+              <input type="text" class="form-control" id="userName" name="userName" placeholder="사용자 이름" required>
               <div class="invalid-feedback">
                 이름을 입력해주세요.
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <label for="userID">아이디</label>
-              <input type="text" class="form-control" id="userID" name="userID" required>
+              <input type="text" class="form-control" id="userID" name="userID" placeholder="사용자 아이디" pattern="[가-힣a-zA-Z0-9]{1,12}"
+              title="한글, 영문, 숫자만 가능 최소 1자리에서 12자리까지" required>
               <div class="invalid-feedback">
-                아이디를 입력해주세요.
+                아이디를 입력해주세요(한글, 영문, 숫자만 가능 최소 1자리에서 12자리까지).
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <label for="userPassword">비밀번호</label>
-              <input type="password" class="form-control" id="userPassword" name="userPassword" required>
+              <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="사용자 비밀번호"
+              pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" title="숫자, 영문, 특수문자 각 1개 이상 포함 최소 8자리에서 최대 16자리까지" required>
               <div class="invalid-feedback">
-                비밀번호을 입력해주세요.
+                비밀번호을 입력해주세요(숫자, 영문, 특수문자 각 1개 이상 포함 최소 8자리에서 최대 16자리까지).
               </div>
             </div>
           </div>
 		<div class="row">
           <div class="col-md-6 mb-3">
             <label for="userEmail">이메일</label>
-            <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="test@example.com" required>
+            <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="사용자 이메일"
+              pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*" title="이메일 양식 ex)example@a.com"required>
             <div class="invalid-feedback">
-              이메일을 입력해주세요.
+              이메일을 입력해주세요(이메일 양식 ex)example@a.com).
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label for="userTel">연락처</label>
-            <input type="tel" class="form-control" id="userTel" name="userTel" placeholder="010-1234-5678" required>
+            <label for="userTel">휴대전화번호</label>
+            <input type="tel" class="form-control" id="userTel" name="userTel" placeholder="사용자 휴대전화번호" required>
             <div class="invalid-feedback">
-              연락처를 입력해주세요.
+              휴대전화번호를 입력해주세요.
             </div>
           </div>
         </div>

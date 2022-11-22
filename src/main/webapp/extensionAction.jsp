@@ -37,12 +37,13 @@
 		BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(userNo, bookIsbn);
 		int result = 0;
 		result = bookLendDAO.updateExtension(bookLendDTO.getBookNo());
+		out.print(result);
 		out.print(userID);
 		out.print(bookIsbn);
 		if(result > 0){
 			script.println("<script>");
 			script.println("alert('연장 완료되었습니다.');");
-			script.println("location.href = 'history.back()';");
+			script.println("location.href = document.referrer;");
 			script.println("</script>");
 			script.close();
 			return;

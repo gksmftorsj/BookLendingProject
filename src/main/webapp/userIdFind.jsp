@@ -17,8 +17,8 @@
 				<input type="text" name="userName" class="form-control" placeholder="이름을 입력해주세요." required>
 			</div>
 			<div class="form-group">
-				<label>이메일</label>
-				<input type="email" name="userEmail" class="form-control" placeholder="이메일을 입력해주세요" required>
+				<label>전화번호</label>
+				<input type="tel" name="userTel" class="form-control" placeholder="휴대전화번호를 입력해주세요" required>
 			</div>
 			<button type="submit" class="btn btn-secondary mt-3 me-2">아이디찾기</button>
 		</form>

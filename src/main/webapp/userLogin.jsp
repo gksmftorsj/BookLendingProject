@@ -25,10 +25,12 @@
 				<button type="submit" class="btn btn-secondary mt-3 me-2">
 					<a style="text-decoration: none; color: white;" href="./userRegister.jsp">회원가입</a>
 				</button>
-				<div class="find mt-3">
-					<a href="./userIdFind.jsp">아이디찾기/</a>
-					<a href="./userPasswordFind.jsp">비밀번호찾기</a>						
-				</div>
+					<button type="submit" class="btn btn-secondary mt-3 me-2">
+						<a style="text-decoration: none; color: white;" href="./userIdFind.jsp">아이디찾기</a>
+					</button>
+					<button type="submit" class="btn btn-secondary mt-3 me-2">
+						<a style="text-decoration: none; color: white;" href="./userPasswordFind.jsp">비밀번호찾기</a>
+					</button>						
 			</div>
 		</form>
 	</div>

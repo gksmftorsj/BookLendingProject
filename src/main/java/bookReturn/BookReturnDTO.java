@@ -12,9 +12,9 @@ public class BookReturnDTO {
 	public Timestamp lendDate;
 	public Timestamp expectedReturnDate;
 	public Timestamp returnDate;
-	
+
 	public BookReturnDTO() {
-		
+
 	}
 
 	public BookReturnDTO(String userNo, String bookNo, String lendNo, String returnNo, Timestamp lendDate,
@@ -84,7 +84,5 @@ public class BookReturnDTO {
 	public void setReturnDate(Timestamp returnDate) {
 		this.returnDate = returnDate;
 	}
-	
-	
 
 }

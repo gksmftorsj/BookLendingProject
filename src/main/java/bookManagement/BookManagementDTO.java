@@ -19,8 +19,7 @@ public class BookManagementDTO {
 	public String publisher;
 	public int bookCnt;
 	public int bookTotalLendingCnt;
-	
-	
+
 	public BookManagementDTO() {
 
 	}
@@ -34,7 +33,6 @@ public class BookManagementDTO {
 		this.bookLendingCnt = bookLendingCnt;
 		this.bookIsbn = bookIsbn;
 	}
-	
 
 	public BookManagementDTO(int rank, String title, String author, String pubDate, String description, String isbn,
 			String cover, String categoryName, String publisher, int bookCnt, int bookTotalLendingCnt, String bookNo,
@@ -57,7 +55,6 @@ public class BookManagementDTO {
 		this.bookLendingCnt = bookLendingCnt;
 		this.bookIsbn = bookIsbn;
 	}
-	
 
 	public String getBookNo() {
 		return bookNo;
@@ -98,7 +95,6 @@ public class BookManagementDTO {
 	public void setBookIsbn(String bookIsbn) {
 		this.bookIsbn = bookIsbn;
 	}
-	
 
 	public int getRank() {
 		return rank;
@@ -183,10 +179,9 @@ public class BookManagementDTO {
 	public int getBookTotalLendingCnt() {
 		return bookTotalLendingCnt;
 	}
-	
+
 	public void setBookTotalLendingCnt(int bookTotalLendingCnt) {
 		this.bookTotalLendingCnt = bookTotalLendingCnt;
 	}
-	
 
 }
