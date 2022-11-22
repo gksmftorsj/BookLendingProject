@@ -177,7 +177,7 @@ public class BookLendDAO {
 							bl.bookIsbn = rs.getString("bookIsbn");					
 							bl.title = rs.getString("bookTitle");
 							bl.ldDate = rs.getString("ldDate");
-							bl.rtDate = rs.getString("rdDate");
+							bl.rtDate = rs.getString("rtDate");
 
 							BookLendList.add(bl);
 						}

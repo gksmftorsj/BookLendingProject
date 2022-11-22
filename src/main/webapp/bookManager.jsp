@@ -133,9 +133,11 @@ p{
 	<%
 	BookInfoDAO bookInfoDao = new BookInfoDAO();
 	BookManagementDAO bookMdao = new BookManagementDAO();
+	%>
 	
+ <%	
 	if( request.getParameter("searching") != null ){
-		String search = request.getParameter("searching");		
+ 		String search = request.getParameter("searching");		
 		String option = request.getParameter("bookOption");
 	
 		if( option.equals("title") ){
@@ -206,27 +208,53 @@ p{
 	<%
 					}}
 		}} else {
-			List<BookInfoDTO> bookInfoList = bookInfoDao.selectAdminBookInfo();
-				if(bookInfoList != null && bookInfoList.size()>0) {
-  				for(BookInfoDTO bookInfo : bookInfoList){
-	%>
+		//검색x 타페이지에서 (bookTitle click) isbn 받아옴
+		if( request.getParameter("bookIsbn") !=null ){
+		String isbn = request.getParameter("bookIsbn");
+		List<BookInfoDTO> bookInfoList = bookInfoDao.selectBookInfoByIsbn(isbn);
+			if(bookInfoList != null && bookInfoList.size()>0) {
+				for(BookInfoDTO bookInfo : bookInfoList){
+			%>
 					<tr>
 						<td><p><%=bookInfo.getRank() %></p></td>
 						<td><p>
-								<img style="width: 3em; object-fit: contain;"
-								onclick="window.open(this.src)" src=<%=bookInfo.getCover() %>>
+							<img style="width: 3em; object-fit: contain;"
+							onclick="window.open(this.src)" src=<%=bookInfo.getCover() %>>
 						</p></td>
 						<td><p>
 								<a href="bookManagerDetail.jsp?isbn=<%=bookInfo.getIsbn() %>"><%=bookInfo.getIsbn() %></a>
-							</p></td>
+						</p></td>
 						<td><p><%=bookInfo.getTitle() %></p></td>
 						<td><p><%=bookInfo.getAuthor() %></p></td>
 						<td><p><%=bookInfo.getPublisher() %></p></td>
 						<td><p><%=bookInfo.getBookLendingCnt() %>/5</p></td>
 						<td><p><%=bookInfo.getBookTotalLendingCnt() %></p></td>
 					</tr>
-	<%
-							}};
+		<% }}}else {
+				//검색x default출력			
+				List<BookInfoDTO> bookInfoList = bookInfoDao.selectAdminBookInfo();
+					if(bookInfoList != null && bookInfoList.size()>0) {
+	  				for(BookInfoDTO bookInfo : bookInfoList){
+		%>
+						<tr>
+							<td><p><%=bookInfo.getRank() %></p></td>
+							<td><p>
+									<img style="width: 3em; object-fit: contain;"
+									onclick="window.open(this.src)" src=<%=bookInfo.getCover() %>>
+							</p></td>
+							<td><p>
+									<a href="bookManagerDetail.jsp?isbn=<%=bookInfo.getIsbn() %>"><%=bookInfo.getIsbn() %></a>
+								</p></td>
+							<td><p><%=bookInfo.getTitle() %></p></td>
+							<td><p><%=bookInfo.getAuthor() %></p></td>
+							<td><p><%=bookInfo.getPublisher() %></p></td>
+							<td><p><%=bookInfo.getBookLendingCnt() %>/5</p></td>
+							<td><p><%=bookInfo.getBookTotalLendingCnt() %></p></td>
+						</tr>
+		<%
+					}
+	  			};
+			}
 	}%>
 
 

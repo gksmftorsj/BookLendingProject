@@ -173,9 +173,24 @@ display: inline;
 														<td><p>
 															<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 														</p></td>
-														<td><p><%=bookReservation.getTitle() %></p></td>
-														<td><p></p></td>
-													</tr>
+														<td><p><a href="bookManager.jsp?searching=<%=bookReservation.getBookIsbn() %>"><%=bookReservation.getTitle() %></a></p></td>
+														<td><p>
+																<%
+																if (bookReservation.getLendStatus().equals("false")) {
+																	if (today.after(bookReservation.getExpectedReturnDate())) {
+																%>
+																<button type="button"
+																	class="btn btn-warning lendingOverDueBtn lendingOverDueTitle"
+																	style="width: 100px;">대여보류</button>
+																<%
+																} else {
+																%><button type="button"
+																	class="btn btn-info reservationBtn reservationTitle"
+																	style="width: 100px;">예약중</button>
+																<%}
+																} else {%>대여완료<%}%>
+														</p></td>
+								</tr>
 								<%
 												}
 											}
@@ -196,9 +211,24 @@ display: inline;
 														<td><p>
 															<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 														</p></td>
-														<td><p><%=bookReservation.getTitle() %></p></td>
-														<td><p></p></td>
-													</tr>
+														<td><p><a href="bookManager.jsp?searching=<%=bookReservation.getBookIsbn() %>"><%=bookReservation.getTitle() %></a></p></td>
+														<td><p>
+																<%
+																if (bookReservation.getLendStatus().equals("false")) {
+																	if (today.after(bookReservation.getExpectedReturnDate())) {
+																%>
+																<button type="button"
+																	class="btn btn-warning lendingOverDueBtn lendingOverDueTitle"
+																	style="width: 100px;">대여보류</button>
+																<%
+																} else {
+																%><button type="button"
+																	class="btn btn-info reservationBtn reservationTitle"
+																	style="width: 100px;">예약중</button>
+																<%}
+																} else {%>대여완료<%}%>
+														</p></td>
+								</tr>
 								<%
 												}
 											}
@@ -213,7 +243,7 @@ display: inline;
 														<td><p>
 															<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 														</p></td>
-														<td><p><%=bookReservation.getTitle() %></p></td>
+														<td><p><a href="bookManager.jsp?searching=<%=bookReservation.getBookIsbn() %>"><%=bookReservation.getTitle() %></a></p></td>
 														<td><p></p></td>
 													</tr>
 								<%
@@ -230,9 +260,24 @@ display: inline;
 														<td><p>
 															<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 														</p></td>
-														<td><p><%=bookReservation.getTitle() %></p></td>
-														<td><p></p></td>
-													</tr>
+														<td><p><a href="bookManager.jsp?searching=<%=bookReservation.getBookIsbn() %>"><%=bookReservation.getTitle() %></a></p></td>
+														<td><p>
+																<%
+																if (bookReservation.getLendStatus().equals("false")) {
+																	if (today.after(bookReservation.getExpectedReturnDate())) {
+																%>
+																<button type="button"
+																	class="btn btn-warning lendingOverDueBtn lendingOverDueTitle"
+																	style="width: 100px;">대여보류</button>
+																<%
+																} else {
+																%><button type="button"
+																	class="btn btn-info reservationBtn reservationTitle"
+																	style="width: 100px;">예약중</button>
+																<%}
+																} else {%>대여완료<%}%>
+														</p></td>
+								</tr>
 								<%
 												}
 											}
@@ -256,9 +301,24 @@ display: inline;
 											<td><p>
 												<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 											</p></td>
-											<td><p><%=bookReservation.getTitle() %></p></td>
-											<td><p></p></td>
-										</tr>
+											<td><p><a href="bookManager.jsp?searching=<%=bookReservation.getBookIsbn() %>"><%=bookReservation.getTitle() %></a></p></td>
+											<td><p>
+													<%
+													if (bookReservation.getLendStatus().equals("false")) {
+														if (today.after(bookReservation.getExpectedReturnDate())) {
+													%>
+													<button type="button"
+														class="btn btn-warning lendingOverDueBtn lendingOverDueTitle"
+														style="width: 100px;">대여보류</button>
+													<%
+													} else {
+													%><button type="button"
+														class="btn btn-info reservationBtn reservationTitle"
+														style="width: 100px;">예약중</button>
+													<%}
+													} else {%>대여완료<%}%>
+											</p></td>
+								</tr>
 					<%
 									}
 								}
@@ -273,9 +333,24 @@ display: inline;
 											<td><p>
 												<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 											</p></td>
-											<td><p><%=bookReservation.getTitle() %></p></td>
-											<td><p></p></td>
-										</tr>
+											<td><p><a href="bookManager.jsp?searching=<%=bookReservation.getBookIsbn() %>"><%=bookReservation.getTitle() %></a></p></td>
+											<td><p>
+													<%
+													if (bookReservation.getLendStatus().equals("false")) {
+														if (today.after(bookReservation.getExpectedReturnDate())) {
+													%>
+													<button type="button"
+														class="btn btn-warning lendingOverDueBtn lendingOverDueTitle"
+														style="width: 100px;">대여보류</button>
+													<%
+													} else {
+													%><button type="button"
+														class="btn btn-info reservationBtn reservationTitle"
+														style="width: 100px;">예약중</button>
+													<%}
+													} else {%>대여완료<%}%>
+											</p></td>
+								</tr>
 					<%
 									}
 								}
@@ -290,9 +365,24 @@ display: inline;
 											<td><p>
 												<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 											</p></td>
-											<td><p><%=bookReservation.getTitle() %></p></td>
-											<td><p></p></td>
-										</tr>
+											<td><p><a href="bookManager.jsp?searching=<%=bookReservation.getBookIsbn() %>"><%=bookReservation.getTitle() %></a></p></td>
+											<td><p>
+													<%
+													if (bookReservation.getLendStatus().equals("false")) {
+														if (today.after(bookReservation.getExpectedReturnDate())) {
+													%>
+													<button type="button"
+														class="btn btn-warning lendingOverDueBtn lendingOverDueTitle"
+														style="width: 100px;">대여보류</button>
+													<%
+													} else {
+													%><button type="button"
+														class="btn btn-info reservationBtn reservationTitle"
+														style="width: 100px;">예약중</button>
+													<%}
+													} else {%>대여완료<%}%>
+											</p></td>
+								</tr>
 					<%
 									}
 								}
@@ -311,9 +401,24 @@ display: inline;
 												<td><p>
 													<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 												</p></td>
-												<td><p><%=bookReservation.getTitle() %></p></td>
-												<td><p></p></td>
-											</tr>
+												<td><p><a href="bookManager.jsp?searching=<%=bookReservation.getBookIsbn() %>"><%=bookReservation.getTitle() %></a></p></td>
+												<td><p>
+														<%
+														if (bookReservation.getLendStatus().equals("false")) {
+															if (today.after(bookReservation.getExpectedReturnDate())) {
+														%>
+														<button type="button"
+															class="btn btn-warning lendingOverDueBtn lendingOverDueTitle"
+															style="width: 100px;">대여보류</button>
+														<%
+														} else {
+														%><button type="button"
+															class="btn btn-info reservationBtn reservationTitle"
+															style="width: 100px;">예약중</button>
+														<%}
+														} else {%>대여완료<%}%>
+												</p></td>
+								</tr>
 						<%
 										}
 									}
@@ -329,9 +434,24 @@ display: inline;
 												<td><p>
 													<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 												</p></td>
-												<td><p><%=bookReservation.getTitle() %></p></td>
-												<td><p></p></td>
-											</tr>
+												<td><p><a href="bookManager.jsp?bookIsbn=<%=bookReservation.getBookIsbn() %>"><%=bookReservation.getTitle() %></a></p></td>
+												<td><p>
+														<%
+														if (bookReservation.getLendStatus().equals("false")) {
+															if (today.after(bookReservation.getExpectedReturnDate())) {
+														%>
+														<button type="button"
+															class="btn btn-warning lendingOverDueBtn lendingOverDueTitle"
+															style="width: 100px;">대여보류</button>
+														<%
+														} else {
+														%><button type="button"
+															class="btn btn-info reservationBtn reservationTitle"
+															style="width: 100px;">예약중</button>
+														<%}
+														} else {%>대여완료<%}%>
+												</p></td>
+								</tr>
 						<%
 															}
 													}
