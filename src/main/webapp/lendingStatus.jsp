@@ -171,7 +171,7 @@ display: inline;
             if(bookLendList != null && bookLendList.size()>0) {
                for(BookLendDTO bookLend : bookLendList){   
                   String userID = userInfoDAO.selectUserID(bookLend.getUserNo());
-               %>
+%>
                <tr>
 					<td><p><%=bookLend.getLdDate() %></p></td>
 					<td><p><%=bookLend.getRtDate() %></p></td>
@@ -179,32 +179,32 @@ display: inline;
 					<td><p>
 							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
 					</p></td>
-					<td><p><%=bookLend.getTitle() %></p></td>
-                  <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
-                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
-                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
-                        </form>
-                        <%} else {%>반납완료<%}%>
-                  </p></td>
-                  <td><%if (bookLend.getExtensionStatus() == "false") {
-                        %>만료
-                        <%} else {%>
-                        <form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
-                                 <p><button type="submit" onclick="{
-                                    if(!confirm('연장하시겠습니까?')){
-                                       alert('연장이 취소되었습니다.');
-                                    } }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
-                              </form>
-                        <%}%>
-                  </td>
-                  <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;"><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
-                        } else {%>                        
-                        <%}%>
-                  </p></td>
-               </tr>         
-         
-<%               }
+					<td><p><a href="bookManager.jsp?bookIsbn=<%=bookLend.getBookIsbn() %>"><%=bookLend.getTitle() %></a></p></td>
+	                 <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
+	                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
+	                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
+	                        </form>
+	                        <%} else {%>반납완료<%}%>
+	                 </p></td>
+	                 <td><%if (bookLend.getExtensionStatus().equals("true")) {
+	                  			if(bookLend.getReturnStatus().equals("true")){%><p><p>만료</p></p>
+	                        	<%} else {%>
+	                        	<form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
+	                                 	<p><button type="submit" onclick="{
+	                                    	if(!confirm('연장하시겠습니까?')){
+	                                       		alert('연장이 취소되었습니다.');
+	                                    	} }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
+	                             </form><%}
+	                        } else {%><p>연장완료</p><%}%>
+	                 </td>
+	                 <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
+	                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
+	                        } else {%>
+	                        <%}%>
+	                  </p></td>
+	            </tr>
+<% 
+				}
             }
          } else {
             //날짜 선택o & 검색어 입력o
@@ -216,39 +216,38 @@ display: inline;
                      if(bookLendList != null && bookLendList.size()>0) {
                         for(BookLendDTO bookLend : bookLendList){
                            String userID = userInfoDAO.selectUserID(bookLend.getUserNo());
-            %>  <tr>
-					<td><p><%=bookLend.getLdDate() %></p></td>
-					<td><p><%=bookLend.getRtDate() %></p></td>
-					<td><p><%=bookLend.getLendNo() %></p></td>
-					<td><p>
-							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
-					</p></td>
-					<td><p><%=bookLend.getTitle() %></p></td>
-                              <td><p><%if (bookLend.getReturnStatus().equals("false")) {
-                                 %>
-                                 <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
-                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
-                        </form>
-                                 <%
-                                 } else {%>반납완료<%}%>
-                              </p></td>
-                              <td><%if (bookLend.getExtensionStatus() == "false") {
-                                 %>만료
-                                 <%} else {%>
-                                 <form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
-                                 <p><button type="submit" onclick="{
-                                    if(!confirm('연장하시겠습니까?')){
-                                       alert('연장이 취소되었습니다.');
-                                    } }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
-                              </form>
-                                 <%}%>
-                              </td>
-                              <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-                                 %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
-                                 } else {%>                        
-                                 <%}%>
-                              </p></td>
-                        </tr>
+                           %>
+                           <tr>
+            					<td><p><%=bookLend.getLdDate() %></p></td>
+            					<td><p><%=bookLend.getRtDate() %></p></td>
+            					<td><p><%=bookLend.getLendNo() %></p></td>
+            					<td><p>
+            							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
+            					</p></td>
+            					<td><p><a href="bookManager.jsp?bookIsbn=<%=bookLend.getBookIsbn() %>"><%=bookLend.getTitle() %></a></p></td>
+            	                 <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
+            	                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
+            	                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
+            	                        </form>
+            	                        <%} else {%>반납완료<%}%>
+            	                 </p></td>
+            	                 <td><%if (bookLend.getExtensionStatus().equals("true")) {
+            	                  			if(bookLend.getReturnStatus().equals("true")){%><p>만료</p>
+            	                        	<%} else {%>
+            	                        	<form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
+            	                                 	<p><button type="submit" onclick="{
+            	                                    	if(!confirm('연장하시겠습니까?')){
+            	                                       		alert('연장이 취소되었습니다.');
+            	                                    	} }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
+            	                             </form><%}
+            	                        } else {%><p>연장완료</p><%}%>
+            	                 </td>
+            	                 <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
+            	                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
+            	                        } else {%>
+            	                        <%}%>
+            	                  </p></td>
+            	            </tr>
             <%
                         }
                      }
@@ -257,40 +256,39 @@ display: inline;
                      if(bookLendList != null && bookLendList.size()>0) {
                         for(BookLendDTO bookLend : bookLendList){
                            String userID = userInfoDAO.selectUserID(bookLend.getUserNo());
-%>               <tr>
+%>
+               <tr>
 					<td><p><%=bookLend.getLdDate() %></p></td>
 					<td><p><%=bookLend.getRtDate() %></p></td>
 					<td><p><%=bookLend.getLendNo() %></p></td>
 					<td><p>
 							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
 					</p></td>
-					<td><p><%=bookLend.getTitle() %></p></td>
-                           <td><p><%if (bookLend.getReturnStatus().equals("false")) {
-                              %>
-                              <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
-                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
-                        </form>
-                              <%
-                              } else {%>반납완료<%}%>
-                           </p></td>
-                           <td><%if (bookLend.getExtensionStatus() == "false") {
-                              %>만료
-                              <%} else {%>
-                              <form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
-                                 <p><button type="submit" onclick="{
-                                    if(!confirm('연장하시겠습니까?')){
-                                       alert('연장이 취소되었습니다.');
-                                    } }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
-                              </form>
-                              <%}%>
-                           </td>
-                           <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-                              %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
-                              } else {%>                        
-                              <%}%>
-                           </p></td>
-                        </tr>
-         <%
+					<td><p><a href="bookManager.jsp?bookIsbn=<%=bookLend.getBookIsbn() %>"><%=bookLend.getTitle() %></a></p></td>
+	                 <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
+	                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
+	                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
+	                        </form>
+	                        <%} else {%>반납완료<%}%>
+	                 </p></td>
+	                 <td><%if (bookLend.getExtensionStatus().equals("true")) {
+	                  			if(bookLend.getReturnStatus().equals("true")){%><p>만료</p>
+	                        	<%} else {%>
+	                        	<form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
+	                                 	<p><button type="submit" onclick="{
+	                                    	if(!confirm('연장하시겠습니까?')){
+	                                       		alert('연장이 취소되었습니다.');
+	                                    	} }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
+	                             </form><%}
+	                        } else {%><p>연장완료</p><%}%>
+	                 </td>
+	                 <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
+	                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
+	                        } else {%>
+	                        <%}%>
+	                  </p></td>
+	            </tr>
+<%
                         }
                      }
                   } else if ( option.equals("userNo") ) {
@@ -298,40 +296,39 @@ display: inline;
                      if(bookLendList != null && bookLendList.size()>0) {
                         for(BookLendDTO bookLend : bookLendList){
                            String userID = userInfoDAO.selectUserID(bookLend.getUserNo());
-%>               <tr>
+%>
+               <tr>
 					<td><p><%=bookLend.getLdDate() %></p></td>
 					<td><p><%=bookLend.getRtDate() %></p></td>
 					<td><p><%=bookLend.getLendNo() %></p></td>
 					<td><p>
 							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
 					</p></td>
-					<td><p><%=bookLend.getTitle() %></p></td>
-                           <td><p><%if (bookLend.getReturnStatus().equals("false")) {
-                              %>
-                              <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
-                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
-                        </form>
-                              <%
-                              } else {%>반납완료<%}%>
-                           </p></td>
-                           <td><%if (bookLend.getExtensionStatus() == "false") {
-                              %>만료
-                              <%} else {%>
-                              <form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
-                                 <p><button type="submit" onclick="{
-                                    if(!confirm('연장하시겠습니까?')){
-                                       alert('연장이 취소되었습니다.');
-                                    } }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
-                              </form>
-                              <%}%>
-                           </td>
-                           <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-                              %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
-                              } else {%>                        
-                              <%}%>
-                           </p></td>
-                        </tr>
-         <%
+					<td><p><a href="bookManager.jsp?bookIsbn=<%=bookLend.getBookIsbn() %>"><%=bookLend.getTitle() %></a></p></td>
+	                 <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
+	                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
+	                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
+	                        </form>
+	                        <%} else {%>반납완료<%}%>
+	                 </p></td>
+	                 <td><%if (bookLend.getExtensionStatus().equals("true")) {
+	                  			if(bookLend.getReturnStatus().equals("true")){%><p>만료</p>
+	                        	<%} else {%>
+	                        	<form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
+	                                 	<p><button type="submit" onclick="{
+	                                    	if(!confirm('연장하시겠습니까?')){
+	                                       		alert('연장이 취소되었습니다.');
+	                                    	} }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
+	                             </form><%}
+	                        } else {%><p>연장완료</p><%}%>
+	                 </td>
+	                 <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
+	                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
+	                        } else {%>
+	                        <%}%>
+	                  </p></td>
+	            </tr>
+<%
                         }
                      }
                   }
@@ -347,40 +344,39 @@ display: inline;
             if(bookLendList != null && bookLendList.size()>0) {
                for(BookLendDTO bookLend : bookLendList){
                   String userID = userInfoDAO.selectUserID(bookLend.getUserNo());
-      %>      	<tr>
-					<td><p><%=bookLend.getLdDate() %></p></td>
-					<td><p><%=bookLend.getRtDate() %></p></td>
-					<td><p><%=bookLend.getLendNo() %></p></td>
-					<td><p>
-							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
-					</p></td>
-					<td><p><%=bookLend.getTitle() %></p></td>
-                        <td><p><%if (bookLend.getReturnStatus().equals("false")) {
-                           %>
-                           <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
-                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
-                        </form>
-                           <%
-                           } else {%>반납완료<%}%>
-                        </p></td>
-                        <td><%if (bookLend.getExtensionStatus() == "false") {
-                           %>만료
-                           <%} else {%>
-                           <form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
-                                 <p><button type="submit" onclick="{
-                                    if(!confirm('연장하시겠습니까?')){
-                                       alert('연장이 취소되었습니다.');
-                                    } }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
-                              </form>
-                           <%}%>
-                        </td>
-                        <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-                           %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
-                           } else {%>                        
-                           <%}%>
-                        </p></td>
-                     </tr>
-      <%
+                  %>
+                  <tr>
+   					<td><p><%=bookLend.getLdDate() %></p></td>
+   					<td><p><%=bookLend.getRtDate() %></p></td>
+   					<td><p><%=bookLend.getLendNo() %></p></td>
+   					<td><p>
+   							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
+   					</p></td>
+   					<td><p><a href="bookManager.jsp?bookIsbn=<%=bookLend.getBookIsbn() %>"><%=bookLend.getTitle() %></a></p></td>
+   	                 <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
+   	                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
+   	                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
+   	                        </form>
+   	                        <%} else {%>반납완료<%}%>
+   	                 </p></td>
+   	                 <td><%if (bookLend.getExtensionStatus().equals("true")) {
+   	                  			if(bookLend.getReturnStatus().equals("true")){%><p>만료</p>
+   	                        	<%} else {%>
+   	                        	<form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
+   	                                 	<p><button type="submit" onclick="{
+   	                                    	if(!confirm('연장하시겠습니까?')){
+   	                                       		alert('연장이 취소되었습니다.');
+   	                                    	} }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
+   	                             </form><%}
+   	                        } else {%><p>연장완료</p><%}%>
+   	                 </td>
+   	                 <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
+   	                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
+   	                        } else {%>
+   	                        <%}%>
+   	                  </p></td>
+   	            </tr>
+   <%
                   }
                }
             } else if ( option.equals("title") ) {
@@ -388,40 +384,39 @@ display: inline;
                if(bookLendList != null && bookLendList.size()>0) {
                   for(BookLendDTO bookLend : bookLendList){
                      String userID = userInfoDAO.selectUserID(bookLend.getUserNo());
- %>               <tr>
-					<td><p><%=bookLend.getLdDate() %></p></td>
-					<td><p><%=bookLend.getRtDate() %></p></td>
-					<td><p><%=bookLend.getLendNo() %></p></td>
-					<td><p>
-							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
-					</p></td>
-					<td><p><%=bookLend.getTitle() %></p></td>
-                     <td><p><%if (bookLend.getReturnStatus().equals("false")) {
-                        %>
-                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
-                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
-                        </form>
-                        <%
-                        } else {%>반납완료<%}%>
-                     </p></td>
-                     <td><%if (bookLend.getExtensionStatus() == "false") {
-                        %>만료
-                        <%} else {%>
-                        <form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
-                                 <p><button type="submit" onclick="{
-                                    if(!confirm('연장하시겠습니까?')){
-                                       alert('연장이 취소되었습니다.');
-                                    } }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
-                              </form>
-                        <%}%>
-                     </td>
-                     <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
-                        } else {%>                        
-                        <%}%>
-                     </p></td>
-                  </tr>
-   <%
+                     %>
+                     <tr>
+      					<td><p><%=bookLend.getLdDate() %></p></td>
+      					<td><p><%=bookLend.getRtDate() %></p></td>
+      					<td><p><%=bookLend.getLendNo() %></p></td>
+      					<td><p>
+      							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
+      					</p></td>
+      					<td><p><a href="bookManager.jsp?bookIsbn=<%=bookLend.getBookIsbn() %>"><%=bookLend.getTitle() %></a></p></td>
+      	                 <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
+      	                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
+      	                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
+      	                        </form>
+      	                        <%} else {%>반납완료<%}%>
+      	                 </p></td>
+      	                 <td><%if (bookLend.getExtensionStatus().equals("true")) {
+      	                  			if(bookLend.getReturnStatus().equals("true")){%><p>만료</p>
+      	                        	<%} else {%>
+      	                        	<form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
+      	                                 	<p><button type="submit" onclick="{
+      	                                    	if(!confirm('연장하시겠습니까?')){
+      	                                       		alert('연장이 취소되었습니다.');
+      	                                    	} }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
+      	                             </form><%}
+      	                        } else {%><p>연장완료</p><%}%>
+      	                 </td>
+      	                 <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
+      	                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
+      	                        } else {%>
+      	                        <%}%>
+      	                  </p></td>
+      	            </tr>
+      <%
                   }
                }
             } else if ( option.equals("userNo") ) {
@@ -429,40 +424,39 @@ display: inline;
                if(bookLendList != null && bookLendList.size()>0) {
                   for(BookLendDTO bookLend : bookLendList){
                      String userID = userInfoDAO.selectUserID(bookLend.getUserNo());
- %>               <tr>
+ %>
+               <tr>
 					<td><p><%=bookLend.getLdDate() %></p></td>
 					<td><p><%=bookLend.getRtDate() %></p></td>
 					<td><p><%=bookLend.getLendNo() %></p></td>
 					<td><p>
 							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
 					</p></td>
-					<td><p><%=bookLend.getTitle() %></p></td>
-                     <td><p><%if (bookLend.getReturnStatus().equals("false")) {
-                        %>
-                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
-                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
-                        </form>
-                        <%
-                        } else {%>반납완료<%}%>
-                     </p></td>
-                     <td><%if (bookLend.getExtensionStatus() == "false") {
-                        %>만료
-                        <%} else {%>
-                        <form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
-                                 <p><button type="submit" onclick="{
-                                    if(!confirm('연장하시겠습니까?')){
-                                       alert('연장이 취소되었습니다.');
-                                    } }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
-                              </form>
-                        <%}%>
-                     </td>
-                     <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
-                        } else {%>                        
-                        <%}%>
-                     </p></td>
-                  </tr>
-   <%
+					<td><p><a href="bookManager.jsp?bookIsbn=<%=bookLend.getBookIsbn() %>"><%=bookLend.getTitle() %></a></p></td>
+	                 <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
+	                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
+	                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
+	                        </form>
+	                        <%} else {%>반납완료<%}%>
+	                 </p></td>
+	                 <td><%if (bookLend.getExtensionStatus().equals("true")) {
+	                  			if(bookLend.getReturnStatus().equals("true")){%><p>만료</p>
+	                        	<%} else {%>
+	                        	<form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
+	                                 	<p><button type="submit" onclick="{
+	                                    	if(!confirm('연장하시겠습니까?')){
+	                                       		alert('연장이 취소되었습니다.');
+	                                    	} }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
+	                             </form><%}
+	                        } else {%><p>연장완료</p><%}%>
+	                 </td>
+	                 <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
+	                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
+	                        } else {%>
+	                        <%}%>
+	                  </p></td>
+	            </tr>
+<%
                   }
                }
             }
@@ -474,42 +468,40 @@ display: inline;
             if(bookLendList != null && bookLendList.size()>0) {
                for(BookLendDTO bookLend : bookLendList){   
                   String userID = userInfoDAO.selectUserID(bookLend.getUserNo());
-               %>
+                  %>
                   <tr>
-					<td><p><%=bookLend.getLdDate() %></p></td>
-					<td><p><%=bookLend.getRtDate() %></p></td>
-					<td><p><%=bookLend.getLendNo() %></p></td>
-					<td><p>
-							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
-					</p></td>
-					<td><p><%=bookLend.getTitle() %></p></td>
-                     <td><p><%if (bookLend.getReturnStatus().equals("false")) {
-                           %>
-                           <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
-                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
-                        </form>
-                           <%
-                           } else {%>반납완료<%}%>
-                     </p></td>
-                     <td><%if (bookLend.getExtensionStatus() == "false") {
-                           %>만료
-                           <%} else {%>
-                           <form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
-                                 <p><button type="submit" onclick="{
-                                    if(!confirm('연장하시겠습니까?')){
-                                       alert('연장이 취소되었습니다.');
-                                    } }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
-                              </form>
-                           <%}%>
-                     </td>
-                     <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-                           %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;"><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
-                           } else {%>                        
-                           <%}%>
-                     </p></td>
-                  </tr>         
-            
-   <%               }
+   					<td><p><%=bookLend.getLdDate() %></p></td>
+   					<td><p><%=bookLend.getRtDate() %></p></td>
+   					<td><p><%=bookLend.getLendNo() %></p></td>
+   					<td><p>
+   							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
+   					</p></td>
+   					<td><p><a href="bookManager.jsp?bookIsbn=<%=bookLend.getBookIsbn() %>"><%=bookLend.getTitle() %></a></p></td>
+   	                 <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
+   	                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
+   	                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
+   	                        </form>
+   	                        <%} else {%>반납완료<%}%>
+   	                 </p></td>
+   	                 <td><%if (bookLend.getExtensionStatus().equals("true")) {
+   	                  			if(bookLend.getReturnStatus().equals("true")){%><p>만료</p>
+   	                        	<%} else {%>
+   	                        	<form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
+   	                                 	<p><button type="submit" onclick="{
+   	                                    	if(!confirm('연장하시겠습니까?')){
+   	                                       		alert('연장이 취소되었습니다.');
+   	                                    	} }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
+   	                             </form><%}
+   	                        } else {%><p>연장완료</p><%}%>
+   	                 </td>
+   	                 <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
+   	                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
+   	                        } else {%>
+   	                        <%}%>
+   	                  </p></td>
+   	            </tr>
+   <%
+   					}
                }
             } else {
       //검색어 입력x & 날짜선택x
@@ -517,40 +509,38 @@ display: inline;
                if(bookLendList != null && bookLendList.size()>0) {
                   for(BookLendDTO bookLend : bookLendList){
                      String userID = userInfoDAO.selectUserID(bookLend.getUserNo());
-               %>
+                     %>
                      <tr>
-					<td><p><%=bookLend.getLdDate() %></p></td>
-					<td><p><%=bookLend.getRtDate() %></p></td>
-					<td><p><%=bookLend.getLendNo() %></p></td>
-					<td><p>
-							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
-					</p></td>
-					<td><p><%=bookLend.getTitle() %></p></td>
-                        <td><p><%if (bookLend.getReturnStatus().equals("false")) {
-                              %>
-                              <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
-                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
-                        </form>
-                              <%
-                              } else {%>반납완료<%}%>
-                        </p></td>
-                        <td><%if (bookLend.getExtensionStatus() == "false") {
-                              %>만료
-                              <%} else {%>
-                              <form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
-                                 <p><button type="submit" onclick="{
-                                    if(!confirm('연장하시겠습니까?')){
-                                       alert('연장이 취소되었습니다.');
-                                    } }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
-                              </form>
-                              <%}%>
-                        </td>
-                        <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
-                              %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;"><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
-                              } else {%>                        
-                              <%}%>
-                        </p></td>
-                     </tr>
+      					<td><p><%=bookLend.getLdDate() %></p></td>
+      					<td><p><%=bookLend.getRtDate() %></p></td>
+      					<td><p><%=bookLend.getLendNo() %></p></td>
+      					<td><p>
+      							<a href="userManager.jsp?userNo=<%=bookLend.getUserNo() %>"><%=bookLend.getUserName() %></a>
+      					</p></td>
+      					<td><p><a href="bookManager.jsp?bookIsbn=<%=bookLend.getBookIsbn() %>"><%=bookLend.getTitle() %></a></p></td>
+      	                 <td><p><%if (bookLend.getReturnStatus().equals("false")) {%>
+      	                        <form method="post" action="./returnAction.jsp?bookNo=<%=bookLend.getBookNo()%>&bookIsbn=<%=bookLend.getBookIsbn()%>&userNo=<%=bookLend.getUserNo()%>">
+      	                           <button type="submit" class="btn btn-dark returnBtn returnTitle" style="width: 100px;">반납가능</button>
+      	                        </form>
+      	                        <%} else {%>반납완료<%}%>
+      	                 </p></td>
+      	                 <td><%if (bookLend.getExtensionStatus().equals("true")) {
+      	                  			if(bookLend.getReturnStatus().equals("true")){%><p>만료</p>
+      	                        	<%} else {%>
+      	                        	<form method="post" action="./extensionAction.jsp?isbn=<%=bookLend.getBookIsbn()%>&userID=<%=userID%>">
+      	                                 	<p><button type="submit" onclick="{
+      	                                    	if(!confirm('연장하시겠습니까?')){
+      	                                       		alert('연장이 취소되었습니다.');
+      	                                    	} }" class="btn btn-light extensionBtn extensionTitle" style="width: 100px;">연장가능</button></p>
+      	                             </form><%}
+      	                        } else {%><p>연장완료</p><%}%>
+      	                 </td>
+      	                 <td><p><%if (today.after(bookLend.getExpectedReturnDate())) {
+      	                        %><button type="button" class="btn btn-danger overDueBtn overDueTitle" style="width: 100px;">연체중</button><%
+      	                        } else {%>
+      	                        <%}%>
+      	                  </p></td>
+      	            </tr>
       <%
                      }
                }

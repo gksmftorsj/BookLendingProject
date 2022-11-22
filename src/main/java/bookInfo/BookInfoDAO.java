@@ -631,8 +631,38 @@ public class BookInfoDAO {
        return bookInfoList;
     }
 
+   public String selectBookTitleByIsbn(String isbn) {
+	      String sqlQuery = "SELECT bookTitle FROM BOOK_INFO WHERE bookIsbn = ?";
+	      
+	      String title = null;
+	      
+	      Connection conn = null;
+	      PreparedStatement psmt = null;
+	      ResultSet rs = null;
+	      
+	      try {
+	         conn = DatabaseUtil.getConnection();
+	         psmt = conn.prepareStatement(sqlQuery);
+	         psmt.setString(1, isbn);
+	         
+	         rs = psmt.executeQuery();
+	         
+	         if(rs.next()) {
+	        	 title = rs.getString("bookTitle");
+	            
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	         try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	         try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+	      }
+	      return title;
+	   
+   }
 
-public BookInfoDTO selectBookDetail(String title) {
+   public BookInfoDTO selectBookDetail(String title) {
          String sqlQuery = "SELECT * FROM BOOK_INFO WHERE BOOKTITLE = ?";
          
          BookInfoDTO bookInfoDTO = null;

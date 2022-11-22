@@ -157,10 +157,10 @@ display: inline;
 						<thead>
 							<tr>
 								<th scope="col"><p>예약일</p></th>
+								<th scope="col"><p>대여가능일</p></th>
 								<th scope="col"><p>예약번호</p></th>
 								<th scope="col"><p>회원명</p></th>
 								<th scope="col"><p>도서명</p></th>
-								<th scope="col"><p>예상대여일</p></th>
 								<th scope="col"><p>비고</p></th>
 							</tr>
 						</thead>
@@ -182,10 +182,10 @@ display: inline;
 						for(BookReservationDTO bookReservation : bookReservationList){
 			%>					<tr>
 									<td><p><%=bookReservation.getRsDate() %></p></td>
+									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 									<td><p><%=bookReservation.getReservationNo() %></p></td>
 									<td><p><%=bookReservation.getUserName() %></p></td>
 									<td><p><%=bookReservation.getTitle() %></p></td>
-									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 									<td><p><%if(bookReservation.getLendStatus().equals("false")){
 												if (today.after(bookReservation.getExpectedReturnDate())) {%>
 													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
@@ -202,10 +202,10 @@ display: inline;
 						for(BookReservationDTO bookReservation : bookReservationList){
 			%>					<tr>
 									<td><p><%=bookReservation.getRsDate() %></p></td>
+									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 									<td><p><%=bookReservation.getReservationNo() %></p></td>
 									<td><p><%=bookReservation.getUserName() %></p></td>
 									<td><p><%=bookReservation.getTitle() %></p></td>
-									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 									<td><p><%if(bookReservation.getLendStatus().equals("false")){
 												if (today.after(bookReservation.getExpectedReturnDate())) {%>
 													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
@@ -223,10 +223,10 @@ display: inline;
 					for(BookReservationDTO bookReservation : bookReservationList){
 		%>					<tr>
 								<td><p><%=bookReservation.getRsDate() %></p></td>
+								<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 								<td><p><%=bookReservation.getReservationNo() %></p></td>
 								<td><p><%=bookReservation.getUserName() %></p></td>
 								<td><p><%=bookReservation.getTitle() %></p></td>
-								<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 								<td><p><%if(bookReservation.getLendStatus().equals("false")){
 											if (today.after(bookReservation.getExpectedReturnDate())) {%>
 												<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
@@ -247,10 +247,10 @@ display: inline;
 					for(BookReservationDTO bookReservation : bookReservationList){
 		%>					<tr>
 								<td><p><%=bookReservation.getRsDate() %></p></td>
+								<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 								<td><p><%=bookReservation.getReservationNo() %></p></td>
 								<td><p><%=bookReservation.getUserName() %></p></td>
 								<td><p><%=bookReservation.getTitle() %></p></td>
-								<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 								<td><p><%if(bookReservation.getLendStatus().equals("false")){
 											if (today.after(bookReservation.getExpectedReturnDate())) {%>
 												<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
@@ -270,10 +270,10 @@ display: inline;
 						for(BookReservationDTO bookReservation : bookReservationList){
 			%>					<tr>
 									<td><p><%=bookReservation.getRsDate() %></p></td>
+									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 									<td><p><%=bookReservation.getReservationNo() %></p></td>
 									<td><p><%=bookReservation.getUserName() %></p></td>
 									<td><p><%=bookReservation.getTitle() %></p></td>
-									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 									<td><p><%if(bookReservation.getLendStatus().equals("false")){
 												if (today.after(bookReservation.getExpectedReturnDate())) {%>
 													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
@@ -290,10 +290,10 @@ display: inline;
 						for(BookReservationDTO bookReservation : bookReservationList){
 			%>					<tr>
 									<td><p><%=bookReservation.getRsDate() %></p></td>
+									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 									<td><p><%=bookReservation.getReservationNo() %></p></td>
 									<td><p><%=bookReservation.getUserName() %></p></td>
 									<td><p><%=bookReservation.getTitle() %></p></td>
-									<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
 									<td><p><%if(bookReservation.getLendStatus().equals("false")){
 												if (today.after(bookReservation.getExpectedReturnDate())) {%>
 													<button type="button" class="btn btn-warning lendingOverDueBtn lendingOverDueTitle" style="width: 100px;">대여보류</button><%
