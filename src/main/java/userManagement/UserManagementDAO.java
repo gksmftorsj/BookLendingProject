@@ -53,309 +53,412 @@ public class UserManagementDAO {
 		}
 		return -1;
 	}
-	
-	
-	public List<UserManagementDTO> selectAdminUserManagement(){
-		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo";
-    
 
-    Connection conn = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    
-    List<UserManagementDTO> userManagementList = null;
+	public List<UserManagementDTO> selectAdminUserManagement() {
 
-    try {
-       conn = DatabaseUtil.getConnection();
-       psmt = conn.prepareStatement(sqlQuery);
-       rs = psmt.executeQuery();
+		String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo";
 
-       userManagementList = new ArrayList<UserManagementDTO>();
-       
-       while(rs.next()) {
-    	   UserManagementDTO umd = new UserManagementDTO();
-    	   umd.userNo = rs.getString("userNo");
-    	   umd.setUserName(rs.getString("userName"));
-    	   umd.setUserID(rs.getString("userId"));
-    	   umd.setUserEmail(rs.getString("userEmail"));
-    	   umd.setUserTel(rs.getString("userTel"));
-    	   umd.setUserAddress(rs.getString("userAddress"));
-    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
-    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
-    	   umd.overDueCnt = rs.getInt("overDueCnt");
-    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 
-    	   userManagementList.add(umd);
-         }
-    } catch (Exception e) {
-       e.printStackTrace();
-    } finally {
-       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-    }
-    return userManagementList;
- }
-	
-	public List<UserManagementDTO> selectAdminUserManagementByUserName(String userName){
-		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userName LIKE '%'||?||'%'";
+		List<UserManagementDTO> userManagementList = null;
 
-    Connection conn = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    
-    List<UserManagementDTO> userManagementList = null;
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			rs = psmt.executeQuery();
 
-    try {
-       conn = DatabaseUtil.getConnection();
-       psmt = conn.prepareStatement(sqlQuery);
-       psmt.setString(1, userName);
-       rs = psmt.executeQuery();
+			userManagementList = new ArrayList<UserManagementDTO>();
 
-       userManagementList = new ArrayList<UserManagementDTO>();
-       
-       while(rs.next()) {
-    	   UserManagementDTO umd = new UserManagementDTO();
-    	   umd.userNo = rs.getString("userNo");
-    	   umd.setUserName(rs.getString("userName"));
-    	   umd.setUserID(rs.getString("userId"));
-    	   umd.setUserEmail(rs.getString("userEmail"));
-    	   umd.setUserTel(rs.getString("userTel"));
-    	   umd.setUserAddress(rs.getString("userAddress"));
-    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
-    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
-    	   umd.overDueCnt = rs.getInt("overDueCnt");
-    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+			while (rs.next()) {
+				UserManagementDTO umd = new UserManagementDTO();
+				umd.userNo = rs.getString("userNo");
+				umd.setUserName(rs.getString("userName"));
+				umd.setUserID(rs.getString("userId"));
+				umd.setUserEmail(rs.getString("userEmail"));
+				umd.setUserTel(rs.getString("userTel"));
+				umd.setUserAddress(rs.getString("userAddress"));
+				umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+				umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+				umd.overDueCnt = rs.getInt("overDueCnt");
+				umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
-    	   userManagementList.add(umd);
-         }
-    } catch (Exception e) {
-       e.printStackTrace();
-    } finally {
-       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-    }
-    return userManagementList;
- }
-	
-	public List<UserManagementDTO> selectAdminUserManagementByUserId(String userId){
-		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userID LIKE '%'||?||'%'";
+				userManagementList.add(umd);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return userManagementList;
+	}
 
-    Connection conn = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    
-    List<UserManagementDTO> userManagementList = null;
+	public List<UserManagementDTO> selectAdminUserManagementByUserName(String userName) {
 
-    try {
-       conn = DatabaseUtil.getConnection();
-       psmt = conn.prepareStatement(sqlQuery);
-       psmt.setString(1, userId);
-       rs = psmt.executeQuery();
+		String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userName LIKE '%'||?||'%'";
 
-       userManagementList = new ArrayList<UserManagementDTO>();
-       
-       while(rs.next()) {
-    	   UserManagementDTO umd = new UserManagementDTO();
-    	   umd.userNo = rs.getString("userNo");
-    	   umd.setUserName(rs.getString("userName"));
-    	   umd.setUserID(rs.getString("userId"));
-    	   umd.setUserEmail(rs.getString("userEmail"));
-    	   umd.setUserTel(rs.getString("userTel"));
-    	   umd.setUserAddress(rs.getString("userAddress"));
-    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
-    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
-    	   umd.overDueCnt = rs.getInt("overDueCnt");
-    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 
-    	   userManagementList.add(umd);
-         }
-    } catch (Exception e) {
-       e.printStackTrace();
-    } finally {
-       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-    }
-    return userManagementList;
- }
-	
-	public List<UserManagementDTO> selectAdminUserManagementByUserNo(String userNo){
-		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userNo LIKE '%'||?||'%'";
+		List<UserManagementDTO> userManagementList = null;
 
-    Connection conn = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    
-    List<UserManagementDTO> userManagementList = null;
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userName);
+			rs = psmt.executeQuery();
 
-    try {
-       conn = DatabaseUtil.getConnection();
-       psmt = conn.prepareStatement(sqlQuery);
-       psmt.setString(1, userNo);
-       rs = psmt.executeQuery();
+			userManagementList = new ArrayList<UserManagementDTO>();
 
-       userManagementList = new ArrayList<UserManagementDTO>();
-       
-       while(rs.next()) {
-    	   UserManagementDTO umd = new UserManagementDTO();
-    	   umd.userNo = rs.getString("userNo");
-    	   umd.setUserName(rs.getString("userName"));
-    	   umd.setUserID(rs.getString("userId"));
-    	   umd.setUserEmail(rs.getString("userEmail"));
-    	   umd.setUserTel(rs.getString("userTel"));
-    	   umd.setUserAddress(rs.getString("userAddress"));
-    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
-    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
-    	   umd.overDueCnt = rs.getInt("overDueCnt");
-    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+			while (rs.next()) {
+				UserManagementDTO umd = new UserManagementDTO();
+				umd.userNo = rs.getString("userNo");
+				umd.setUserName(rs.getString("userName"));
+				umd.setUserID(rs.getString("userId"));
+				umd.setUserEmail(rs.getString("userEmail"));
+				umd.setUserTel(rs.getString("userTel"));
+				umd.setUserAddress(rs.getString("userAddress"));
+				umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+				umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+				umd.overDueCnt = rs.getInt("overDueCnt");
+				umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
-    	   userManagementList.add(umd);
-         }
-    } catch (Exception e) {
-       e.printStackTrace();
-    } finally {
-       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-    }
-    return userManagementList;
- }
-	
-	public List<UserManagementDTO> selectAdminUserManagementDetailByUserName(String userName){
-		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userName = ?";
+				userManagementList.add(umd);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return userManagementList;
+	}
 
-    Connection conn = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    
-    List<UserManagementDTO> userManagementList = null;
+	public List<UserManagementDTO> selectAdminUserManagementByUserId(String userId) {
 
-    try {
-       conn = DatabaseUtil.getConnection();
-       psmt = conn.prepareStatement(sqlQuery);
-       psmt.setString(1, userName);
-       rs = psmt.executeQuery();
+		String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userID LIKE '%'||?||'%'";
 
-       userManagementList = new ArrayList<UserManagementDTO>();
-       
-       while(rs.next()) {
-    	   UserManagementDTO umd = new UserManagementDTO();
-    	   umd.userNo = rs.getString("userNo");
-    	   umd.setUserName(rs.getString("userName"));
-    	   umd.setUserID(rs.getString("userId"));
-    	   umd.setUserEmail(rs.getString("userEmail"));
-    	   umd.setUserTel(rs.getString("userTel"));
-    	   umd.setUserAddress(rs.getString("userAddress"));
-    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
-    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
-    	   umd.overDueCnt = rs.getInt("overDueCnt");
-    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 
-    	   userManagementList.add(umd);
-         }
-    } catch (Exception e) {
-       e.printStackTrace();
-    } finally {
-       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-    }
-    return userManagementList;
- }
-	
-	public List<UserManagementDTO> selectAdminUserManagementDetailByUserId(String userId){
-		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userID = ?";
+		List<UserManagementDTO> userManagementList = null;
 
-    Connection conn = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    
-    List<UserManagementDTO> userManagementList = null;
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userId);
+			rs = psmt.executeQuery();
 
-    try {
-       conn = DatabaseUtil.getConnection();
-       psmt = conn.prepareStatement(sqlQuery);
-       psmt.setString(1, userId);
-       rs = psmt.executeQuery();
+			userManagementList = new ArrayList<UserManagementDTO>();
 
-       userManagementList = new ArrayList<UserManagementDTO>();
-       
-       while(rs.next()) {
-    	   UserManagementDTO umd = new UserManagementDTO();
-    	   umd.userNo = rs.getString("userNo");
-    	   umd.setUserName(rs.getString("userName"));
-    	   umd.setUserID(rs.getString("userId"));
-    	   umd.setUserEmail(rs.getString("userEmail"));
-    	   umd.setUserTel(rs.getString("userTel"));
-    	   umd.setUserAddress(rs.getString("userAddress"));
-    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
-    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
-    	   umd.overDueCnt = rs.getInt("overDueCnt");
-    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+			while (rs.next()) {
+				UserManagementDTO umd = new UserManagementDTO();
+				umd.userNo = rs.getString("userNo");
+				umd.setUserName(rs.getString("userName"));
+				umd.setUserID(rs.getString("userId"));
+				umd.setUserEmail(rs.getString("userEmail"));
+				umd.setUserTel(rs.getString("userTel"));
+				umd.setUserAddress(rs.getString("userAddress"));
+				umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+				umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+				umd.overDueCnt = rs.getInt("overDueCnt");
+				umd.currentReservationCnt = rs.getInt("currentReservationCnt");
 
-    	   userManagementList.add(umd);
-         }
-    } catch (Exception e) {
-       e.printStackTrace();
-    } finally {
-       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-    }
-    return userManagementList;
- }
-	
-	public List<UserManagementDTO> selectAdminUserManagementDetailByUserNo(String userNo){
-		
-	String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userNo =?";
+				userManagementList.add(umd);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return userManagementList;
+	}
 
-    Connection conn = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    
-    List<UserManagementDTO> userManagementList = null;
+	public List<UserManagementDTO> selectAdminUserManagementByUserNo(String userNo) {
 
-    try {
-       conn = DatabaseUtil.getConnection();
-       psmt = conn.prepareStatement(sqlQuery);
-       psmt.setString(1, userNo);
-       rs = psmt.executeQuery();
+		String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userNo LIKE '%'||?||'%'";
 
-       userManagementList = new ArrayList<UserManagementDTO>();
-       
-       while(rs.next()) {
-    	   UserManagementDTO umd = new UserManagementDTO();
-    	   umd.userNo = rs.getString("userNo");
-    	   umd.setUserName(rs.getString("userName"));
-    	   umd.setUserID(rs.getString("userId"));
-    	   umd.setUserEmail(rs.getString("userEmail"));
-    	   umd.setUserTel(rs.getString("userTel"));
-    	   umd.setUserAddress(rs.getString("userAddress"));
-    	   umd.currentLendingCnt = rs.getInt("currentLendingCnt");
-    	   umd.totalLendingCnt = rs.getInt("totalLendingCnt");
-    	   umd.overDueCnt = rs.getInt("overDueCnt");
-    	   umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 
-    	   userManagementList.add(umd);
-         }
-    } catch (Exception e) {
-       e.printStackTrace();
-    } finally {
-       try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-       try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
-    }
-    return userManagementList;
- }
-	
+		List<UserManagementDTO> userManagementList = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userNo);
+			rs = psmt.executeQuery();
+
+			userManagementList = new ArrayList<UserManagementDTO>();
+
+			while (rs.next()) {
+				UserManagementDTO umd = new UserManagementDTO();
+				umd.userNo = rs.getString("userNo");
+				umd.setUserName(rs.getString("userName"));
+				umd.setUserID(rs.getString("userId"));
+				umd.setUserEmail(rs.getString("userEmail"));
+				umd.setUserTel(rs.getString("userTel"));
+				umd.setUserAddress(rs.getString("userAddress"));
+				umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+				umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+				umd.overDueCnt = rs.getInt("overDueCnt");
+				umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+
+				userManagementList.add(umd);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return userManagementList;
+	}
+
+	public List<UserManagementDTO> selectAdminUserManagementDetailByUserName(String userName) {
+
+		String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userName = ?";
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		List<UserManagementDTO> userManagementList = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userName);
+			rs = psmt.executeQuery();
+
+			userManagementList = new ArrayList<UserManagementDTO>();
+
+			while (rs.next()) {
+				UserManagementDTO umd = new UserManagementDTO();
+				umd.userNo = rs.getString("userNo");
+				umd.setUserName(rs.getString("userName"));
+				umd.setUserID(rs.getString("userId"));
+				umd.setUserEmail(rs.getString("userEmail"));
+				umd.setUserTel(rs.getString("userTel"));
+				umd.setUserAddress(rs.getString("userAddress"));
+				umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+				umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+				umd.overDueCnt = rs.getInt("overDueCnt");
+				umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+
+				userManagementList.add(umd);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return userManagementList;
+	}
+
+	public List<UserManagementDTO> selectAdminUserManagementDetailByUserId(String userId) {
+
+		String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userID = ?";
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		List<UserManagementDTO> userManagementList = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userId);
+			rs = psmt.executeQuery();
+
+			userManagementList = new ArrayList<UserManagementDTO>();
+
+			while (rs.next()) {
+				UserManagementDTO umd = new UserManagementDTO();
+				umd.userNo = rs.getString("userNo");
+				umd.setUserName(rs.getString("userName"));
+				umd.setUserID(rs.getString("userId"));
+				umd.setUserEmail(rs.getString("userEmail"));
+				umd.setUserTel(rs.getString("userTel"));
+				umd.setUserAddress(rs.getString("userAddress"));
+				umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+				umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+				umd.overDueCnt = rs.getInt("overDueCnt");
+				umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+
+				userManagementList.add(umd);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return userManagementList;
+	}
+
+	public List<UserManagementDTO> selectAdminUserManagementDetailByUserNo(String userNo) {
+
+		String sqlQuery = "SELECT * FROM user_info ui, user_management um WHERE ui.userNo = um.userNo AND ui.userNo =?";
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		List<UserManagementDTO> userManagementList = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userNo);
+			rs = psmt.executeQuery();
+
+			userManagementList = new ArrayList<UserManagementDTO>();
+
+			while (rs.next()) {
+				UserManagementDTO umd = new UserManagementDTO();
+				umd.userNo = rs.getString("userNo");
+				umd.setUserName(rs.getString("userName"));
+				umd.setUserID(rs.getString("userId"));
+				umd.setUserEmail(rs.getString("userEmail"));
+				umd.setUserTel(rs.getString("userTel"));
+				umd.setUserAddress(rs.getString("userAddress"));
+				umd.currentLendingCnt = rs.getInt("currentLendingCnt");
+				umd.totalLendingCnt = rs.getInt("totalLendingCnt");
+				umd.overDueCnt = rs.getInt("overDueCnt");
+				umd.currentReservationCnt = rs.getInt("currentReservationCnt");
+
+				userManagementList.add(umd);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return userManagementList;
+	}
+
 	public int updateUserManagement(String userNo) {
 		String sqlQuery = "UPDATE USER_MANAGEMENT "
 				+ "SET currentLendingCnt = currentLendingCnt + 1, totalLendingCnt = totalLendingCnt +1 "
@@ -396,7 +499,7 @@ public class UserManagementDAO {
 		}
 		return result;
 	}
-	
+
 	public int updateCurrentReservationCntPlus(String userNo) {
 		String sqlQuery = "UPDATE USER_MANAGEMENT "
 				+ "SET currentReservationCnt = currentReservationCnt + 1 "
@@ -437,59 +540,18 @@ public class UserManagementDAO {
 		}
 		return result;
 	}
-	
+
 	public int updateCurrentReservationCntMinus(String userNo) {
 		String sqlQuery = "UPDATE USER_MANAGEMENT "
 				+ "SET currentReservationCnt = currentReservationCnt - 1 "
 				+ "WHERE userNo = ?";
-		
+
 		int result = 0;
-		
+
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
-		
-		try {
-			conn = DatabaseUtil.getConnection();
-			psmt = conn.prepareStatement(sqlQuery);
-			psmt.setString(1, userNo);
-			result = psmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				if (psmt != null)
-					conn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			try {
-				if (rs != null)
-					conn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-	
-	public int updateCurrentLendingCntMinus(String userNo) {
-		String sqlQuery = "UPDATE USER_MANAGEMENT "
-				+ "SET currentLendingCnt = currentLendingCnt - 1 "
-				+ "WHERE userNo = ?";
-		
-		int result = 0;
-		
-		Connection conn = null;
-		PreparedStatement psmt = null;
-		ResultSet rs = null;
-		
+
 		try {
 			conn = DatabaseUtil.getConnection();
 			psmt = conn.prepareStatement(sqlQuery);
@@ -520,6 +582,46 @@ public class UserManagementDAO {
 		return result;
 	}
 
+	public int updateCurrentLendingCntMinus(String userNo) {
+		String sqlQuery = "UPDATE USER_MANAGEMENT "
+				+ "SET currentLendingCnt = currentLendingCnt - 1 "
+				+ "WHERE userNo = ?";
+
+		int result = 0;
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userNo);
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
 
 	public int selectCurrentLendingCnt(String userNo) {
 		String sqlQuery = "SELECT currentLendingCnt FROM USER_MANAGEMENT WHERE userNo = ?";
@@ -567,7 +669,7 @@ public class UserManagementDAO {
 		}
 		return currentLendingCnt;
 	}
-	
+
 	public int selectCurrentReservationCnt(String userNo) {
 		String sqlQuery = "SELECT currentReservationCnt FROM USER_MANAGEMENT WHERE userNo = ?";
 

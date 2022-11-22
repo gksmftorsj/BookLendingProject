@@ -100,14 +100,14 @@
 			updateTelResult = userInfoDAO.updateUserTel(userTel, userID);
 			if(updateTelResult > 0){
 				script.println("<script>");
-				script.println("alert('이름이 변경되었습니다.');");
+				script.println("alert('휴대전화번호가 변경되었습니다.');");
 				script.println("location.href = './modifyUserInfo.jsp';");
 				script.println("</script>");
 				script.close();
 				return;
 			}else{
 				script.println("<script>");
-				script.println("alert('이름이 변경을 실패했습니다.');");
+				script.println("alert('휴대전화번호 변경을 실패했습니다.');");
 				script.println("location.href = './modifyUserInfo.jsp';");
 				script.println("</script>");
 				script.close();

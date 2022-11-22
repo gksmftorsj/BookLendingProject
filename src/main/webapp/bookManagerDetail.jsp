@@ -114,6 +114,15 @@ p{
 				<label for="name">도서상세</label>
 				<div class="myTable">
 					<table class="lendingTable container">
+					<colgroup>
+						<col width="5%"/>
+						<col width="5%"/>
+						<col width="40%"/>
+						<col width="20%"/>
+						<col width="12%"/>
+						<col width="10%"/>
+						<col width="8%"/>
+					</colgroup>
 						<thead>
 							<tr>
 								<th scope="col"><p>도서번호</p></th>

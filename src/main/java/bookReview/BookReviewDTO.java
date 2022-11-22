@@ -12,11 +12,11 @@ public class BookReviewDTO {
    public String reviewDate;
    public String reviewContent;
    public int reviewStar;
-   
+
    public BookReviewDTO() {
-      
+
    }
-   
+
    public BookReviewDTO(String reviewNo, String userName, String userNo, String bookIsbn, String reviewDate,
          String reviewContent, int reviewStar) {
       super();
@@ -84,7 +84,5 @@ public class BookReviewDTO {
    public void setReviewStar(int reviewStar) {
       this.reviewStar = reviewStar;
    }
-   
-
 
 }
