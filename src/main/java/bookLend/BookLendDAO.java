@@ -142,7 +142,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminNotReturnBookLendDetailByUserNo(String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -210,7 +210,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetail() {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate, bl.extensionStatus,"
 	      		+ " bl.expectedReturnDate, bl.returnStatus, ui.userName,"
-	      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+	      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 	      		+ " bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20 THEN bi.bookTitle"
 	      		+ " ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle FROM book_lend bl,"
 	      		+ " book_management bm, book_info bi, user_info ui WHERE bl.bookNo = bm.bookNo"
@@ -276,7 +276,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailThisMonth() {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -344,6 +344,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDateAndLendNo(String lendDate, String lendNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -412,7 +413,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDateAndUserNo(String lendDate, String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -481,7 +482,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDateAndTitle(String lendDate, String title) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -550,7 +551,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByLendNo(String lendNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -618,7 +619,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByUserNo(String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -686,7 +687,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByTitle(String title) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -754,7 +755,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDate(String lendDate) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 	      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-	      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+	      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 	      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 	      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 	      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -822,7 +823,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailThisMonthByUserNo(String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -891,7 +892,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDateAndLendNoAndUserNo(String lendDate, String lendNo, String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -962,7 +963,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByLendDateAndTitleAndUserNo(String lendDate, String title, String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -1034,7 +1035,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByLendNoAndUserNo(String lendNo, String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -1103,7 +1104,7 @@ public class BookLendDAO {
 	public List<BookLendDTO> selectAdminBookLendDetailByTitleAndUserNo(String title, String userNo) {
 	      String sqlQuery = "SELECT bl.lendNo, bl.userNo, bl.bookNo, bl.lendDate,"
 		      		+ " bl.extensionStatus, bl.expectedReturnDate,"
-		      		+ " TO_CHAR(bl.lendDate, 'yy/mm/dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy/mm/dd') rtDate,"
+		      		+ " TO_CHAR(bl.lendDate, 'yy-mm-dd') ldDate, TO_CHAR(bl.expectedReturnDate, 'yy-mm-dd') rtDate,"
 		      		+ " bl.returnStatus, ui.userName, bm.bookIsbn, CASE WHEN length(bi.bookTitle) < 20"
 		      		+ " THEN bi.bookTitle ELSE SUBSTR(bi.bookTitle, 1, 20)||'...' END bookTitle"
 		      		+ " FROM book_lend bl, book_management bm, book_info bi, user_info ui"
@@ -1171,7 +1172,7 @@ public class BookLendDAO {
 		}
 
 	public String selectExpectedReturnDateByBookNo(String bookNo) {
-		String sqlQuery = "SELECT TO_CHAR(expectedReturnDate, 'yy/mm/dd') expectedReturnDate FROM book_lend WHERE bookNo = ?";
+		String sqlQuery = "SELECT TO_CHAR(expectedReturnDate, 'yy-mm-dd') expectedReturnDate FROM book_lend WHERE bookNo = ?";
 
 		String expectedReturnDate = null;
 
@@ -1212,6 +1213,54 @@ public class BookLendDAO {
 			}
 		}
 		return expectedReturnDate;
+	}
+
+	public BookLendDTO selectLendInfoByBookNo(String bookNo) {
+		String sqlQuery = "SELECT userNo, lendNo, TO_CHAR(expectedReturnDate, 'yy-mm-dd') rtDate FROM book_lend WHERE bookNo = ?";
+
+		BookLendDTO lendDTO = null;
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, bookNo);
+
+			rs = psmt.executeQuery();
+
+			lendDTO = new BookLendDTO();
+			
+			if (rs.next()) {
+				lendDTO.userNo = rs.getString("userNo");
+				lendDTO.lendNo = rs.getString("lendNo");
+				lendDTO.rtDate = rs.getString("rtDate");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (psmt != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return lendDTO;
 	}
 
 

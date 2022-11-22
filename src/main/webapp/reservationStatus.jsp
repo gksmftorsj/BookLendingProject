@@ -146,10 +146,10 @@ display: inline;
 						<thead>
 							<tr>
 								<th scope="col"><p>예약일</p></th>
+								<th scope="col"><p>대여가능일</p></th>
 								<th scope="col"><p>예약번호</p></th>
 								<th scope="col"><p>회원명</p></th>
 								<th scope="col"><p>도서명</p></th>
-								<th scope="col"><p>대여가능일</p></th>
 								<th scope="col"><p>비고</p></th>
 							</tr>
 						</thead>
@@ -167,16 +167,14 @@ display: inline;
 											if(bookReservationList != null && bookReservationList.size()>0) {
 												for(BookReservationDTO bookReservation : bookReservationList){
 								%>					<tr>
-														<td><p><%=bookReservation.getReservationDate() %></p></td>
-														<td><p>
-																<%=bookReservation.getReservationNo() %>
-														</p></td>
+														<td><p><%=bookReservation.getRsDate() %></p></td>
+														<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
+														<td><p><%=bookReservation.getReservationNo() %></p></td>
 														<td><p>
 															<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 														</p></td>
 														<td><p><%=bookReservation.getTitle() %></p></td>
-														<td><p><%=bookReservation.getExpectedLendingDate() %>
-														</p></td>
+														<td><p></p></td>
 													</tr>
 								<%
 												}
@@ -192,16 +190,14 @@ display: inline;
 											if(bookReservationList != null && bookReservationList.size()>0) {
 												for(BookReservationDTO bookReservation : bookReservationList){
 								%>					<tr>
-														<td><p><%=bookReservation.getReservationDate() %></p></td>
-														<td><p>
-																<%=bookReservation.getReservationNo() %>
-														</p></td>
+														<td><p><%=bookReservation.getRsDate() %></p></td>
+														<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
+														<td><p><%=bookReservation.getReservationNo() %></p></td>
 														<td><p>
 															<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 														</p></td>
 														<td><p><%=bookReservation.getTitle() %></p></td>
-														<td><p><%=bookReservation.getExpectedLendingDate() %>
-														</p></td>
+														<td><p></p></td>
 													</tr>
 								<%
 												}
@@ -211,16 +207,14 @@ display: inline;
 											if(bookReservationList != null && bookReservationList.size()>0) {
 												for(BookReservationDTO bookReservation : bookReservationList){
 								%>					<tr>
-														<td><p><%=bookReservation.getReservationDate() %></p></td>
-														<td><p>
-																<%=bookReservation.getReservationNo() %>
-														</p></td>
+														<td><p><%=bookReservation.getRsDate() %></p></td>
+														<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
+														<td><p><%=bookReservation.getReservationNo() %></p></td>
 														<td><p>
 															<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 														</p></td>
 														<td><p><%=bookReservation.getTitle() %></p></td>
-														<td><p><%=bookReservation.getExpectedLendingDate() %>
-														</p></td>
+														<td><p></p></td>
 													</tr>
 								<%
 												}
@@ -230,16 +224,14 @@ display: inline;
 											if(bookReservationList != null && bookReservationList.size()>0) {
 												for(BookReservationDTO bookReservation : bookReservationList){
 								%>					<tr>
-														<td><p><%=bookReservation.getReservationDate() %></p></td>
-														<td><p>
-																<%=bookReservation.getReservationNo() %>
-														</p></td>
+														<td><p><%=bookReservation.getRsDate() %></p></td>
+														<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
+														<td><p><%=bookReservation.getReservationNo() %></p></td>
 														<td><p>
 															<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 														</p></td>
 														<td><p><%=bookReservation.getTitle() %></p></td>
-														<td><p><%=bookReservation.getExpectedLendingDate() %>
-														</p></td>
+														<td><p></p></td>
 													</tr>
 								<%
 												}
@@ -258,16 +250,14 @@ display: inline;
 								if(bookReservationList != null && bookReservationList.size()>0) {
 									for(BookReservationDTO bookReservation : bookReservationList){
 					%>					<tr>
-											<td><p><%=bookReservation.getReservationDate() %></p></td>
-											<td><p>
-													<%=bookReservation.getReservationNo() %>
-											</p></td>
+											<td><p><%=bookReservation.getRsDate() %></p></td>
+											<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
+											<td><p><%=bookReservation.getReservationNo() %></p></td>
 											<td><p>
 												<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 											</p></td>
 											<td><p><%=bookReservation.getTitle() %></p></td>
-											<td><p><%=bookReservation.getExpectedLendingDate() %>
-											</p></td>
+											<td><p></p></td>
 										</tr>
 					<%
 									}
@@ -277,16 +267,14 @@ display: inline;
 								if(bookReservationList != null && bookReservationList.size()>0) {
 									for(BookReservationDTO bookReservation : bookReservationList){
 					%>					<tr>
-											<td><p><%=bookReservation.getReservationDate() %></p></td>
-											<td><p>
-													<%=bookReservation.getReservationNo() %>
-											</p></td>
+											<td><p><%=bookReservation.getRsDate() %></p></td>
+											<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
+											<td><p><%=bookReservation.getReservationNo() %></p></td>
 											<td><p>
 												<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 											</p></td>
 											<td><p><%=bookReservation.getTitle() %></p></td>
-											<td><p><%=bookReservation.getExpectedLendingDate() %>
-											</p></td>
+											<td><p></p></td>
 										</tr>
 					<%
 									}
@@ -296,16 +284,14 @@ display: inline;
 								if(bookReservationList != null && bookReservationList.size()>0) {
 									for(BookReservationDTO bookReservation : bookReservationList){
 					%>					<tr>
-											<td><p><%=bookReservation.getReservationDate() %></p></td>
-											<td><p>
-													<%=bookReservation.getReservationNo() %>
-											</p></td>
+											<td><p><%=bookReservation.getRsDate() %></p></td>
+											<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
+											<td><p><%=bookReservation.getReservationNo() %></p></td>
 											<td><p>
 												<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 											</p></td>
 											<td><p><%=bookReservation.getTitle() %></p></td>
-											<td><p><%=bookReservation.getExpectedLendingDate() %>
-											</p></td>
+											<td><p></p></td>
 										</tr>
 					<%
 									}
@@ -319,16 +305,14 @@ display: inline;
 									if(bookReservationList != null && bookReservationList.size()>0) {
 										for(BookReservationDTO bookReservation : bookReservationList){
 						%>					<tr>
-												<td><p><%=bookReservation.getReservationDate() %></p></td>
-												<td><p>
-														<%=bookReservation.getReservationNo() %>
-												</p></td>
+												<td><p><%=bookReservation.getRsDate() %></p></td>
+												<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
+												<td><p><%=bookReservation.getReservationNo() %></p></td>
 												<td><p>
 													<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 												</p></td>
 												<td><p><%=bookReservation.getTitle() %></p></td>
-												<td><p><%=bookReservation.getExpectedLendingDate() %>
-												</p></td>
+												<td><p></p></td>
 											</tr>
 						<%
 										}
@@ -339,16 +323,14 @@ display: inline;
 									if(bookReservationList != null && bookReservationList.size()>0) {
 										for(BookReservationDTO bookReservation : bookReservationList){
 						%>					<tr>
-												<td><p><%=bookReservation.getReservationDate() %></p></td>
-												<td><p>
-														<%=bookReservation.getReservationNo() %>
-												</p></td>
+												<td><p><%=bookReservation.getRsDate() %></p></td>
+												<td><p><%=bookReservation.getExpectedLendingDate() %></p></td>
+												<td><p><%=bookReservation.getReservationNo() %></p></td>
 												<td><p>
 													<a href="userManager.jsp?userNo=<%=bookReservation.getUserNo() %>"><%=bookReservation.getUserName() %></a>
 												</p></td>
 												<td><p><%=bookReservation.getTitle() %></p></td>
-												<td><p><%=bookReservation.getExpectedLendingDate() %>
-												</p></td>
+												<td><p></p></td>
 											</tr>
 						<%
 															}

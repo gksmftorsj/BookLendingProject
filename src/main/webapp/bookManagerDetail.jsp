@@ -6,6 +6,8 @@
 <%@ page import="bookInfo.BookInfoDAO" %>
 <%@ page import="bookManagement.BookManagementDTO" %>
 <%@ page import="bookManagement.BookManagementDAO" %>
+<%@ page import="bookLend.BookLendDTO" %>
+<%@ page import="bookLend.BookLendDAO" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 
 <!DOCTYPE html>
@@ -129,14 +131,18 @@ p{
 	<%
 		BookManagementDAO bookMdao = new BookManagementDAO();
 		List<BookManagementDTO> bookMlist = null;
+						
+		BookLendDAO bookLendDao = new BookLendDAO();
+		BookLendDTO lendInfo = null;
 
 		if( request.getParameter("searching") == null){
 			if( request.getParameter("isbn") != null ){
 				String isbn = request.getParameter("isbn");
 				bookMlist = bookMdao.selectAdminBookManagementDetailByIsbn(isbn);
-	
+
 					if(bookMlist != null && bookMlist.size()>0) {
 			  			for(BookManagementDTO bmd : bookMlist){
+			  				lendInfo = bookLendDao.selectLendInfoByBookNo(bmd.getBookNo());
 	%>
 						<tr>
 								<td><p><%=bmd.getBookNo() %></p></td>
@@ -149,11 +155,16 @@ p{
 								<td><p><%=bmd.getPublisher() %></p></td>
 								<td><p>
 								<%if( (bmd.getBookLendingAvailability()).equals("대여중") ) {
-								%> <button type="button" class="btn btn-danger" 
-								data-toggle="popover" data-bs-title="대여중" 
-								data-bs-content="And here's some amazing content.">
-								대여중</button> <% } else {%> 대여가능 <% } %></p></td>
-								<td><p><%=bmd.getBookReservationAvailability() %></p></td>
+								%> <button type="button" class="btn btn-success" 
+								data-toggle="popover" data-bs-title="반납예정일 : 20<%=lendInfo.getRtDate()%>" 
+								data-bs-content="회원번호 : <%=lendInfo.getUserNo()%>">
+								대여중</button><% } else {%> 대여가능 <% } %></p></td>
+<%-- 								<td><p>
+								<%if( (bmd.getBookReservationAvailability()).equals("예약중") ) {
+								%> <button type="button" class="btn btn-warning" 
+								data-toggle="popover" data-bs-title="대여예정일 : 20<%=lendInfo.getRtDate()%>" 
+								data-bs-content="회원번호 : <%=lendInfo.getUserNo()%>">예약중</button>
+								<% } else {%> 예약가능 <% } %></p></td> --%>
 							</tr>
 						<%
 			  			}
@@ -181,11 +192,16 @@ p{
 								<td><p><%=bmd.getPublisher() %></p></td>
 								<td><p>
 								<%if( (bmd.getBookLendingAvailability()).equals("대여중") ) {
-								%> <button type="button" class="btn btn-danger" 
-								data-toggle="popover" data-bs-title="대여중" 
-								data-bs-content="And here's some amazing content.">
+								%> <button type="button" class="btn btn-success" 
+								data-toggle="popover" data-bs-title="반납예정일 : 20<%=lendInfo.getRtDate()%>" 
+								data-bs-content="회원번호 : <%=lendInfo.getUserNo()%>">
 								대여중</button> <% } else {%> 대여가능 <% } %></p></td>
-								<td><p><%=bmd.getBookReservationAvailability() %></p></td>
+<%-- 								<td><p>
+								<%if( (bmd.getBookReservationAvailability()).equals("예약중") ) {
+								%> <button type="button" class="btn btn-warning" 
+								data-toggle="popover" data-bs-title="대여예정일 : 20<%=lendInfo.getRtDate()%>" 
+								data-bs-content="회원번호 : <%=lendInfo.getUserNo()%>">예약중</button>
+								<% } else {%> 예약가능 <% } %></p></td> --%>
 							</tr>
 	<%
 					}
@@ -206,11 +222,16 @@ p{
 								<td><p><%=bmd.getPublisher() %></p></td>
 								<td><p>
 								<%if( (bmd.getBookLendingAvailability()).equals("대여중") ) {
-								%> <button type="button" class="btn btn-danger" 
-								data-toggle="popover" data-bs-title="대여중" 
-								data-bs-content="And here's some amazing content.">
-								대여중</button> <% } else {%> 대여가능 <% } %></p></td>
-								<td><p><%=bmd.getBookReservationAvailability() %></p></td>
+								%> <button type="button" class="btn btn-success" 
+								data-toggle="popover" data-bs-title="반납예정일 : 20<%=lendInfo.getRtDate()%>" 
+								data-bs-content="회원번호 : <%=lendInfo.getUserNo()%>">대여중</button> 
+								<% } else {%> 대여가능 <% } %></p></td>
+<%-- 								<td><p>
+								<%if( (bmd.getBookReservationAvailability()).equals("예약중") ) {
+								%> <button type="button" class="btn btn-warning" 
+								data-toggle="popover" data-bs-title="대여예정일 : 20<%=lendInfo.getRtDate()%>" 
+								data-bs-content="회원번호 : <%=lendInfo.getUserNo()%>">예약중</button>
+								<% } else {%> 예약가능 <% } %></p></td> --%>
 							</tr>
   	<%
 					}
@@ -231,11 +252,16 @@ p{
 								<td><p><%=bmd.getPublisher() %></p></td>
 								<td><p>
 								<%if( (bmd.getBookLendingAvailability()).equals("대여중") ) {
-								%> <button type="button" class="btn btn-danger" 
-								data-toggle="popover" data-bs-title="대여중" 
-								data-bs-content="And here's some amazing content.">
-								대여중</button> <% } else {%> 대여가능 <% } %></p></td>
-								<td><p><%=bmd.getBookReservationAvailability() %></p></td>
+								%> <button type="button" class="btn btn-success" 
+								data-toggle="popover" data-bs-title="반납예정일 : 20<%=lendInfo.getRtDate()%>" 
+								data-bs-content="회원번호 : <%=lendInfo.getUserNo()%>">대여중</button>
+								<% } else {%> 대여가능 <% } %></p></td>
+<%-- 								<td><p>
+								<%if( (bmd.getBookReservationAvailability()).equals("예약중") ) {
+								%> <button type="button" class="btn btn-warning" 
+								data-toggle="popover" data-bs-title="대여예정일 : 20<%=lendInfo.getRtDate()%>" 
+								data-bs-content="회원번호 : <%=lendInfo.getUserNo()%>">예약중</button>
+								<% } else {%> 예약가능 <% } %></p></td> --%>
 							</tr>
   	<%
 					}
