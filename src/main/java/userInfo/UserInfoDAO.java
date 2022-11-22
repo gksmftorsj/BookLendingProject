@@ -137,6 +137,39 @@ public class UserInfoDAO {
 		return getUserID;
 	}
 	
+	public String selectUserTel(String userTel) {
+		String sqlQuery = "SELECT userTel FROM USER_INFO WHERE userTel = ?";
+		
+		String result = null;
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DatabaseUtil.getConnection();
+			psmt = conn.prepareStatement(sqlQuery);
+			psmt.setString(1, userTel);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				if(rs.getString("userTel").equals(userTel)) {
+					result = rs.getString("userTel");
+				}else {
+					result = null;
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+			try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+			try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+		}
+		return result;
+	}
+	
 		public int login(String userID, String userPassword) {
 			String SQL = "SELECT userPassword FROM USER_INFO WHERE userID = ?";
 			Connection conn = null;
@@ -215,8 +248,8 @@ public class UserInfoDAO {
 			return null;
 		}
 		
-		public String getUserId(String userName, String userEmail) {
-			String SQL = "SELECT userId FROM USER_INFO WHERE userName = ? AND userEmail = ?";
+		public String getUserEmailByNameAndTel(String userName, String userTel) {
+			String SQL = "SELECT userEmail FROM USER_INFO WHERE userName = ? AND userTel = ?";
 			Connection conn = null;
 			PreparedStatement psmt = null;
 			ResultSet rs = null;
@@ -224,7 +257,7 @@ public class UserInfoDAO {
 				conn = DatabaseUtil.getConnection();
 				psmt = conn.prepareStatement(SQL);
 				psmt.setString(1, userName);
-				psmt.setString(2, userEmail);
+				psmt.setString(2, userTel);
 				rs = psmt.executeQuery();
 				if(rs.next()) {
 					return rs.getString(1);
@@ -238,7 +271,33 @@ public class UserInfoDAO {
 			}
 			return null;
 		}
-
+		
+		public String getUserId(String userName, String userTel) {
+			String SQL = "SELECT userId FROM USER_INFO WHERE userName = ? AND userTel = ?";
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+			try {
+				conn = DatabaseUtil.getConnection();
+				psmt = conn.prepareStatement(SQL);
+				psmt.setString(1, userName);
+				psmt.setString(2, userTel);
+				rs = psmt.executeQuery();
+				if(rs.next()) {
+					return rs.getString(1);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {if(conn != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+				try {if(psmt != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+				try {if(rs != null) conn.close();} catch (Exception e) {e.printStackTrace();}
+			}
+			return null;
+		}
+		
+		
+		
 		public String getUserEmailChecked(String userID) {
 			String SQL = "SELECT userEmailChecked FROM USER_INFO WHERE userID = ?";
 			Connection conn = null;

@@ -18,26 +18,28 @@
 	request.setCharacterEncoding("UTF-8");
 	
 	String userName = null;
-	String userEmail = null;
+	String userTel = null;
 	
 	if(request.getParameter("userName") != null){
 		userName = (String) request.getParameter("userName");
 	}
 
-	if(request.getParameter("userEmail") != null){
-		userEmail = (String) request.getParameter("userEmail");
+	if(request.getParameter("userTel") != null){
+		userTel = (String) request.getParameter("userTel");
 	}
 	
 	UserInfoDAO userInfoDAO = new UserInfoDAO();
-	String userID = userInfoDAO.getUserId(userName, userEmail);
+	String userID = userInfoDAO.getUserId(userName, userTel);
+	String userEmail = userInfoDAO.getUserEmailByNameAndTel(userName, userTel);
 	
 	if(userID != null){
 		String host = "http://localhost:8080/BookLendingProject/";
 		String from = "gksmftorsj@gamil.com";
 		String to = userEmail;
-		String subject = "지니북스 아이디찾기.";
-		String content = "아이디찾기 결과입니다: " + userID +
-		"<a href=" + host + "userLogin.jsp> 로그인하러가기 </a>";
+		String subject = "지니북스 아이디찾기";
+		String content = "아이디찾기 결과입니다: " + userID + "<br><br>" +
+		"<button style='background-color: #2196f3; width: 12rem; height: 40px;'><a href=" + host + " userLogin.jsp"
+		+ " style='color: white; text-decoration: none; font-size: 25px; font-weight: bold;'>로그인하러가기</a></button>";
 		
 		Properties p = new Properties();
 		p.put("mail.smtp.user", from);
@@ -67,7 +69,7 @@
 			e.printStackTrace();
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
-			script.println("alert('오류가 발생했습니다.');");
+			script.println("alert('오류가 발생했습니다. 입력한 정보를 다시 확인해주세요.');");
 			script.println("history.back();");
 			script.println("</script>");
 			script.close();

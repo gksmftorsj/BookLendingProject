@@ -42,7 +42,7 @@
 		if(result > 0){
 			script.println("<script>");
 			script.println("alert('연장 완료되었습니다.');");
-			script.println("location.href = './index.jsp';");
+			script.println("history.back()';");
 			script.println("</script>");
 			script.close();
 			return;
