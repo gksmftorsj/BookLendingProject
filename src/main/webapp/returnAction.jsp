@@ -89,9 +89,26 @@
 		} else { // 예약 대기중인 사람 있을 때
 			int currentLendingCnt = userManagementDAO.selectCurrentLendingCnt(lendUserNo);
 			if(currentLendingCnt == 5){
+				// 대여에서 반납하는 사람(USER_MANAGEMENT에서 currentLendingCnt -1)
+				clc = userManagementDAO.updateCurrentLendingCntMinus(returnUserNo);
+				
+				// 대여에서 반납하는 사람(BOOK_LEND에서 returnStatus -> true로 변경)
+				urs = bookLendDAO.updateReturnStatus(bookNo);
+				
+				// BookLendDTO 초기화 시켜주고 lend테이블에서 반납하는 사람의 lendingData 가져오기 -->
+				BookLendDTO bookLendDTO = bookLendDAO.selectUserLendingData(returnUserNo, bookIsbn);
+				BookReturnDTO bookReturnDTO = new BookReturnDTO();
+				bookReturnDTO.setUserNo(bookLendDTO.getUserNo());
+				bookReturnDTO.setBookNo(bookLendDTO.getBookNo());
+				bookReturnDTO.setLendNo(bookLendDTO.getLendNo());
+				bookReturnDTO.setLendDate(bookLendDTO.getLendDate());
+				bookReturnDTO.setExpectedReturnDate(bookLendDTO.getExpectedReturnDate());
+				// ---> 대여에서 반납하는 사람(BOOK_RETURN에 반납하는 도서 데이터 insert)
+				ibr = bookReturnDAO.insertBookReturn(bookReturnDTO);
+				
 				script.println("<script>");
-				script.println("alert('현재 대여중인 책이 5권 입니다. 반납후 대여가능합니다.');");
-				script.println("history.back()");
+				script.println("alert('예약대기자의 현재 대여 권수가 5권 입니다. 반납후 대여가능합니다.');");
+				script.println("location.href = document.referrer");
 				script.println("</script>");
 				script.close();
 				return;
